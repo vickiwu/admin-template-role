@@ -8,26 +8,25 @@
       :zoom="zoom"
       :scroll-wheel-zoom="true"
     >
-      <bm-marker v-for="i in 4" :key="i" :position="centerList[i]" :dragging="true" @click="infoWindowOpen">
+      <bm-marker v-for="(item, i) in centerList" :key="i" :position="item" :dragging="true" @click="infoWindowOpen(i)">
         <bm-info-window
-          :show="show"
-          @close="infoWindowClose"
-          @open="infoWindowOpen"
+          :show="i===currentI"
+          @close="infoWindowClose(i)"
         >
           <div>
-            <div class="info-title">杂草信息{{ i }}</div>
+            <div class="info-title">杂草信息</div>
             <ul class="weed-info">
               <li>
                 <span class="info-key">名称:</span>
-                <span class="info-value">{{ weedInfo.name }}</span>
+                <span class="info-value">{{ weedInfo.name }}{{ i }}</span>
               </li>
               <li>
                 <span class="info-key">位置:</span>
-                <span class="info-value">{{ weedInfo.address }}</span>
+                <span class="info-value">{{ weedInfo.address }}{{ i }}</span>
               </li>
               <li>
                 <span class="info-key">来源:</span>
-                <span class="info-value">{{ weedInfo.from }}</span>
+                <span class="info-value">{{ weedInfo.from }}{{ i }}</span>
               </li>
               <li>
                 <span class="info-key">图片:</span>
@@ -62,26 +61,26 @@ export default {
       },
       zoom: 12, // 地图放大的级别
       labelStyle: { color: 'red', fontSize: '14px' },
-      show: false,
+      currentI: -1,
       centerList: [{
         lng: 118.846,
         lat: 32.063
       },
       {
-        lng: 119.846,
-        lat: 31.063
+        lng: 118.946,
+        lat: 32.043
       },
       {
-        lng: 118.846,
-        lat: 31.063
+        lng: 118.746,
+        lat: 31.963
       },
       {
-        lng: 120.846,
-        lat: 33.063
+        lng: 118.886,
+        lat: 32.163
       },
       {
-        lng: 119.146,
-        lat: 30.063
+        lng: 118.746,
+        lat: 32.163
       }],
       weedInfo: {
         name: '杂草B',
@@ -101,11 +100,11 @@ export default {
 
   },
   methods: {
-    infoWindowClose() {
-      this.show = false
+    infoWindowClose(i) {
+      // this.currentI = -1
     },
-    infoWindowOpen() {
-      this.show = true
+    infoWindowOpen(i) {
+      this.currentI = i
     }
 
   }
