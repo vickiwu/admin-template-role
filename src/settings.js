@@ -1,16 +1,16 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: '生物杂草信息处理系统',
 
   /**
    * @type {boolean} true | false
-   * @description Whether fix the header
+   * @description 固定头部
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * @type {boolean} true | false
-   * @description Whether show the logo in sidebar
+   * @description 是否在侧边栏展示标题logo
    */
-  sidebarLogo: false
+  sidebarLogo: true
 }

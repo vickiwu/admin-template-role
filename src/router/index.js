@@ -42,124 +42,140 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
+    path: '/', // 首页的设定
+    redirect: '/statistical/weeds',
+    hidden: true
   },
-
   {
-    path: '/example',
+    path: '/statistical',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    redirect: '/statistical/weeds',
+    name: 'Statistical',
+    meta: { title: '统计分析', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: 'weeds',
+        name: 'WeedsStatistical',
+        component: () => import('@/views/statistical/weeds'),
+        meta: { title: '杂草分布', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'report',
+        name: 'Report',
+        component: () => import('@/views/statistical/report'),
+        meta: { title: '报表统计', icon: 'tree' }
       }
+    ]
+  },
+  {
+    path: '/news',
+    component: Layout,
+    redirect: '/news/trend',
+    name: 'News',
+    meta: { title: '新闻中心', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'trend',
+        name: 'Trend',
+        component: () => import('@/views/news/trend'),
+        meta: { title: '新闻动态', icon: 'table' }
+      },
+      {
+        path: 'management',
+        name: 'Management',
+        component: () => import('@/views/news/management'),
+        meta: { title: '新闻管理', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/weeds',
+    component: Layout,
+    redirect: '/weeds/management',
+    name: 'Weeds',
+    meta: { title: '杂草库', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'management',
+        name: 'WeedsManagement',
+        component: () => import('@/views/weeds/management'),
+        meta: { title: '杂草管理', icon: 'tree' }
+      },
+      {
+        path: 'category',
+        name: 'Category',
+        component: () => import('@/views/weeds/category'),
+        meta: { title: '类别管理', icon: 'table' }
+      }
+
     ]
   },
 
   {
-    path: '/form',
+    path: '/expert',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        name: 'Expert',
+        component: () => import('@/views/expert/index'),
+        meta: { title: '专家调度', icon: 'form' }
       }
     ]
   },
-
   {
-    path: '/nested',
+    path: '/information',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
     children: [
       {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+        path: 'index',
+        name: 'Information',
+        component: () => import('@/views/information/index'),
+        meta: { title: '资料中心', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/resource',
+    component: Layout,
+    redirect: '/resource/account',
+    name: 'Resource',
+    meta: { title: '资源管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'account',
+        name: 'Account',
+        component: () => import('@/views/resource/account'),
+        meta: { title: '账户管理', icon: 'tree' }
       },
       {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
+        path: 'file',
+        name: 'File',
+        component: () => import('@/views/resource/file'),
+        meta: { title: '文件管理', icon: 'table' }
+      },
+      {
+        path: 'space',
+        name: 'Space',
+        component: () => import('@/views/resource/space'),
+        meta: { title: '空间管理', icon: 'table' }
       }
+
     ]
   },
-
   {
-    path: 'external-link',
+    path: '/log',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'index',
+        name: 'Log',
+        component: () => import('@/views/log/index'),
+        meta: { title: '系统日志', icon: 'form' }
       }
     ]
   },
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
