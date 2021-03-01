@@ -51,6 +51,7 @@ export default {
     BmMarker,
     BmInfoWindow
   },
+  // eslint-disable-next-line vue/require-prop-types
   props: ['apprefs'],
   data() {
     return {
