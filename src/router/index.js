@@ -86,6 +86,13 @@ export const constantRoutes = [
         name: 'Management',
         component: () => import('@/views/news/management'),
         meta: { title: '新闻管理', icon: 'tree' }
+      },
+      {
+        path: 'addNews',
+        name: 'AddNews',
+        hidden: true,
+        component: () => import('@/views/news/addNews'),
+        meta: { title: '新闻发布', icon: 'tree' }
       }
     ]
   },
@@ -103,10 +110,24 @@ export const constantRoutes = [
         meta: { title: '杂草管理', icon: 'tree' }
       },
       {
+        path: 'search',
+        name: 'Search',
+        hidden: true,
+        component: () => import('@/views/weeds/search'),
+        meta: { title: '杂草检索', icon: 'tree' }
+      },
+      {
         path: 'category',
         name: 'Category',
         component: () => import('@/views/weeds/category'),
         meta: { title: '类别管理', icon: 'table' }
+      },
+      {
+        path: 'addWeeds',
+        name: 'AddWeeds',
+        hidden: true,
+        component: () => import('@/views/weeds/addWeeds'),
+        meta: { title: '杂草录入', icon: 'tree' }
       }
 
     ]

@@ -1,11 +1,56 @@
 <template>
   <div class="app-container">
-    <div class="news-title">类别管理</div>
+    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草检索</span> </div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="23" class="right-btn">
-          <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+        <el-col :span="6">
+          <el-col :span="11">
+            <el-date-picker
+              v-model="formInline.date1"
+              size="medium"
+              type="date"
+              placeholder="开始日期"
+              style="width: 100%"
+            />
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              v-model="formInline.date2"
+              size="medium"
+              type="date"
+              placeholder="结束日期"
+              style="width: 100%"
+            />
+          </el-col>
+        </el-col>
+        <el-col :span="3">
+          <el-select v-model="formInline.region1" size="medium" placeholder="所有区域">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-col>
+        <el-col :span="3">
+          <el-select v-model="formInline.region2" size="medium" placeholder="所有种类">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-col>
+        <el-col :span="3">
+          <el-select v-model="formInline.region3" size="medium" placeholder="所有程度">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-col>
+        <el-col :span="4">
+          <el-input v-model="formInline.region2" size="medium" placeholder="搜索关键字" prefix-icon="el-icon-search">
+            <template slot="append">检索</template>
+          </el-input>
+
+        </el-col>
+        <el-col :span="4" class="right-btn">
+          <el-button type="primary" size="small" @click="handleDownLoad()">下载图片</el-button>
+          <el-button type="primary" size="small" @click="handleExport()">导出</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -17,24 +62,49 @@
         <el-table-column
           type="selection"
           label="选择"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           type="index"
           label="序号"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
-          label="类别"
+          prop="name"
+          label="来源"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="address"
+          label="名称"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="种类"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="危害程度"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="图片"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="发现时间"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="name"
           label="编辑"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
@@ -72,6 +142,13 @@ export default {
 
   data() {
     return {
+      formInline: {
+        region1: '',
+        region2: '',
+        region3: '',
+        date1: '',
+        date2: ''
+      },
       tableData: [{
         date: '2016-05-04',
         name: '王小虎',
@@ -126,21 +203,19 @@ export default {
   methods: {
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
-      // 跳转页面
-      this.$router.push({
-        name: 'AddNews',
-        params: {
-          index, rowData
-        }
-      })
+      // 跳转到修改页面
+      // this.$router.push({
+      //   name: 'AddNews',
+      //   params: {
+      //     index, rowData
+      //   }
+      // })
     },
-    handleAdd() {
-      // 跳转页面
-      this.$router.push({
-        name: 'AddNews'
+    handleDownLoad() {
+      // 处理下载函数
 
-      })
     },
+    handleExport() {},
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val
@@ -153,6 +228,15 @@ export default {
 .news-title {
   height: 35px;
   // line-height: 35px;
+   .news-sub{
+    display: inline-block;
+    margin: 0 5px;
+
+  }
+  .news-sub-title{
+    display: inline-block;
+    color: #97a8be;
+  }
 }
 .news-card {
   height: calc(100% - 35px);
