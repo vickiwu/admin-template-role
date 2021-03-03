@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="news-title">资料管理</div>
+    <div class="news-title">资料管理 <span class="news-sub">/</span> <span class="news-sub-title">资料检索</span> </div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
 
@@ -10,13 +10,17 @@
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
+
         <el-col :span="5">
           <el-input v-model="formInline.region2" size="medium" placeholder="资料名称" prefix-icon="el-icon-search">
-            <template slot="append"><span style="cursor: pointer;" @click="jumpSearch()">检索</span></template>
+            <template slot="append" style="cursor: pointer;">检索</template>
           </el-input>
+
         </el-col>
         <el-col :span="14" class="right-btn">
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
+          <el-button type="primary" size="small" @click="handleDownLoad()">下载</el-button>
+          <el-button type="danger" size="small" @click="handleExport()">删除</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -38,17 +42,17 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="name"
           label="资料名称"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="address"
           label="涉及杂草种类"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="name"
           label="摘要"
           :show-overflow-tooltip="true"
         />
@@ -57,7 +61,6 @@
           label="发现时间"
           :show-overflow-tooltip="true"
         />
-
         <el-table-column
           prop="name"
           label="编辑"
@@ -103,7 +106,8 @@ export default {
         region1: '',
         region2: '',
         region3: '',
-        name: ''
+        date1: '',
+        date2: ''
       },
       tableData: [{
         date: '2016-05-04',
@@ -159,7 +163,7 @@ export default {
   methods: {
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
-      // 跳转页面
+      // 跳转到修改页面
       this.$router.push({
         name: 'InformationAdd',
         params: {
@@ -167,14 +171,17 @@ export default {
         }
       })
     },
+    handleDownLoad() {
+      // 处理下载函数
 
-    jumpSearch() {
-      // 跳转页面
+    },
+    handleAdd() {
+      // 跳转到修改页面
       this.$router.push({
-        name: 'InformationSearch'
-
+        name: 'InformationAdd'
       })
     },
+    handleExport() {},
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val
@@ -206,6 +213,7 @@ export default {
       ::v-deep.el-button{
         margin: 0 10px;
       }
+
     }
   }
   .report-table {

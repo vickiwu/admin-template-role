@@ -44,7 +44,7 @@
         </el-col>
         <el-col :span="4">
           <el-input v-model="formInline.region2" size="medium" placeholder="标题" prefix-icon="el-icon-search">
-            <template slot="append">检索</template>
+            <template slot="append"> <span style="cursor: pointer;" @click="handleSearch()">检索</span></template>
           </el-input>
 
         </el-col>
@@ -226,6 +226,13 @@ export default {
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val
+    },
+    handleSearch() {
+      // 跳转页面
+      this.$router.push({
+        name: 'Search'
+
+      })
     }
   }
 }

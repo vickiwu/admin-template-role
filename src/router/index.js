@@ -168,6 +168,20 @@ export const constantRoutes = [
         name: 'Information',
         component: () => import('@/views/information/index'),
         meta: { title: '资料中心', icon: 'form' }
+      },
+      {
+        path: 'searchInformation',
+        name: 'InformationSearch',
+        hidden: true,
+        component: () => import('@/views/information/search'),
+        meta: { title: '资料检索', icon: 'tree' }
+      },
+      {
+        path: 'addInformation',
+        name: 'InformationAdd',
+        hidden: true,
+        component: () => import('@/views/information/addInfo'),
+        meta: { title: '资料录入', icon: 'tree' }
       }
     ]
   },
