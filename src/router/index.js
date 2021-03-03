@@ -142,6 +142,20 @@ export const constantRoutes = [
         name: 'Expert',
         component: () => import('@/views/expert/index'),
         meta: { title: '专家调度', icon: 'form' }
+      },
+      {
+        path: 'management',
+        name: 'ExpertManagement',
+        hidden: true,
+        component: () => import('@/views/expert/management'),
+        meta: { title: '专家管理', icon: 'tree' }
+      },
+      {
+        path: 'addExpert',
+        name: 'AddExpert',
+        hidden: true,
+        component: () => import('@/views/expert/addExpert'),
+        meta: { title: '专家录入', icon: 'tree' }
       }
     ]
   },

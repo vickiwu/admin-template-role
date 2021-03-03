@@ -64,19 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.news-title {
-  height: 35px;
-  // line-height: 35px;
-  .news-sub{
-    display: inline-block;
-    margin: 0 5px;
 
-  }
-  .news-sub-title{
-    display: inline-block;
-    color: #97a8be;
-  }
-}
 .news-card {
 .news-form{
   width: 80%;

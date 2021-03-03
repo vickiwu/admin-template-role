@@ -1,9 +1,23 @@
 <template>
   <div class="app-container">
-    <div class="news-title">类别管理</div>
+    <div class="news-title">专家管理</div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="23" class="right-btn">
+        <el-col :span="4">
+          <el-input v-model="formInline.name" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
+        </el-col>
+        <el-col :span="4">
+          <el-select v-model="formInline.region1" size="medium" placeholder="专业领域">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-col>
+        <el-col :span="5">
+          <el-input v-model="formInline.region2" size="medium" placeholder="工号" prefix-icon="el-icon-search">
+            <template slot="append">检索</template>
+          </el-input>
+        </el-col>
+        <el-col :span="10" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>
@@ -17,24 +31,60 @@
         <el-table-column
           type="selection"
           label="选择"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           type="index"
           label="序号"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="date"
-          label="类别"
+          label="专家姓名"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="name"
+          label="专家工号"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="address"
+          label="手机号码"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="专业领域"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="参与调度"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="简介"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="头像"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="录入时间"
+          :show-overflow-tooltip="true"
+        />
+
+        <el-table-column
+          prop="name"
           label="编辑"
-          width="120"
+          width="80"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
@@ -72,6 +122,12 @@ export default {
 
   data() {
     return {
+      formInline: {
+        region1: '',
+        region2: '',
+        region3: '',
+        name: ''
+      },
       tableData: [{
         date: '2016-05-04',
         name: '王小虎',
@@ -128,7 +184,7 @@ export default {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面
       this.$router.push({
-        name: 'AddNews',
+        name: 'AddExpert',
         params: {
           index, rowData
         }
@@ -137,7 +193,7 @@ export default {
     handleAdd() {
       // 跳转页面
       this.$router.push({
-        name: 'AddNews'
+        name: 'AddExpert'
 
       })
     },
@@ -170,7 +226,7 @@ export default {
     .right-btn{
       text-align: right;
       ::v-deep.el-button{
-        // margin: 0 10px;
+        margin: 0 10px;
       }
     }
   }

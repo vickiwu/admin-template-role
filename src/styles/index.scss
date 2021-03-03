@@ -9,7 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Microsoft YaHei, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Arial, sans-serif;
 }
 
 label {
@@ -59,10 +59,48 @@ div:focus {
   }
 }
 
-// main-container global css
+// main-container 全局 css
 .app-container {
   padding: 20px;
   height: calc(100vh - 50px);
   width: 100%;
   background: #f7f7f7;
+  overflow: auto;
+
+  // 标题
+  .news-title {
+    height: 35px;
+
+    // line-height: 35px;
+    .news-sub {
+      display: inline-block;
+      margin: 0 5px;
+
+    }
+
+    .news-sub-title {
+      display: inline-block;
+      color: #97a8be;
+    }
+  }
+
+  // 蓝色背景块
+  .blue-bg {
+    width: 200px;
+    height: 55px;
+    background: linear-gradient(90deg, #2bd9f5 0%, #01abe6 100%);
+    opacity: 1;
+    border-radius: 5px;
+    color: #fff;
+    line-height: 55px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+
+    .bg-icon {
+      font-size: 20px;
+      margin-right: 15px;
+    }
+  }
 }

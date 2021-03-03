@@ -225,21 +225,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.news-title {
-  height: 35px;
-  // line-height: 35px;
-   .news-sub{
-    display: inline-block;
-    margin: 0 5px;
 
-  }
-  .news-sub-title{
-    display: inline-block;
-    color: #97a8be;
-  }
-}
 .news-card {
-  height: calc(100% - 35px);
+  min-height: calc(100% - 35px);
   ::v-deep.el-card__body {
     // padding: 20px 0;
     height: 100%;
@@ -256,9 +244,7 @@ export default {
     }
     .right-btn{
       text-align: right;
-      ::v-deep.el-button{
-        // margin: 0 10px;
-      }
+
     }
   }
   .report-table {

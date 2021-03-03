@@ -232,12 +232,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.news-title {
-  height: 35px;
-  // line-height: 35px;
-}
+
 .news-card {
-  height: calc(100% - 35px);
+  min-height: calc(100% - 35px);
   ::v-deep.el-card__body {
     // padding: 20px 0;
     height: 100%;

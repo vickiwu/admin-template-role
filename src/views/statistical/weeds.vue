@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <baidu-map
       ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
       class="map"
@@ -113,6 +113,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep.app-container{
+  padding: 0;
+}
 .map {
   width: 100%;
   height: 500px;
