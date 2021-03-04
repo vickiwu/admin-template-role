@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h3 class="title">生物信息处理系统</h3>
       </div>
@@ -21,7 +27,7 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password">
+      <el-form-item prop="password" class="last-form">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
@@ -37,16 +43,25 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
         </span>
       </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
+        <span>
+          <el-checkbox v-model="passWord">记住密码</el-checkbox>
+        </span>
+        <span> 忘记密码？</span>
       </div>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px; padding: 15px 0;"
+        @click.native.prevent="handleLogin"
+      >
+        登录
+      </el-button>
 
     </el-form>
   </div>
@@ -60,19 +75,20 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入正确的用户名！'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码的长度不少于6位！'))
       } else {
         callback()
       }
     }
     return {
+      passWord: '',
       loginForm: {
         username: 'admin',
         password: '111111'
@@ -128,9 +144,9 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
+$bg: #fff;
+$light_gray: #283443;
+$cursor: #283443;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -164,7 +180,8 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    // background: rgba(0, 0, 0, 0.1);
+    background: #fff;
     border-radius: 5px;
     color: #454545;
   }
@@ -172,14 +189,16 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b; // 深色背景
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  // background-color: $bg;
+  background: url('../../assets/login.png') no-repeat;
+  background-size: 100% 100%;
   overflow: hidden;
 
   .login-form {
@@ -189,12 +208,27 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    ::v-deep.el-button--primary:focus,
+    .el-button--primary:hover {
+      background: #368ce6;
+    }
+    .last-form{
+      margin-bottom: 10px;
+    }
   }
 
   .tips {
     font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
+    color: #7882A2;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    ::v-deep.el-checkbox__input.is-checked+.el-checkbox__label{
+      color: #7882A2;
+    }
+    ::v-deep.el-checkbox{
+      color: #7882A2;
+    }
 
     span {
       &:first-of-type {
@@ -216,7 +250,8 @@ $light_gray:#eee;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      // color: $light_gray;
+      color: #fff;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;

@@ -199,6 +199,35 @@ export const constantRoutes = [
         meta: { title: '账户管理', icon: 'tree' }
       },
       {
+        path: 'syncAccount',
+        name: 'SyncAccount',
+        hidden: true,
+        component: () => import('@/views/resource/syncAccount'),
+        meta: { title: '账户同步', icon: 'tree' }
+      },
+      {
+        path: 'roles',
+        name: 'AccountRoles',
+        hidden: true,
+        component: () => import('@/views/resource/roles'),
+        meta: { title: '权限设置', icon: 'tree' }
+      },
+      {
+        path: 'addAccount',
+        name: 'AddAccount',
+        hidden: true,
+        component: () => import('@/views/resource/addAccount'),
+        meta: { title: '账户新增', icon: 'tree' }
+      },
+      {
+        path: 'editAccount',
+        name: 'EditAccount',
+        hidden: true,
+        component: () => import('@/views/resource/editAccount'),
+        meta: { title: '账户编辑', icon: 'tree' }
+      },
+
+      {
         path: 'file',
         name: 'File',
         component: () => import('@/views/resource/file'),
