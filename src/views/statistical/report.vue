@@ -3,7 +3,7 @@
     <el-row type="flex" class="report-row" justify="space-around">
       <el-col :span="15">
         <el-card class="left-card" shadow="always">
-          <el-row type="flex" class="report-row" justify="space-between">
+          <el-row type="flex" justify="space-between">
             <el-col :span="11">
               <el-col :span="11">
                 <el-date-picker v-model="formInline.date1" size="medium" type="date" placeholder="开始日期" style="width: 100%;" />
