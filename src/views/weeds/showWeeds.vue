@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草录入</span> </div>
+    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草详情</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"
@@ -8,7 +8,6 @@
         label-width="80px"
         label-position="left"
         class="news-form"
-        :rules="rules"
       >
         <el-form-item label="名称" prop="name" placeholder="请输入杂草名称">
           <el-input v-model="form.name" />
@@ -54,10 +53,22 @@
             <img width="100%" :src="dialogImageUrl" alt="">
           </el-dialog>
         </el-form-item>
-        <el-form-item class="btn-center">
-          <el-button>取消</el-button>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
+        <el-form-item label="区域" prop="region1">
+          <el-col :span="17">
+            <el-input v-model="form.region1" placeholder="" />
+          </el-col>
+          <el-col :span="6">
+            <el-button style="margin-left:20px" type="primary">  地图查看</el-button>
+          </el-col>
+
         </el-form-item>
+        <el-form-item label="状态" placeholder="请输入杂草状态">
+          <el-input v-model="form.desc2" :rows="4" />
+        </el-form-item>
+        <el-form-item label="研判意见" placeholder="请输入杂草研判意见">
+          <el-input v-model="form.desc2" />
+        </el-form-item>
+
       </el-form>
     </el-card>
   </div>

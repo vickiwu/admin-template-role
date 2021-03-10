@@ -24,31 +24,30 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region1" size="medium" placeholder="所有区域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region2" size="medium" placeholder="所有种类">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region3" size="medium" placeholder="所有程度">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="4">
-          <el-input v-model="formInline.region2" size="medium" placeholder="搜索关键字" prefix-icon="el-icon-search">
-            <template slot="append">检索</template>
-          </el-input>
+        <!-- <el-col :span="3">
+          <el-input v-model="formInline.region2" size="medium" placeholder="搜索关键字" prefix-icon="el-icon-search" />
 
-        </el-col>
-        <el-col :span="4" class="right-btn">
+        </el-col> -->
+        <el-col :span="5" class="right-btn">
+          <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleDownLoad()">下载图片</el-button>
           <el-button type="primary" size="small" @click="handleExport()">导出</el-button>
         </el-col>
@@ -69,6 +68,11 @@
           type="index"
           label="序号"
           width="80"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="name"
+          label="区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -101,7 +105,7 @@
           label="发现时间"
           :show-overflow-tooltip="true"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="name"
           label="编辑"
           width="80"
@@ -115,7 +119,7 @@
               修改
             </span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <!-- 分页 -->
       <el-pagination
@@ -191,6 +195,7 @@ export default {
 
     },
     handleExport() {},
+    handleSearch() {},
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val

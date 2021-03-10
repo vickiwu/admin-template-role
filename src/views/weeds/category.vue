@@ -28,7 +28,12 @@
         />
         <el-table-column
           prop="date"
-          label="类别"
+          label="科"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="date"
+          label="属"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -63,6 +68,33 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="新增类别"
+      :visible.sync="dialogVisible"
+      width="40%"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="60px"
+        label-position="left"
+        :rules="rules"
+      >
+        <el-form-item label="科" prop="name">
+          <el-input v-model="form.name" placeholder="请填写科" />
+
+        </el-form-item>
+        <el-form-item label="属" prop="desc">
+          <el-input v-model="form.desc" placeholder="请填写属" />
+
+        </el-form-item>
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -72,6 +104,20 @@ export default {
 
   data() {
     return {
+      dialogVisible: false,
+      form: {
+        name: '',
+        resource: '',
+        desc: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请选择杂草所属科', trigger: 'blur' }
+        ],
+        desc: [
+          { required: true, message: '请选择杂草所属', trigger: 'blur' }
+        ]
+      },
       tableData: [{
         date: '2016-05-04',
         name: '王小虎',
@@ -107,19 +153,21 @@ export default {
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面
-      this.$router.push({
-        name: 'AddNews',
-        params: {
-          index, rowData
-        }
-      })
+      this.dialogVisible = true
+      // this.$router.push({
+      //   name: 'AddCategory',
+      //   params: {
+      //     index, rowData
+      //   }
+      // })
     },
     handleAdd() {
       // 跳转页面
-      this.$router.push({
-        name: 'AddNews'
+      this.dialogVisible = true
+      // this.$router.push({
+      //   name: 'AddCategory'
 
-      })
+      // })
     },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)

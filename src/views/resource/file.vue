@@ -56,6 +56,11 @@
           label="创建时间"
           :show-overflow-tooltip="true"
         />
+        <el-table-column
+          prop="name"
+          label="创建账户"
+          :show-overflow-tooltip="true"
+        />
 
       </el-table>
       <!-- 分页 -->

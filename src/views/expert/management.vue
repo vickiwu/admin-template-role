@@ -6,18 +6,21 @@
         <el-col :span="4">
           <el-input v-model="formInline.name" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
         </el-col>
+
+        <el-col :span="4">
+          <el-input v-model="formInline.region2" size="medium" placeholder="工号" prefix-icon="el-icon-search">
+            <!-- <template slot="append">检索</template> -->
+          </el-input>
+        </el-col>
         <el-col :span="4">
           <el-select v-model="formInline.region1" size="medium" placeholder="专业领域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="5">
-          <el-input v-model="formInline.region2" size="medium" placeholder="工号" prefix-icon="el-icon-search">
-            <template slot="append">检索</template>
-          </el-input>
-        </el-col>
-        <el-col :span="10" class="right-btn">
+        <el-col :span="11" class="right-btn">
+
+          <el-button type="primary" size="small">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>

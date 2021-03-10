@@ -16,24 +16,121 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <div @click="dialogVisible = true">
             <el-dropdown-item><i class="el-icon-document" /> 基本资料
             </el-dropdown-item>
-          </router-link>
-          <router-link to="/">
+          </div>
+          <div @click="dialogVisible2 = true">
             <el-dropdown-item><i class="el-icon-lock" /> 修改密码
             </el-dropdown-item>
-          </router-link>
-          <router-link to="/">
+          </div>
+          <div @click="dialogVisible3 = true">
             <el-dropdown-item><i class="el-icon-user" /> 修改头像
             </el-dropdown-item>
-          </router-link>
+          </div>
           <!-- 处理退出，删除token -->
           <el-dropdown-item @click.native="logout"><i class="el-icon-switch-button" /> 退出
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-dialog
+      title="基本资料"
+      :visible.sync="dialogVisible"
+      :modal-append-to-body="false"
+      width="50%"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="80px"
+        label-position="left"
+        class="news-form"
+      >
+        <el-form-item label="用户名" prop="name" placeholder="请输入用户名">
+          <el-input v-model="form.name" />
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="name2" placeholder="请输入真实姓名">
+          <el-input v-model="form.name2" />
+        </el-form-item>
+        <el-form-item label="昵称" prop="name3" placeholder="请输入昵称">
+          <el-input v-model="form.name3" />
+        </el-form-item>
+
+        <el-form-item label="地市" prop="name6" placeholder="请输入地市">
+          <el-input v-model="form.name6" />
+        </el-form-item>
+        <el-form-item label="单位" prop="name7" placeholder="请输入单位">
+          <el-input v-model="form.name7" />
+        </el-form-item>
+        <el-form-item label="工号" prop="name8" placeholder="请输入工号">
+          <el-input v-model="form.name8" />
+        </el-form-item>
+        <el-form-item label="手机号码" prop="name9" placeholder="请输入手机号码">
+          <el-input v-model.number="form.name9" />
+        </el-form-item>
+
+        <el-form-item label="类型" prop="region1" placeholder="现场工作人员">
+          <el-select v-model="form.region1" placeholder="请选择发现地域">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
+        </el-form-item>
+        <div style="text-align:center">
+          <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogVisible2"
+      :modal-append-to-body="false"
+      width="50%"
+    >
+      <el-form
+        ref="form2"
+        :model="form2"
+        label-width="120px"
+        label-position="left"
+        class="news-form"
+      >
+        <el-form-item label="当前密码" prop="name" placeholder="请输入当前密码">
+          <el-input v-model="form2.name" />
+        </el-form-item>
+        <el-form-item label="新密码" prop="name2" placeholder="请输入新密码">
+          <el-input v-model="form2.name2" />
+        </el-form-item>
+        <el-form-item label="确认新密码" prop="name3" placeholder="请输入确认新密码">
+          <el-input v-model="form2.name3" />
+        </el-form-item>
+
+        <div style="text-align:center">
+          <el-button type="primary" @click="dialogVisible2 = false">确认修改</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog
+      title="修改头像"
+      :visible.sync="dialogVisible3"
+      :modal-append-to-body="false"
+      width="35%"
+    >
+      <div style="text-align:center; ">
+        <el-image class="img-info">
+          <div slot="error" class="image-slot">
+            <i class="el-icon-picture-outline" />
+          </div>
+        </el-image>
+
+        <div style="text-align:center;">
+          <el-button type="primary" style="margin-right:20px"> 长传图片</el-button>
+          <el-button type="primary" @click="dialogVisible3 = false">确认更改</el-button>
+        </div>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -46,6 +143,32 @@ export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      dialogVisible2: false,
+      dialogVisible3: false,
+      form: {
+        name: '',
+        name2: '',
+        name3: '',
+        name4: '',
+        name5: '',
+        name6: '',
+        name7: '',
+        name8: '',
+        name9: '',
+        region1: '',
+        from: ''
+      },
+      form2: {
+        name: '',
+        name2: '',
+        name3: ''
+      }
+
+    }
   },
   computed: {
     ...mapGetters([
@@ -153,4 +276,25 @@ export default {
     font-size: 16px;
   }
 }
+.news-form {
+  ::v-deep.el-select{
+    width: 100%;
+  }
+}
+.img-info{
+    height: 240px;
+    width: 350px;
+    margin-bottom:20px;
+    ::v-deep.image-slot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f5f7fa;
+    color: #909399;
+    font-size: 24px;
+  }
+  }
+
 </style>

@@ -33,7 +33,7 @@
                 <span class="info-value"> <img :src="item.img" alt=""></span>
               </li>
             </ul>
-            <div class="weed-detail">查看详细内容 ></div>
+            <div class="weed-detail" @click="showDetail()">查看详细内容 ></div>
           </div>
         </bm-info-window>
         <bm-label :content="`${item.name} 位置${item.from }`" :label-style="labelStyle" :offset="{width: 25, height:5}" />
@@ -142,6 +142,11 @@ export default {
 
   },
   methods: {
+    showDetail() {
+      this.$router.push({
+        name: 'ShowWeeds'
+      })
+    },
     infoWindowClose(i) {
       // this.currentI = -1
     },

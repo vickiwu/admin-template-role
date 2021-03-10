@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <el-row type="flex" class="report-row" justify="space-around">
-      <el-col :span="15">
+    <el-row type="flex" class="report-row" justify="space-around" :gutter="10">
+      <el-col :span="17">
         <el-card class="left-card" shadow="always">
           <el-row type="flex" justify="space-between">
-            <el-col :span="11">
+            <el-col :span="8">
               <el-col :span="11">
                 <el-date-picker v-model="formInline.date1" size="medium" type="date" placeholder="开始日期" style="width: 100%;" />
               </el-col>
@@ -30,6 +30,9 @@
                 <el-option label="区域一" value="shanghai" />
                 <el-option label="区域二" value="beijing" />
               </el-select>
+            </el-col>
+            <el-col :span="2">
+              <el-button size="medium" type="primary">检索</el-button>
             </el-col>
           </el-row>
           <el-table
@@ -104,7 +107,7 @@
 
         </el-card>
       </el-col>
-      <el-col :span="8" class="right-col">
+      <el-col :span="7" class="right-col">
         <el-card class="right-card" shadow="always">
           <div class="body-card">
             <div class="title-card">杂草数量</div>
@@ -193,6 +196,7 @@ export default {
       myChart.setOption({
         grid: {
           left: '10%',
+          right: '10px',
           top: '10%',
           bottom: '15%'
         },
@@ -227,6 +231,7 @@ export default {
       myChart.setOption({
         grid: {
           left: '10%',
+          right: '10px',
           top: '10%',
           bottom: '15%'
         },

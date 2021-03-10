@@ -9,8 +9,11 @@
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="用户" prop="name" placeholder="请选择下属账户">
-          <el-input v-model="form.name" />
+        <el-form-item label="用户" prop="name">
+          <el-select v-model="form.name" placeholder="请选择下属账户">
+            <el-option label="区域一" value="shanghai" />
+            <el-option label="区域二" value="beijing" />
+          </el-select>
         </el-form-item>
         <el-form-item label="访问控制" prop="name" placeholder="请输入杂草来源">
           <el-checkbox-group v-model="checkList">

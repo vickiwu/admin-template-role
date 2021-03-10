@@ -24,31 +24,32 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region1" size="medium" placeholder="所有区域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region2" size="medium" placeholder="所有种类">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="4">
           <el-select v-model="formInline.region3" size="medium" placeholder="所有程度">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-input v-model="formInline.region2" size="medium" placeholder="标题" prefix-icon="el-icon-search">
             <template slot="append"> <span style="cursor: pointer;" @click="handleSearch()">检索</span></template>
           </el-input>
 
-        </el-col>
-        <el-col :span="4" class="right-btn">
+        </el-col> -->
+        <el-col :span="5" class="right-btn">
+          <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>
@@ -109,10 +110,16 @@
         <el-table-column
           prop="name"
           label="编辑"
-          width="80"
+          width="180"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
+            <span
+              style="color: #409EFF;cursor:pointer; margin-right:10px"
+              @click="handleDetail(scope.$index, scope.row)"
+            >
+              查看
+            </span>
             <span
               style="color: #409EFF;cursor:pointer;"
               @click="handleEdit(scope.$index, scope.row)"
@@ -199,6 +206,14 @@ export default {
       // 跳转页面
       this.$router.push({
         name: 'AddWeeds',
+        params: {
+          index, rowData
+        }
+      })
+    },
+    handleDetail(index, rowData) {
+      this.$router.push({
+        name: 'ShowWeeds',
         params: {
           index, rowData
         }

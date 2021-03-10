@@ -30,12 +30,13 @@
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-input v-model="formInline.region2" size="medium" placeholder="请输入关键词" prefix-icon="el-icon-search">
-            <template slot="append">检索</template>
+            <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
-        <el-col :span="7" class="right-btn">
+        <el-col :span="8" class="right-btn">
+          <el-button type="primary" size="small">检索</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>
       </el-row>
@@ -92,21 +93,7 @@
           label="发现时间"
           :show-overflow-tooltip="true"
         />
-        <el-table-column
-          prop="name"
-          label="编辑"
-          width="80"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="scope">
-            <span
-              style="color: #409EFF;cursor:pointer;"
-              @click="handleEdit(scope.$index, scope.row)"
-            >
-              修改
-            </span>
-          </template>
-        </el-table-column>
+
       </el-table>
       <!-- 分页 -->
       <el-pagination

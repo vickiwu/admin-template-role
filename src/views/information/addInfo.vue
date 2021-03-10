@@ -19,8 +19,15 @@
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-form-item>
-        <el-form-item label="资料介绍" prop="desc" placeholder="请输入资料内容摘要">
-          <el-input v-model="form.desc" type="textarea" />
+        <el-form-item label="资料介绍" prop="desc">
+          <el-input v-model="form.desc" type="textarea" placeholder="请输入资料内容摘要" />
+        </el-form-item>
+        <el-form-item label="封面图片" placeholder="请输入资料内容摘要">
+          <el-image class="img-info">
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline" />
+            </div>
+          </el-image>
         </el-form-item>
         <el-form-item label="资料文件" prop="resource">
           <el-upload
@@ -96,6 +103,21 @@ export default {
       margin: 0 15px;
     }
   }
+  .img-info{
+    height: 200px;
+    width: 300px;
+    ::v-deep.image-slot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #f5f7fa;
+    color: #909399;
+    font-size: 24px;
+  }
+  }
+
 }
 }
 </style>

@@ -36,7 +36,7 @@
         />
         <el-table-column
           prop="date"
-          label="区域"
+          label="用户名"
           :show-overflow-tooltip="true"
         />
         <el-table-column

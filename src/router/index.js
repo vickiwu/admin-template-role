@@ -76,6 +76,13 @@ export const constantRoutes = [
     meta: { title: '新闻中心', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'addNews',
+        name: 'AddNews',
+        // hidden: true,
+        component: () => import('@/views/news/addNews'),
+        meta: { title: '新闻发布', icon: 'tree' }
+      },
+      {
         path: 'trend',
         name: 'Trend',
         component: () => import('@/views/news/trend'),
@@ -86,14 +93,8 @@ export const constantRoutes = [
         name: 'Management',
         component: () => import('@/views/news/management'),
         meta: { title: '新闻管理', icon: 'tree' }
-      },
-      {
-        path: 'addNews',
-        name: 'AddNews',
-        hidden: true,
-        component: () => import('@/views/news/addNews'),
-        meta: { title: '新闻发布', icon: 'tree' }
       }
+
     ]
   },
   {
@@ -104,6 +105,20 @@ export const constantRoutes = [
     meta: { title: '杂草库', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'addWeeds',
+        name: 'AddWeeds',
+        // hidden: true,
+        component: () => import('@/views/weeds/addWeeds'),
+        meta: { title: '杂草录入', icon: 'tree' }
+      },
+      {
+        path: 'showWeeds',
+        name: 'ShowWeeds',
+        // hidden: true,
+        component: () => import('@/views/weeds/showWeeds'),
+        meta: { title: '杂草详情', icon: 'tree' }
+      },
+      {
         path: 'management',
         name: 'WeedsManagement',
         component: () => import('@/views/weeds/management'),
@@ -112,7 +127,6 @@ export const constantRoutes = [
       {
         path: 'search',
         name: 'Search',
-        hidden: true,
         component: () => import('@/views/weeds/search'),
         meta: { title: '杂草检索', icon: 'tree' }
       },
@@ -121,13 +135,6 @@ export const constantRoutes = [
         name: 'Category',
         component: () => import('@/views/weeds/category'),
         meta: { title: '类别管理', icon: 'table' }
-      },
-      {
-        path: 'addWeeds',
-        name: 'AddWeeds',
-        hidden: true,
-        component: () => import('@/views/weeds/addWeeds'),
-        meta: { title: '杂草录入', icon: 'tree' }
       }
 
     ]
@@ -136,6 +143,9 @@ export const constantRoutes = [
   {
     path: '/expert',
     component: Layout,
+    redirect: '/expert/index',
+    name: 'ExpertIndex',
+    meta: { title: '专家中心', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'index',
@@ -144,45 +154,55 @@ export const constantRoutes = [
         meta: { title: '专家调度', icon: 'form' }
       },
       {
+        path: 'addExpert',
+        name: 'AddExpert',
+        // hidden: true,
+        component: () => import('@/views/expert/addExpert'),
+        meta: { title: '专家录入', icon: 'tree' }
+      },
+      {
         path: 'management',
         name: 'ExpertManagement',
-        hidden: true,
+        // hidden: true,
         component: () => import('@/views/expert/management'),
         meta: { title: '专家管理', icon: 'tree' }
       },
       {
-        path: 'addExpert',
-        name: 'AddExpert',
-        hidden: true,
-        component: () => import('@/views/expert/addExpert'),
-        meta: { title: '专家录入', icon: 'tree' }
+        path: 'set',
+        name: 'ExpertSet',
+        // hidden: true,
+        component: () => import('@/views/expert/setExpert'),
+        meta: { title: '调度管理', icon: 'tree' }
       }
     ]
   },
   {
     path: '/information',
     component: Layout,
+    redirect: '/information/index',
+    name: 'InformationIndex',
+    meta: { title: '资料中心', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'index',
         name: 'Information',
         component: () => import('@/views/information/index'),
-        meta: { title: '资料中心', icon: 'form' }
+        meta: { title: '资料管理', icon: 'form' }
       },
       {
         path: 'searchInformation',
         name: 'InformationSearch',
-        hidden: true,
+        // hidden: true,
         component: () => import('@/views/information/search'),
         meta: { title: '资料检索', icon: 'tree' }
       },
       {
         path: 'addInformation',
         name: 'InformationAdd',
-        hidden: true,
         component: () => import('@/views/information/addInfo'),
         meta: { title: '资料录入', icon: 'tree' }
       }
+
     ]
   },
   {
@@ -201,21 +221,21 @@ export const constantRoutes = [
       {
         path: 'syncAccount',
         name: 'SyncAccount',
-        hidden: true,
+        // hidden: true,
         component: () => import('@/views/resource/syncAccount'),
         meta: { title: '账户同步', icon: 'tree' }
       },
       {
         path: 'roles',
         name: 'AccountRoles',
-        hidden: true,
+        // hidden: true,
         component: () => import('@/views/resource/roles'),
         meta: { title: '权限设置', icon: 'tree' }
       },
       {
         path: 'addAccount',
         name: 'AddAccount',
-        hidden: true,
+        // hidden: true,
         component: () => import('@/views/resource/addAccount'),
         meta: { title: '账户新增', icon: 'tree' }
       },

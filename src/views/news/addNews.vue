@@ -14,7 +14,7 @@
           <el-input v-model="form.name" />
         </el-form-item>
         <el-form-item label="内容" prop="desc">
-          <el-input v-model="form.desc" type="textarea" />
+          <el-input v-model="form.desc" type="textarea" :rows="4" />
         </el-form-item>
         <el-form-item label="可见性" prop="resource">
           <el-radio-group v-model="form.resource">
