@@ -6,13 +6,23 @@ const table = require('./table')
 const admin = require('./admin')
 const sys = require('./sys')
 const zacao = require('./zacao')
+const ziliao = require('./ziliao')
+const zhuanjia = require('./zhuanjia')
+const yanpan = require('./yanpan')
+const xinwen = require('./xinwen')
+const log = require('./log')
 
 const mocks = [
   ...user,
   ...table,
   ...admin,
   ...sys,
-  ...zacao
+  ...zacao,
+  ...ziliao,
+  ...zhuanjia,
+  ...yanpan,
+  ...xinwen,
+  ...log
 ]
 
 // for front mock
