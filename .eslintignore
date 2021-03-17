@@ -1,3 +1,4 @@
+# 语法检查忽略文件
 build/*.js
 src/assets
 public

@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '生物杂草信息处理系统',
+  title: '新联admin系统',
 
   /**
    * @type {boolean} true | false
@@ -12,5 +12,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description 是否在侧边栏展示标题logo
    */
-  sidebarLogo: true
+  sidebarLogo: true,
+  apiCreateUser: '/admin/createUser',
+  apiEditUser: '/admin/editUser'
 }

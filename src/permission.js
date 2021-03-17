@@ -1,12 +1,12 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+import NProgress from 'nprogress' // 加载进度条
+import 'nprogress/nprogress.css'
+import { getToken } from '@/utils/auth' // 从cookie中获取token
 import getPageTitle from '@/utils/get-page-title'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login'] // 白名单
 
@@ -27,7 +27,7 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.name
-      if (hasGetUserInfo) {
+      if (hasGetUserInfo) { // 刷新store会丢失
         next()
       } else {
         try {
@@ -43,6 +43,7 @@ router.beforeEach(async(to, from, next) => {
           NProgress.done()
         }
       }
+      // next()
     }
   } else {
     /* 没有taken*/

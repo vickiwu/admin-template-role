@@ -19,7 +19,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -36,7 +36,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -50,7 +50,7 @@
       </el-form-item>
       <div class="tips">
         <span>
-          <el-checkbox v-model="passWord">记住密码</el-checkbox>
+          <el-checkbox v-model="markPassword">记住密码</el-checkbox>
         </span>
         <span> 忘记密码？</span>
       </div>
@@ -68,48 +68,41 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
+    // 用户名的验证规则
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('请输入正确的用户名！'))
+      if (value.length < 4 || value.length > 32) {
+        callback(new Error('用户名的长度在4-32位！'))
       } else {
         callback()
       }
     }
+    // 密码的验证规则
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码的长度不少于6位！'))
+      if (value.length < 4 || value.length > 32) {
+        callback(new Error('密码的长度在4-32位！'))
       } else {
         callback()
       }
     }
     return {
-      passWord: '',
-      loginForm: {
-        username: 'admin',
-        password: '111111'
+      markPassword: false, // 是否记住密码
+      loginForm: { // 登录表单
+        username: '',
+        password: ''
       },
-      loginRules: {
+      loginRules: { // 登录验证规则
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
-      passwordType: 'password',
-      redirect: undefined
+      passwordType: 'password'
     }
   },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
+
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -125,14 +118,15 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          // 验证通过提交登录信息
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: '/' }) // 跳转至首页
             this.loading = false
           }).catch(() => {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
+          console.log('用户名密码验证未通过!!')
           return false
         }
       })
@@ -142,7 +136,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
+/* 修复input 背景 和光标变色 */
 
 $bg: #fff;
 $light_gray: #283443;
@@ -154,7 +148,7 @@ $cursor: #283443;
   }
 }
 
-/* reset element-ui css */
+/* login页面的样式 */
 .login-container {
   .el-input {
     display: inline-block;
@@ -220,6 +214,7 @@ $light_gray: #eee;
   .tips {
     font-size: 14px;
     color: #7882A2;
+    margin-top: 15px;
     margin-bottom: 30px;
     display: flex;
     justify-content: space-between;

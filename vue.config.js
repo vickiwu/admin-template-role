@@ -16,6 +16,7 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
+  filenameHashing: false,
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
@@ -25,7 +26,18 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_BASE_URL,
+        changeOrigin: true,
+        xfwd: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    }
+
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     name: name,
@@ -76,9 +88,10 @@ module.exports = {
           config
             .optimization.splitChunks({
               chunks: 'all',
+              minSize: 2,
               cacheGroups: {
                 libs: {
-                  name: 'chunk-libs',
+                  name: 'ss-libs',
                   test: /[\\/]node_modules[\\/]/,
                   priority: 10,
                   chunks: 'initial'
@@ -87,6 +100,11 @@ module.exports = {
                   name: 'chunk-elementUI',
                   priority: 20,
                   test: /[\\/]node_modules[\\/]_?element-ui(.*)/
+                },
+                settingXl: {
+                  name: 'chunk-settingXl',
+                  priority: 20,
+                  test: resolve('src/settings.js')
                 },
                 commons: {
                   name: 'chunk-commons',

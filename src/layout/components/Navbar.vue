@@ -12,11 +12,11 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
-          <span class="user-name">用户名</span>
+          <span class="user-name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <div @click="dialogVisible = true">
+          <div @click="getInfo()">
             <el-dropdown-item><i class="el-icon-document" /> 基本资料
             </el-dropdown-item>
           </div>
@@ -36,7 +36,7 @@
     </div>
     <el-dialog
       title="基本资料"
-      :visible.sync="dialogVisible"
+      :visible.sync="dialogUserInfo"
       :modal-append-to-body="false"
       width="50%"
     >
@@ -77,7 +77,7 @@
           </el-select>
         </el-form-item>
         <div style="text-align:center">
-          <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+          <el-button type="primary" @click="dialogUserInfo = false">关 闭</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -146,7 +146,7 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
+      dialogUserInfo: false,
       dialogVisible2: false,
       dialogVisible3: false,
       form: {
@@ -173,7 +173,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   methods: {
@@ -183,6 +184,12 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login`)
+    },
+    async getInfo() {
+      const data = await this.$store.dispatch('user/getInfo')
+      console.log('%c 🍒 data: ', 'font-size:20px;background-color: #7F2B82;color:#fff;', data)
+
+      this.dialogUserInfo = true
     }
   }
 }

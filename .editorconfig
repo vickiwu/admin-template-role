@@ -1,4 +1,4 @@
-# http://editorconfig.org
+# vscode编译器的配置文件，做代码格式化
 root = true
 
 [*]
