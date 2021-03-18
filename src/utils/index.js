@@ -107,3 +107,13 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+export function clean(obj) {
+  const objC = JSON.parse(JSON.stringify(obj))
+  for (var propName in objC) {
+    if (objC[propName] === null || objC[propName] === undefined || objC[propName] === '') {
+      delete objC[propName]
+    }
+  }
+  return objC
+}

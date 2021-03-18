@@ -9,31 +9,26 @@ import getPageTitle from '@/utils/get-page-title'
 NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login'] // 白名单
-
 router.beforeEach(async(to, from, next) => {
   // 进度条
   NProgress.start()
-
   // 设置页面标题
   document.title = getPageTitle(to.meta.title)
-
   // 验证用户是否已经登录
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
       // 如果已登录，直接跳转首页
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.name
-      if (hasGetUserInfo) { // 刷新store会丢失
+      const hasGetUserInfo = store.getters.name // 验证是否有登录信息
+      if (hasGetUserInfo) { // 刷新store会丢失 将用户数据缓存到cook中
         next()
       } else {
         try {
           // 获取用户信息
-          await store.dispatch('user/getInfo')
-
+          // await store.dispatch('user/getInfo')
           next()
         } catch (error) {
           // 移除本地token 重新登录
@@ -47,7 +42,6 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* 没有taken*/
-
     if (whiteList.indexOf(to.path) !== -1) {
       // 如果是免登陆页面，直接跳转
       next()

@@ -1,13 +1,12 @@
 import axios from 'axios'
 import qs from 'qs'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
@@ -15,10 +14,12 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     if (config.method === 'post') {
-      config.data = qs.stringify(config.data)
+      if (!(config.data instanceof FormData)) {
+        config.data = qs.stringify(config.data)
+      }
     }
     if (store.getters.token) {
-      config.headers['sessionId'] = getToken()
+      config.headers['JSSID'] = getToken()
     }
     return config
   },
@@ -38,7 +39,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject(new Error(res.data.msg || '错误'))
+      return Promise.reject(res.data.msg || '错误')
     } else {
       return res
     }

@@ -1,25 +1,26 @@
 <template>
   <div class="app-container">
-    <div class="news-title">新闻中心 <span class="news-sub">/</span> <span class="news-sub-title">新闻发布</span> </div>
+    <div class="news-title">新闻中心 <span class="news-sub">/</span> <span class="news-sub-title">{{ !isEdit ? '新闻发布' : '新闻编辑' }}</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
-        ref="form"
-        :model="form"
+        ref="formNews"
+        :model="formNews"
         label-width="80px"
         label-position="left"
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="标题" prop="name">
-          <el-input v-model="form.name" />
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="formNews.title" />
         </el-form-item>
-        <el-form-item label="内容" prop="desc">
-          <el-input v-model="form.desc" type="textarea" :rows="4" />
+        <el-form-item label="内容" prop="content">
+          <el-input v-model="formNews.content" type="textarea" :rows="4" />
         </el-form-item>
-        <el-form-item label="可见性" prop="resource">
-          <el-radio-group v-model="form.resource">
-            <el-radio label="可见" />
-            <el-radio label="不可见" />
+        <el-form-item label="可见性" prop="state">
+          <el-radio-group v-model="formNews.state">
+            <el-radio :label="0">未审核</el-radio>
+            <el-radio :label="1">可见</el-radio>
+            <el-radio :label="-1">不可见</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item class="btn-center">
@@ -32,32 +33,61 @@
 </template>
 
 <script>
-
+import { create, edit } from '@/api/xinwen'
+import { clean } from '@/utils/index'
 export default {
 
   data() {
     return {
-      form: {
-        name: '',
-        resource: '',
-        desc: ''
+      isEdit: false,
+      formNews: {
+        title: '',
+        state: '',
+        content: ''
       },
       rules: {
-        name: [
+        title: [
           { required: true, message: '请输入标题', trigger: 'blur' }
         ],
-        desc: [
+        content: [
           { required: true, message: '请输入内容', trigger: 'blur' }
         ]
       }
     }
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
+    this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
+    if (this.$route.params.rowData) {
+      this.formNews = this.$route.params.rowData
+    }
   },
   methods: {
+    async edit() {
+      await edit({ json: JSON.stringify(this.formNews) }).then((data) => {
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      })
+    },
+    async create() {
+      await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '新增成功!'
+          })
+        }
+      })
+    },
     onSubmit() {
-      console.log('submit!')
+      if (this.isEdit) {
+        this.edit()
+      } else {
+        this.create()
+      }
     }
   }
 }

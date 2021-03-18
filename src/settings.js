@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '新联admin系统',
+  title: '生物杂草信息处理系统',
 
   /**
    * @type {boolean} true | false

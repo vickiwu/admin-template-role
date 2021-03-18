@@ -6,7 +6,7 @@
         <el-col :span="6">
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date1"
+              v-model="formSearch.createTimeStart"
               size="medium"
               type="date"
               placeholder="开始日期"
@@ -16,7 +16,7 @@
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date2"
+              v-model="formSearch.createTimeEnd"
               size="medium"
               type="date"
               placeholder="结束日期"
@@ -25,20 +25,19 @@
           </el-col>
         </el-col>
         <el-col :span="5">
-          <el-select v-model="formInline.region1" size="medium" placeholder="类别">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+          <el-select v-model="formSearch.ntype" size="medium" placeholder="类别">
+            <el-option label="区域一" :value="0" />
+            <el-option label="区域二" :value="1" />
           </el-select>
         </el-col>
-        <el-col :span="6">
-          <el-input v-model="formInline.region2" size="medium" placeholder="标题" prefix-icon="el-icon-search">
-            <template slot="append">检索</template>
-          </el-input>
+        <el-col :span="5">
+          <el-input v-model="formSearch.title" size="medium" placeholder="标题" prefix-icon="el-icon-search" />
 
         </el-col>
-        <el-col :span="6" class="right-btn">
+        <el-col :span="7" class="right-btn">
+          <el-button type="primary" size="small" @click="searchHandle">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <!-- <el-button type="danger" size="small">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -60,42 +59,47 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
-          label="区域"
+          prop="title"
+          label="标题"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="来源"
+          prop="content"
+          label="内容"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
-          label="名称"
+          prop="specyJson"
+          label="涉及杂草种类"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="种类"
+          prop="username"
+          label="发布人"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="危害程度"
+          prop="group"
+          label="归属组"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="图片"
+          prop="create"
+          label="发布时间"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="发现时间"
+          prop="update"
+          label="更新时间"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="state"
+          label="状态"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop=""
           label="编辑"
           width="80"
           :show-overflow-tooltip="true"
@@ -103,26 +107,32 @@
           <template slot-scope="scope">
             <span
               style="color: #409EFF;cursor:pointer;"
-              @click="handleEdit(scope.$index, scope.row)"
+              @click="handleEdit(scope.row)"
             >
               修改
+            </span>
+            <span
+              style="color: #f78989;cursor:pointer;"
+              @click="handleDel(scope.row.id)"
+            >
+              删除
             </span>
           </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
+        v-if="pagination.total > pagination.count"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
         :total="pagination.total"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ (pagination.start ) * pagination.count + 1 }}至第{{ (pagination.start+1) * pagination.count }}项结果，共{{ pagination.total }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -130,52 +140,69 @@
 </template>
 
 <script>
+import { getPage, xinwenDelete } from '@/api/xinwen'
+import { clean } from '@/utils/index'
 
 export default {
-
   data() {
     return {
-      formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        date1: '',
-        date2: ''
+      formSearch: {
+        ntype: '',
+        title: '',
+        createTimeStart: '',
+        createTimeEnd: ''
       },
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [{ id: 2, title: 'ddd', a: 'ss' }],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
+        count: 10,
+        total: '',
+        start: 0
       }
     }
   },
   created() {
   },
   methods: {
-    handleEdit(index, rowData) {
-      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
+    searchHandle() {
+      this.getPage()
+    },
+    handleDel(id) {
+      this.$confirm('确认删除这条记录吗?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        xinwenDelete({ id }).then((data) => {
+          if (data.state) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            // 删除成功 执行查询更新
+            this.getPage() // 未测试
+          }
+        })
+      }).catch((e) => {
+        console.log(e, 'ee')
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    async getPage() {
+      const params = { ...this.pagination, ...this.formSearch }
+      await getPage(clean(params))
+      alert('接口报错')
+    },
+    handleEdit(rowData) {
+      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', rowData)
       // 跳转页面
       this.$router.push({
         name: 'AddNews',
         params: {
-          index, rowData
+          isEdit: true,
+          rowData
         }
       })
     },
@@ -183,12 +210,11 @@ export default {
       // 跳转页面
       this.$router.push({
         name: 'AddNews'
-
       })
     },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = val
     }
   }
 }

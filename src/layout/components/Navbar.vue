@@ -20,11 +20,11 @@
             <el-dropdown-item><i class="el-icon-document" /> 基本资料
             </el-dropdown-item>
           </div>
-          <div @click="dialogVisible2 = true">
+          <div @click="dialogChangePassword = true">
             <el-dropdown-item><i class="el-icon-lock" /> 修改密码
             </el-dropdown-item>
           </div>
-          <div @click="dialogVisible3 = true">
+          <div @click="dialogImg = true">
             <el-dropdown-item><i class="el-icon-user" /> 修改头像
             </el-dropdown-item>
           </div>
@@ -41,37 +41,37 @@
       width="50%"
     >
       <el-form
-        ref="form"
-        :model="form"
+        ref="userInfoForm"
+        :model="userInfoForm"
         label-width="80px"
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="用户名" prop="name" placeholder="请输入用户名">
-          <el-input v-model="form.name" />
+        <el-form-item label="用户名" prop="username" placeholder="请输入用户名">
+          <el-input v-model="userInfoForm.username" />
         </el-form-item>
-        <el-form-item label="真实姓名" prop="name2" placeholder="请输入真实姓名">
-          <el-input v-model="form.name2" />
+        <el-form-item label="真实姓名" prop="realname" placeholder="请输入真实姓名">
+          <el-input v-model="userInfoForm.realname" />
         </el-form-item>
-        <el-form-item label="昵称" prop="name3" placeholder="请输入昵称">
-          <el-input v-model="form.name3" />
-        </el-form-item>
-
-        <el-form-item label="地市" prop="name6" placeholder="请输入地市">
-          <el-input v-model="form.name6" />
-        </el-form-item>
-        <el-form-item label="单位" prop="name7" placeholder="请输入单位">
-          <el-input v-model="form.name7" />
-        </el-form-item>
-        <el-form-item label="工号" prop="name8" placeholder="请输入工号">
-          <el-input v-model="form.name8" />
-        </el-form-item>
-        <el-form-item label="手机号码" prop="name9" placeholder="请输入手机号码">
-          <el-input v-model.number="form.name9" />
+        <el-form-item label="昵称" prop="nickname" placeholder="请输入昵称">
+          <el-input v-model="userInfoForm.nickname" />
         </el-form-item>
 
-        <el-form-item label="类型" prop="region1" placeholder="现场工作人员">
-          <el-select v-model="form.region1" placeholder="请选择发现地域">
+        <el-form-item label="地市" prop="cityName" placeholder="请输入地市">
+          <el-input v-model="userInfoForm.cityName" />
+        </el-form-item>
+        <el-form-item label="单位" prop="group" placeholder="请输入单位">
+          <el-input v-model="userInfoForm.group" />
+        </el-form-item>
+        <el-form-item label="工号" prop="jobNo" placeholder="请输入工号">
+          <el-input v-model="userInfoForm.jobNo" />
+        </el-form-item>
+        <el-form-item label="手机号码" prop="phone" placeholder="请输入手机号码">
+          <el-input v-model.number="userInfoForm.phone" />
+        </el-form-item>
+
+        <el-form-item label="类型" prop="utype" placeholder="现场工作人员">
+          <el-select v-model="userInfoForm.utype" placeholder="请选择发现地域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
@@ -84,36 +84,37 @@
 
     <el-dialog
       title="修改密码"
-      :visible.sync="dialogVisible2"
+      :visible.sync="dialogChangePassword"
       :modal-append-to-body="false"
       width="50%"
     >
       <el-form
-        ref="form2"
-        :model="form2"
+        ref="formChangePassword"
+        :model="formChangePassword"
+        :rules="formChangePasswordRules"
         label-width="120px"
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="当前密码" prop="name" placeholder="请输入当前密码">
-          <el-input v-model="form2.name" />
+        <el-form-item label="当前密码2" prop="oldPass" placeholder="请输入当前密码">
+          <el-input v-model="formChangePassword.oldPass" />
         </el-form-item>
-        <el-form-item label="新密码" prop="name2" placeholder="请输入新密码">
-          <el-input v-model="form2.name2" />
+        <el-form-item label="新密码" prop="newPass" placeholder="请输入新密码">
+          <el-input v-model="formChangePassword.newPass" />
         </el-form-item>
-        <el-form-item label="确认新密码" prop="name3" placeholder="请输入确认新密码">
-          <el-input v-model="form2.name3" />
+        <el-form-item label="确认新密码" prop="newPass2" placeholder="请输入确认新密码">
+          <el-input v-model="formChangePassword.newPass2" />
         </el-form-item>
 
         <div style="text-align:center">
-          <el-button type="primary" @click="dialogVisible2 = false">确认修改</el-button>
+          <el-button type="primary" @click="changePassword()">确认修改</el-button>
         </div>
       </el-form>
     </el-dialog>
 
     <el-dialog
       title="修改头像"
-      :visible.sync="dialogVisible3"
+      :visible.sync="dialogImg"
       :modal-append-to-body="false"
       width="35%"
     >
@@ -123,10 +124,24 @@
             <i class="el-icon-picture-outline" />
           </div>
         </el-image>
-
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <div style="text-align:center;">
-          <el-button type="primary" style="margin-right:20px"> 长传图片</el-button>
-          <el-button type="primary" @click="dialogVisible3 = false">确认更改</el-button>
+
+          <el-upload
+            style="display: inline-block;"
+            action="string"
+            :http-request="uploadAvatar"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+
+            <el-button type="primary" style="margin-right:20px">
+              上传图片
+              <i class="el-icon-plus avatar-uploader-icon" />
+            </el-button>
+          </el-upload>
+          <el-button type="primary" @click="setAvatar">确认更改</el-button>
         </div>
       </div>
     </el-dialog>
@@ -138,6 +153,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { changePassword, uploadAvatar, setAvatar } from '@/api/admin'
 
 export default {
   components: {
@@ -145,27 +161,48 @@ export default {
     Hamburger
   },
   data() {
+    const validatePassNew = (rule, value, callback) => {
+      if (value.length < 4 || value.length > 32) {
+        callback(new Error('密码的长度在4-32位！请输入正确的新密码'))
+      } else {
+        callback()
+      }
+    }
+    const validatePass = (rule, value, callback) => {
+      if (value !== this.formChangePassword.newPass) {
+        callback(new Error('两次密码需要一致'))
+      } else {
+        callback()
+      }
+    }
     return {
       dialogUserInfo: false,
-      dialogVisible2: false,
-      dialogVisible3: false,
-      form: {
-        name: '',
-        name2: '',
-        name3: '',
-        name4: '',
-        name5: '',
-        name6: '',
-        name7: '',
-        name8: '',
-        name9: '',
-        region1: '',
-        from: ''
+      dialogChangePassword: false,
+      dialogImg: false,
+      imageUrl: '',
+      fileData: null,
+      userInfoForm: {
+        username: '', // 用户名
+        realname: '', // 真实姓名
+        nickname: '', // 昵称
+        cityName: '', // 地市
+        group: '', // 单位 todo 字段待定
+        jobNo: '', // 工号
+        phone: '', // 手机号
+        utype: '' // 类型
       },
-      form2: {
-        name: '',
-        name2: '',
-        name3: ''
+      formChangePassword: {
+        oldPass: '',
+        newPass: '',
+        newPass2: ''
+      },
+      formChangePasswordRules: {
+        oldPass: [{ required: true, message: '请输入原来的密码', trigger: 'blur' }],
+        newPass: [{ required: true, message: '请输入新密码', trigger: 'blur' },
+          { trigger: 'blur', validator: validatePassNew }
+        ],
+        newPass2: [{ required: true, message: '请重新输入新密码', trigger: 'blur' },
+          { trigger: 'blur', validator: validatePass }]
       }
 
     }
@@ -178,6 +215,21 @@ export default {
     ])
   },
   methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -187,9 +239,30 @@ export default {
     },
     async getInfo() {
       const data = await this.$store.dispatch('user/getInfo')
-      console.log('%c 🍒 data: ', 'font-size:20px;background-color: #7F2B82;color:#fff;', data)
-
+      this.userInfoForm = data.user
       this.dialogUserInfo = true
+    },
+    changePassword() {
+      this.$refs.formChangePassword.validate(async valid => {
+        if (valid) {
+          // 验证通过
+          await changePassword({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass })
+          this.dialogChangePassword = false
+        } else {
+          console.log('重置密码验证未通过!!')
+          return false
+        }
+      })
+    },
+    async uploadAvatar(file) {
+      const params = new FormData()
+      params.append('file', file.file)
+      const { data } = await uploadAvatar(params)
+      this.fileData = data.result // 返回的是表单格式
+    },
+    async setAvatar() {
+      await setAvatar({ json: JSON.stringify(this.fileData) })
+      this.dialogImg = false
     }
   }
 }
@@ -302,6 +375,16 @@ export default {
     color: #909399;
     font-size: 24px;
   }
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 0px auto;
+    margin-bottom: 20px;
   }
 
 </style>

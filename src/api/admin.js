@@ -91,6 +91,7 @@ export function resetPassword(data) {
 }
 // 头像设置
 export function setAvatar(data) {
+  console.log('%c 🥘 data: ', 'font-size:20px;background-color: #465975;color:#fff;', data)
   return request({
     url: '/user/setAvatar',
     method: 'POST',

@@ -1,15 +1,13 @@
 import { login, logout, getInfo } from '@/api/admin'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId, getUser, setUser, removeUser, getSysConfig, setSysConfig, removeSysConfig } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: '',
-    userId: '',
-    sysconfig: {},
-    user: {}
+    userId: getUserId(),
+    sysconfig: getSysConfig() ? JSON.parse(getSysConfig()) : '',
+    user: getUser() ? JSON.parse(getUser()) : ''
   }
 }
 
@@ -30,12 +28,6 @@ const mutations = {
   },
   SET_USERID: (state, userId) => {
     state.userId = userId
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
   }
 }
 
@@ -46,18 +38,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        console.log('%c 🍾 data: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', data)
-        const { sessionId, id, realname, avatar } = data.user
+        const { sessionId, id } = data.user
+        // store 存token
         commit('SET_USER', data.user)
         commit('SET_SYSCONFIG', data.sysconfig)
-        // 存token
         commit('SET_TOKEN', sessionId)
-        // 存用户id
-        commit('SET_USERID', id)
-        commit('SET_NAME', realname)
-        commit('SET_AVATAR', avatar)
-        // 缓存token
-        setToken(data.user.sessionId)
+        commit('SET_USERID', id) // 存用户id
+        // 缓存token等登录信息到cook中
+        setToken(sessionId)
+        setUserId(id)
+        setUser(data.user)
+        setSysConfig(data.sysconfig)
+
         resolve()
       }).catch(error => {
         reject(error)
@@ -71,12 +63,9 @@ const actions = {
       console.log(state.token, 'sss')
       getInfo({ id: state.userId }).then(response => {
         const { data } = response
-        console.log('%c 🍱 data: ', 'font-size:20px;background-color: #E41A6A;color:#fff;', data)
-
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          return reject('登录失效，请重新登录')
         }
-
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -87,8 +76,12 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout().then(() => {
         removeToken() // 首先移除token
+        removeUserId()
+        removeUser()
+        removeSysConfig()
+
         resetRouter()
         commit('RESET_STATE')
         resolve()

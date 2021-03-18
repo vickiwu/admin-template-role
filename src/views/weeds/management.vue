@@ -149,6 +149,7 @@
 </template>
 
 <script>
+import { getPage } from '@/api/zacao'
 
 export default {
 
@@ -201,6 +202,9 @@ export default {
   created() {
   },
   methods: {
+    async getPage() {
+      await getPage({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass })
+    },
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面

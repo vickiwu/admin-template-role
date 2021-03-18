@@ -1,47 +1,50 @@
 <template>
   <div class="app-container">
-    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草录入</span> </div>
+    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">
+
+      {{ !isEdit ? '杂草录入' : '杂草编辑' }}
+    </span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"
-        :model="form"
+        :model="formWeed"
         label-width="80px"
         label-position="left"
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="名称" prop="name" placeholder="请输入杂草名称">
-          <el-input v-model="form.name" />
+        <el-form-item label="名称" prop="nameCn" placeholder="请输入杂草名称">
+          <el-input v-model="formWeed.nameCn" />
         </el-form-item>
         <el-form-item label="拉丁名称" placeholder="请输入杂草拉丁名称">
-          <el-input v-model="form.name2" />
+          <el-input v-model="formWeed.nameLt" />
         </el-form-item>
-        <el-form-item label="来源" prop="name" placeholder="请输入杂草来源">
-          <el-input v-model="form.from" />
+        <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
+          <el-input v-model="formWeed.source" />
         </el-form-item>
-        <el-form-item label="区域" prop="region1">
-          <el-select v-model="form.region1" placeholder="请选择发现地域">
+        <el-form-item label="区域" prop="discRegJson">
+          <el-select v-model="formWeed.discRegJson" placeholder="请选择发现地域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-form-item>
-        <el-form-item label="种类" prop="region2">
-          <el-select v-model="form.region2" placeholder="请选择杂草所属种类">
+        <el-form-item label="种类" prop="specyJson">
+          <el-select v-model="formWeed.specyJson" placeholder="请选择杂草所属种类">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-form-item>
-        <el-form-item label="危害程度" prop="region3">
-          <el-select v-model="form.region3" placeholder="请选择杂草危害程度">
+        <el-form-item label="危害程度" prop="jydw">
+          <el-select v-model="formWeed.jydw" placeholder="请选择杂草危害程度">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-form-item>
         <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
-          <el-input v-model="form.desc2" type="textarea" :rows="4" />
+          <el-input v-model="formWeed.desc" type="textarea" :rows="4" />
         </el-form-item>
 
-        <el-form-item label="图片" prop="resource">
+        <el-form-item label="图片" prop="piclistJson">
           <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
@@ -69,39 +72,43 @@ export default {
 
   data() {
     return {
+      isEdit: false,
       dialogImageUrl: '',
       dialogVisible: false,
-      form: {
-        name: '',
-        name2: '',
+      formWeed: {
+        nameCn: '',
+        nameLt: '',
+        source: '',
+        discRegJson: '',
+        specyJson: '',
+        jydw: '',
         desc: '',
-        desc2: '',
-        region1: '',
-        region2: '',
-        region3: '',
-        from: ''
+        piclistJson: ''
       },
       rules: {
-        name: [
-          { required: true, message: '请输入标题', trigger: 'blur' }
+        nameCn: [
+          { required: true, message: '请输入杂草名称', trigger: 'blur' }
         ],
-        from: [
-          { required: true, message: '请输入内容', trigger: 'blur' }
+        source: [
+          { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
-        region1: [
+        discRegJson: [
+          { required: true, message: '请选择杂草区域', trigger: 'change' }
+        ],
+        specyJson: [
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
         ],
-        region2: [
-          { required: true, message: '请选择杂草所属种类', trigger: 'change' }
-        ],
-        region3: [
+        jydw: [
           { required: true, message: '请选择杂草危害程度', trigger: 'change' }
         ]
       }
     }
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
+    this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
+    if (this.$route.params.rowData) {
+      // this.formWeed = this.$route.params.rowData
+    }
   },
   methods: {
     onSubmit() {
