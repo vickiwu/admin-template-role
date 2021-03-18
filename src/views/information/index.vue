@@ -76,17 +76,16 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ (pagination.start ) * pagination.count + 1 }}至第{{ (Number(pagination.start) + 1) * pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -94,6 +93,9 @@
 </template>
 
 <script>
+import { getPage } from '@/api/ziliao'
+import { clean } from '@/utils/index'
+const cityJson = require('@/assets/json/cities.json')
 
 export default {
 
@@ -122,11 +124,12 @@ export default {
         name: '王小虎',
         address: '上海市普陀区金沙江路 1516 弄'
       }],
+
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0
     }
   },
   created() {
@@ -152,7 +155,7 @@ export default {
     },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = val
     }
   }
 }

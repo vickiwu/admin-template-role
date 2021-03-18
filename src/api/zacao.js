@@ -68,3 +68,36 @@ export function commit(data) {
     data
   })
 }
+export function getLbPage(data) {
+  // 杂草类别查询
+  return request({
+    url: '/zacao/getLbPage',
+    method: 'POST',
+    data
+  })
+}
+export function addLb(data) {
+  // 杂草类别新增
+  return request({
+    url: '/zacao/addLb',
+    method: 'POST',
+    data
+  })
+}
+export function editLb(data) {
+  // 杂草类别修改
+  return request({
+    url: '/zacao/editLb',
+    method: 'POST',
+    data
+  })
+}
+export function delLb(data) {
+  // 杂草类别删除
+  return request({
+    url: '/zacao/delLb',
+    method: 'POST',
+    data
+  })
+}
+

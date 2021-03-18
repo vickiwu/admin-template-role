@@ -101,10 +101,15 @@ module.exports = {
                   priority: 20,
                   test: /[\\/]node_modules[\\/]_?element-ui(.*)/
                 },
-                settingXl: {
-                  name: 'chunk-settingXl',
+                weedConfig: {
+                  name: 'chunk-weedConfig',
                   priority: 20,
                   test: resolve('src/settings.js')
+                },
+                cityJson: {
+                  name: 'chunk-cityJson',
+                  priority: 20,
+                  test: resolve('src/assets/json/cities.json')
                 },
                 commons: {
                   name: 'chunk-commons',

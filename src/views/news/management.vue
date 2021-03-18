@@ -69,7 +69,7 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="specyJson"
+          prop="specy"
           label="涉及杂草种类"
           :show-overflow-tooltip="true"
         />
@@ -87,17 +87,30 @@
           prop="create"
           label="发布时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="update"
+          prop="create"
           label="更新时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.update) }}</span>
+          </template>
+        </el-table-column>
+
         <el-table-column
           prop="state"
           label="状态"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.state == 0 ? '未审核' : scope.row.state == 1 ? '审核通过': '驳回' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop=""
           label="编辑"
@@ -122,17 +135,16 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.count"
         background
         :current-page="pagination.start"
         :page-size="pagination.count"
-        :total="pagination.total"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.start ) * pagination.count + 1 }}至第{{ (pagination.start+1) * pagination.count }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count -1 }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -141,7 +153,7 @@
 
 <script>
 import { getPage, xinwenDelete } from '@/api/xinwen'
-import { clean } from '@/utils/index'
+import { clean, parseTime } from '@/utils/index'
 
 export default {
   data() {
@@ -152,18 +164,30 @@ export default {
         createTimeStart: '',
         createTimeEnd: ''
       },
-      tableData: [{ id: 2, title: 'ddd', a: 'ss' }],
+      tableData: [],
       pagination: {
         count: 10,
-        total: '',
         start: 0
-      }
+      },
+      totalCount: 0
+
+    }
+  },
+  computed: {
+    startNum() {
+      return Number(this.pagination.start * this.pagination.count) + 1
+    },
+    endNum() {
+      return Number(this.pagination.start * this.pagination.count) + 1 // 分页好好想想
     }
   },
   mounted() {
     this.getPage()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
     searchHandle() {
       this.getPage()
     },
@@ -193,8 +217,11 @@ export default {
     },
     async getPage() {
       const params = { ...this.pagination, ...this.formSearch }
-      await getPage(clean(params))
-      alert('接口报错')
+      await getPage(clean(params)).then((res) => {
+        const { data } = res
+        this.tableData = data.xinwenlist
+        this.totalCount = data.totalCount
+      })
     },
     handleEdit(rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', rowData)
@@ -214,8 +241,9 @@ export default {
       })
     },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
-      this.pagination.start = val
+      // console.log(`当前页: ${val}`) 当前页 0 1
+      this.pagination.start = (val - 1) * this.pagination.count
+      this.getPage()
     }
   }
 }

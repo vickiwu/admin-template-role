@@ -90,7 +90,7 @@ export const constantRoutes = [
       {
         path: 'showWeeds',
         name: 'ShowWeeds',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/weeds/showWeeds'),
         meta: { title: '杂草详情', icon: 'tree' }
       },

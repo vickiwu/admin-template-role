@@ -29,16 +29,27 @@
           </el-col>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formSearch.reg" size="medium" placeholder="所有区域">
-            <el-option label="未研判" :value="0" />
-            <el-option label="研判中" :value="1" />
-            <el-option label="入库" :value="16" />
+
+          <el-select
+            v-model="formSearch.reg"
+            multiple
+            collapse-tags
+            size="medium"
+            placeholder="所有区域"
+          >
+            <el-option
+              v-for="item in cityJson"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-col>
         <el-col :span="4">
           <el-select v-model="formSearch.specy" size="medium" placeholder="所有种类">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+            <el-option label="未研判" :value="0" />
+            <el-option label="研判中" :value="1" />
+            <el-option label="入库" :value="16" />
           </el-select>
         </el-col>
         <el-col :span="4">
@@ -49,12 +60,6 @@
             <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
         </el-col>
-        <!-- <el-col :span="4">
-          <el-input v-model="formSearch.specy" size="medium" placeholder="标题" prefix-icon="el-icon-search">
-            <template slot="append"> <span style="cursor: pointer;" @click="handleSearch()">检索</span></template>
-          </el-input>
-
-        </el-col> -->
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
@@ -138,17 +143,17 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.count"
+        v-if="totalCount > pagination.count"
         background
         :current-page="pagination.start"
         :page-size="pagination.count"
-        :total="pagination.total"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start * pagination.count + 1 }}至第{{ ( pagination.start +1 ) * pagination.count }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ Number(pagination.start * pagination.count) + 1 }}至第{{ ( pagination.start +1 ) * pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -158,26 +163,26 @@
 <script>
 import { getPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
+const cityJson = require('@/assets/json/cities.json')
 
 export default {
 
   data() {
     return {
+      cityJson: cityJson.cityies,
       formSearch: {
-        reg: '',
+        reg: [],
         specy: '',
         jydw: '',
         startTime: '',
         endTime: ''
       },
-      tableData: [{
-        id: '2016'
-      }],
+      tableData: [],
       pagination: {
         count: 10,
-        total: '',
-        start: 1
-      }
+        start: 0
+      },
+      totalCount: 0
     }
   },
   mounted() {
@@ -185,13 +190,17 @@ export default {
   },
   methods: {
     async getPage() {
-      const params = { ...this.pagination, ...this.formSearch }
+      const searchParams = JSON.parse(JSON.stringify(this.formSearch))
+      searchParams.reg = JSON.stringify(searchParams.reg)
+      const params = { ...this.pagination, ...searchParams }
+
       await getPage(clean(params)).then((res) => {
-        console.log('%c 🥪 res: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', res)
+        const { data } = res
+        this.tableData = data.zacaolist
+        this.totalCount = data.totalCount
       })
     },
     handleEdit(index, rowData) {
-      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面
       this.$router.push({
         name: 'AddWeeds',
@@ -217,7 +226,8 @@ export default {
     },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
-      this.pagination.start = val
+      this.pagination.start = (val - 1) * this.pagination.count
+      this.getPage()
     },
     handleSearch() {
       this.getPage()

@@ -23,9 +23,20 @@
           <el-input v-model="formWeed.source" />
         </el-form-item>
         <el-form-item label="区域" prop="discRegJson">
-          <el-select v-model="formWeed.discRegJson" placeholder="请选择发现地域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+
+          <el-select
+            v-model="formWeed.discRegJson"
+            multiple
+            collapse-tags
+            size="medium"
+            placeholder="请选择发现地域"
+          >
+            <el-option
+              v-for="item in cityJson"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="种类" prop="specyJson">
@@ -36,8 +47,10 @@
         </el-form-item>
         <el-form-item label="危害程度" prop="jydw">
           <el-select v-model="formWeed.jydw" placeholder="请选择杂草危害程度">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+            <el-option label="未发现有害生物" :value="0" />
+            <el-option label="非检疫性有害生物" :value="1" />
+            <el-option label="检疫性有害生物" :value="2" />
+            <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
         </el-form-item>
         <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
@@ -71,10 +84,13 @@
 <script>
 import { uploadImg, create, edit } from '@/api/zacao'
 import { clean } from '@/utils/index'
+const cityJson = require('@/assets/json/cities.json')
+
 export default {
 
   data() {
     return {
+      cityJson: cityJson.cityies,
       isEdit: false,
       dialogVisible: false,
 
@@ -82,7 +98,7 @@ export default {
         nameCn: '',
         nameLt: '',
         source: '',
-        discRegJson: '',
+        discRegJson: [],
         specyJson: '',
         jydw: '',
         desc: '',
