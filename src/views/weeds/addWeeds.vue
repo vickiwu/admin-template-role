@@ -45,17 +45,19 @@
         </el-form-item>
 
         <el-form-item label="图片" prop="piclistJson">
+
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
+            class="upload-demo"
+            drag
             :on-remove="handleRemove"
+            action="string"
+            :http-request="uploadImg"
+            multiple
           >
-            <i class="el-icon-plus" />
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
+
         </el-form-item>
         <el-form-item class="btn-center">
           <el-button>取消</el-button>
@@ -67,14 +69,15 @@
 </template>
 
 <script>
-
+import { uploadImg, create, edit } from '@/api/zacao'
+import { clean } from '@/utils/index'
 export default {
 
   data() {
     return {
       isEdit: false,
-      dialogImageUrl: '',
       dialogVisible: false,
+
       formWeed: {
         nameCn: '',
         nameLt: '',
@@ -83,7 +86,8 @@ export default {
         specyJson: '',
         jydw: '',
         desc: '',
-        piclistJson: ''
+        piclistJson: '',
+        imgList: []
       },
       rules: {
         nameCn: [
@@ -106,18 +110,52 @@ export default {
   },
   mounted() {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
-    if (this.$route.params.rowData) {
-      // this.formWeed = this.$route.params.rowData
+    if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
+      this.formWeed = this.$route.params.rowData
     }
   },
   methods: {
+    async uploadImg(file) {
+      const params = new FormData()
+      params.append('file', file.file)
+      uploadImg(params).then((res) => {
+        console.log('%c 🍛 res: ', 'font-size:20px;background-color: #42b983;color:#fff;', res)
+        const { data } = res
+        this.formWeed.imgList.push(JSON.stringify(data.result))
+      })
+    },
+    async create() {
+      await create({ json: JSON.stringify(clean(this.formWeed)) }).then((data) => {
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '新增成功!'
+          })
+        }
+      })
+    },
+    async edit() { // id 必须存在
+      await edit({ json: JSON.stringify(this.formWeed) }).then((data) => {
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      })
+    },
     onSubmit() {
-      console.log('submit!')
+      if (this.isEdit) {
+        this.edit()
+      } else {
+        this.create()
+      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
     },
     handlePictureCardPreview(file) {
+      console.log('%c 🌮 file: ', 'font-size:20px;background-color: #FCA650;color:#fff;', file)
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     }

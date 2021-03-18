@@ -160,7 +160,8 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
+    this.getPage()
   },
   methods: {
     searchHandle() {

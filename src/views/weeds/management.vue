@@ -6,44 +6,51 @@
         <el-col :span="6">
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date1"
+              v-model="formSearch.startTime"
               size="medium"
               type="date"
               placeholder="开始日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date2"
+              v-model="formSearch.endTime"
               size="medium"
               type="date"
               placeholder="结束日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.region1" size="medium" placeholder="所有区域">
+          <el-select v-model="formSearch.reg" size="medium" placeholder="所有区域">
+            <el-option label="未研判" :value="0" />
+            <el-option label="研判中" :value="1" />
+            <el-option label="入库" :value="16" />
+          </el-select>
+        </el-col>
+        <el-col :span="4">
+          <el-select v-model="formSearch.specy" size="medium" placeholder="所有种类">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.region2" size="medium" placeholder="所有种类">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
-          </el-select>
-        </el-col>
-        <el-col :span="4">
-          <el-select v-model="formInline.region3" size="medium" placeholder="所有程度">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+          <el-select v-model="formSearch.jydw" size="medium" placeholder="所有程度">
+            <el-option label="未发现有害生物" :value="0" />
+            <el-option label="非检疫性有害生物" :value="1" />
+            <el-option label="检疫性有害生物" :value="2" />
+            <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
         </el-col>
         <!-- <el-col :span="4">
-          <el-input v-model="formInline.region2" size="medium" placeholder="标题" prefix-icon="el-icon-search">
+          <el-input v-model="formSearch.specy" size="medium" placeholder="标题" prefix-icon="el-icon-search">
             <template slot="append"> <span style="cursor: pointer;" @click="handleSearch()">检索</span></template>
           </el-input>
 
@@ -73,42 +80,42 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="discRegJson"
           label="区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="source"
           label="来源"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="nameCn"
           label="名称"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="specyJson"
           label="种类"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="jydw"
           label="危害程度"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="piclistJson"
           label="图片"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="create"
           label="发现时间"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop=""
           label="编辑"
           width="180"
           :show-overflow-tooltip="true"
@@ -131,17 +138,17 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
+        v-if="pagination.total > pagination.count"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
         :total="pagination.total"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start * pagination.count + 1 }}至第{{ ( pagination.start +1 ) * pagination.count }}项结果，共{{ pagination.total }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -150,60 +157,38 @@
 
 <script>
 import { getPage } from '@/api/zacao'
+import { clean } from '@/utils/index'
 
 export default {
 
   data() {
     return {
-      formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        date1: '',
-        date2: ''
+      formSearch: {
+        reg: '',
+        specy: '',
+        jydw: '',
+        startTime: '',
+        endTime: ''
       },
       tableData: [{
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },
-      {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
+        id: '2016'
       }],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
+        count: 10,
+        total: '',
+        start: 1
       }
     }
   },
-  created() {
+  mounted() {
+    this.getPage()
   },
   methods: {
     async getPage() {
-      await getPage({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass })
+      const params = { ...this.pagination, ...this.formSearch }
+      await getPage(clean(params)).then((res) => {
+        console.log('%c 🥪 res: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', res)
+      })
     },
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
@@ -232,14 +217,10 @@ export default {
     },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = val
     },
     handleSearch() {
-      // 跳转页面
-      this.$router.push({
-        name: 'Search'
-
-      })
+      this.getPage()
     }
   }
 }

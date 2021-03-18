@@ -13,6 +13,14 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   config => {
+    if (store.getters.token) {
+      if (!config.data) {
+        config.data = { JSSID: getToken() }
+      } else {
+        config.data.JSSID = getToken()
+      }
+    }
+
     if (config.method === 'post') {
       if (!(config.data instanceof FormData)) {
         config.data = qs.stringify(config.data)
