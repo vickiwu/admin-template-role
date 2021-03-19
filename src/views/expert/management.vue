@@ -4,23 +4,23 @@
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="4">
-          <el-input v-model="formInline.name" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.realname" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
         </el-col>
 
         <el-col :span="4">
-          <el-input v-model="formInline.region2" size="medium" placeholder="工号" prefix-icon="el-icon-search">
+          <el-input v-model="formInline.jobNo" size="medium" placeholder="工号" prefix-icon="el-icon-search">
             <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.region1" size="medium" placeholder="专业领域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+          <el-select v-model="formInline.cat" size="medium" placeholder="专业领域">
+            <el-option label="杂草研判" :value="1" />
+            <el-option label="杂草危害分析" :value="2" />
           </el-select>
         </el-col>
         <el-col :span="11" class="right-btn">
 
-          <el-button type="primary" size="small">检索</el-button>
+          <el-button type="primary" size="small" @click="query">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>
@@ -44,42 +44,54 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="realname"
           label="专家姓名"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="jobNo"
           label="专家工号"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="phone"
           label="手机号码"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="cat"
           label="专业领域"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.cat === 1">杂草研判</span>
+            <span v-else-if="scope.row.cat === 2">杂草危害分析</span>
+            <span v-else />
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="schedule"
           label="参与调度"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.schedule === 1">是</span>
+            <span v-else-if="scope.row.schedule === 0">否</span>
+            <span v-else />
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="desc"
           label="简介"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="avatarJson"
           label="头像"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="create"
           label="录入时间"
           :show-overflow-tooltip="true"
         />
@@ -102,17 +114,17 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
+        v-if="totalCount > pagination.count"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -120,60 +132,61 @@
 </template>
 
 <script>
+import { getPage } from '@/api/zhuanjia'
+import { clean } from '@/utils/index'
 
 export default {
 
   data() {
     return {
       formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        name: ''
+        cat: '',
+        jobNo: '',
+        realname: ''
       },
-      tableData: [{
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },
-      {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      tableData: [],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0
     }
   },
-  created() {
+  mounted() {
+    this.query()
   },
   methods: {
+    async query() {
+      const params = {
+        ...this.pagination,
+        ...this.formInline
+      }
+      console.log(params)
+      await getPage(clean(params)).then((res) => {
+        const { data } = res
+        this.tableData = data.lblist
+        this.totalCount = data.totalCount
+      })
+    },
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面
       this.$router.push({
         name: 'AddExpert',
         params: {
-          index, rowData
+          index,
+          rowData,
+          isEdit: true
         }
       })
     },
     handleAdd() {
       // 跳转页面
       this.$router.push({
-        name: 'AddExpert'
-
+        name: 'AddExpert',
+        params: {
+          isEdit: false
+        }
       })
     },
     handlePageChange(val) {

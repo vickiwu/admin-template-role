@@ -25,18 +25,19 @@
           </el-col>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.region1" size="medium" placeholder="所有级别">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+          <el-select v-model="formInline.level" size="medium" placeholder="所有级别">
+            <el-option label="通知" :value="0" />
+            <el-option label="消息" :value="1" />
+            <el-option label="错误" :value="2" />
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-input v-model="formInline.region2" size="medium" placeholder="请输入关键词" prefix-icon="el-icon-search">
+          <el-input v-model="formInline.content" size="medium" placeholder="请输入关键词" prefix-icon="el-icon-search">
             <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
         <el-col :span="8" class="right-btn">
-          <el-button type="primary" size="small">检索</el-button>
+          <el-button type="primary" size="small" @click="query">检索</el-button>
           <el-button type="danger" size="small">删除</el-button>
         </el-col>
       </el-row>
@@ -97,17 +98,17 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
+        v-if="totalCount > pagination.count"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -115,50 +116,47 @@
 </template>
 
 <script>
+import { getPage } from '@/api/log'
+import { clean } from '@/utils/index'
 
 export default {
 
   data() {
     return {
       formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        name: '',
+        content: '',
+        level: '',
         date1: '',
         date2: ''
       },
-      tableData: [{
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0
     }
   },
-  created() {
+  mounted() {
+    this.queryLogs()
   },
   methods: {
+    query() {
+      this.queryLogs()
+    },
+    async queryLogs() {
+      const params = {
+        ...this.pagination,
+        ...this.formInline
+
+      }
+      await getPage(clean(params)).then(res => {
+        const { data } = res
+        console.log('data loglist', data.loglist)
+        this.tableData = data.loglist
+        this.totalCount = data.totalCount
+      })
+    },
     handleEdit(index, rowData) {
       console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转页面
@@ -177,8 +175,7 @@ export default {
       })
     },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = (val - 1) * this.pagination.count
     }
   }
 }

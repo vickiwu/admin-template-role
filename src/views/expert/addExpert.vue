@@ -10,28 +10,29 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="专家姓名" prop="name" placeholder="请输入专家姓名">
-          <el-input v-model="form.name" />
+        <el-form-item label="专家姓名" prop="realname" placeholder="请输入专家姓名">
+          <el-input v-model="form.realname" />
         </el-form-item>
-        <el-form-item label="专家工号" prop="name" placeholder="请输入专家工号">
-          <el-input v-model="form.from" />
+        <el-form-item label="专家工号" prop="jobNo" placeholder="请输入专家工号">
+          <el-input v-model="form.jobNo" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="name" placeholder="请输入手机号码">
-          <el-input v-model="form.region1" />
+        <el-form-item label="手机号码" prop="phone" placeholder="请输入手机号码">
+          <el-input v-model="form.phone" />
         </el-form-item>
-        <el-form-item label="专业领域" prop="region2">
-          <el-select v-model="form.region2" placeholder="请选择专业领域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+        <el-form-item label="专业领域" prop="cat">
+          <el-select v-model="form.cat" placeholder="请选择专业领域">
+            <el-option label="杂草研判" :value="1" />
+            <el-option label="杂草危害分析" :value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="资料介绍" prop="desc" placeholder="请输入资料内容摘要">
           <el-input v-model="form.desc" type="textarea" :rows="3" />
         </el-form-item>
-        <el-form-item label="专家头像" prop="resource">
+        <el-form-item label="专家头像" prop="avatar">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="string"
+            :http-request="uploadImg"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -41,9 +42,9 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="是否参与调度">
-          <el-radio-group v-model="form.region3">
-            <el-radio label="是" />
-            <el-radio label="否" />
+          <el-radio-group v-model="form.schedule">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item class="btn-center">
@@ -56,32 +57,38 @@
 </template>
 
 <script>
+import { uploadImg } from '@/api/zacao'
+import { create } from '@/api/zhuanjia'
+import { clean } from '@/utils/index'
 
 export default {
 
   data() {
     return {
+      isEdit: false,
       form: {
-        name: '',
+        realname: '',
+        cat: '',
         desc: '',
-        region1: '',
-        region2: '',
-        region3: '',
-        from: ''
+        jobNo: '',
+        phone: '',
+        schedule: '',
+        from: '',
+        avatar: []
       },
       imageUrl: '',
       rules: {
-        name: [
-          { required: true, message: '请输入标题', trigger: 'blur' }
+        realname: [
+          { required: true, message: '请输入专家姓名', trigger: 'blur' }
         ],
-        from: [
-          { required: true, message: '请输入内容', trigger: 'blur' }
+        jobNo: [
+          { required: true, message: '请输入工号', trigger: 'blur' }
         ],
-        region1: [
-          { required: true, message: '请选择杂草所属种类', trigger: 'change' }
+        phone: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' }
         ],
-        region2: [
-          { required: true, message: '请选择杂草所属种类', trigger: 'change' }
+        cat: [
+          { required: true, message: '请选择专业领域', trigger: 'change' }
         ],
         region3: [
           { required: true, message: '请选择杂草危害程度', trigger: 'change' }
@@ -90,11 +97,37 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
+    console.log(this.$route.params)
+    this.isEdit = this.$route.params.isEdit
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
+      this.create()
+    },
+    async create() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log('error submit!!')
+          return false
+        } else {
+          create({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+            if (data.state === 1) {
+              this.$message({
+                type: 'success',
+                message: '新增成功!'
+              })
+            }
+          })
+        }
+      })
+    },
+    async uploadImg(file) {
+      const params = new FormData()
+      params.append('file', file.file)
+      uploadImg(params).then((res) => {
+        const { data } = res
+        this.formWeed.imgList.push(JSON.stringify(data.result))
+      })
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)

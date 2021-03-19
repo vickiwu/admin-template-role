@@ -10,38 +10,40 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="用户名" prop="name" placeholder="请输入用户名">
-          <el-input v-model="form.name" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="真实姓名" prop="name2" placeholder="请输入真实姓名">
-          <el-input v-model="form.name2" />
+        <el-form-item label="真实姓名" prop="realname">
+          <el-input v-model="form.realname" placeholder="请输入真实姓名" />
         </el-form-item>
-        <el-form-item label="昵称" prop="name3" placeholder="请输入昵称">
-          <el-input v-model="form.name3" suffix-icon="el-icon-refresh" />
+        <el-form-item label="昵称" prop="nickname">
+          <el-input v-model="form.nickname" suffix-icon="el-icon-refresh" placeholder="请输入昵称" />
         </el-form-item>
-        <el-form-item label="登陆密码" prop="name4" placeholder="请输入登陆密码">
-          <el-input v-model="form.name4" />
+        <el-form-item label="登陆密码" prop="password">
+          <el-input v-model="form.password" placeholder="请输入登陆密码" />
         </el-form-item>
-        <el-form-item label="确认密码" prop="name5" placeholder="请再次输入登陆密码">
-          <el-input v-model="form.name5" />
+        <el-form-item label="确认密码" prop="password1">
+          <el-input v-model="form.password1" placeholder="请再次输入登陆密码" />
         </el-form-item>
-        <el-form-item label="地市" prop="name6" placeholder="请输入地市">
-          <el-input v-model="form.name6" />
+        <el-form-item label="地市" prop="name6">
+          <el-input v-model="form.name6" placeholder="请输入地市" />
         </el-form-item>
-        <el-form-item label="单位" prop="name7" placeholder="请输入单位">
-          <el-input v-model="form.name7" />
+        <el-form-item label="单位" prop="name7">
+          <el-input v-model="form.name7" placeholder="请输入单位" />
         </el-form-item>
-        <el-form-item label="工号" prop="name8" placeholder="请输入工号">
-          <el-input v-model="form.name8" />
+        <el-form-item label="工号" prop="jobNo">
+          <el-input v-model="form.jobNo" placeholder="请输入工号" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="name9" placeholder="请输入手机号码">
-          <el-input v-model.number="form.name9" />
+        <el-form-item label="手机号码" prop="phone">
+          <el-input v-model.number="form.phone" placeholder="请输入手机号码" />
         </el-form-item>
 
-        <el-form-item label="类型" prop="region1" placeholder="现场工作人员">
-          <el-select v-model="form.region1" placeholder="请选择发现地域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+        <el-form-item label="类型" prop="utype">
+          <el-select v-model="form.utype" placeholder="请选择类型">
+            <el-option label="系统管理员" :value="1" />
+            <el-option label="专家调度用户" :value="2" />
+            <el-option label="研判专家" :value="3" />
+            <el-option label="图像采集操作员" :value="4" />
           </el-select>
         </el-form-item>
 
@@ -85,52 +87,59 @@ export default {
         }
       }
     }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       ValidCode: '33',
       width: '120px',
       height: '50px',
       refresh: '2',
       form: {
-        name: '',
-        name2: '',
-        name3: '',
-        name4: '',
-        name5: '',
+        username: '',
+        realname: '',
+        nickname: '',
+        password: '',
+        password1: '',
         name6: '',
         name7: '',
-        name8: '',
-        name9: '',
-
-        region1: '',
-
+        jobNo: '',
+        phone: '',
+        utype: '',
         from: ''
       },
       rules: {
-        name: [
-          { required: true, message: '请输入标题', trigger: 'blur' }
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-        name2: [
+        realname: [
           { required: true, message: '请输入真实姓名', trigger: 'blur' }
         ],
-        name3: [
+        nickname: [
           { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
-        name4: [
+        password: [
           { required: true, message: '请输入登陆密码', trigger: 'blur' }
         ],
-        name5: [
-          { required: true, message: '请再次输入登陆密码', trigger: 'blur' }
+        password1: [
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ],
         name6: [
           { required: true, message: '请输入地市', trigger: 'blur' }
         ],
         name7: [
+          { required: true, message: '请输入单位', trigger: 'blur' }
+        ],
+        jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
         ],
-        name8: [
-          { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        name9: [
+        phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }
         ]
