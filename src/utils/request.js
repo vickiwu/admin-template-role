@@ -2,9 +2,8 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
-
-// create an axios instance
+import { getToken, removeToken, removeUserId, removeUser, removeSysConfig } from '@/utils/auth'
+// 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   timeout: 5000 // request timeout
@@ -47,6 +46,14 @@ service.interceptors.response.use(
         type: 'error',
         duration: 5 * 1000
       })
+      if (res.data.msg === '您还没有登录') {
+        // 移除token 重置到登录页
+        console.log('%c 🥘 移除token 重置到登录页: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', 'this')
+        removeToken() // 首先移除token
+        removeUserId()
+        removeUser()
+        removeSysConfig()
+      }
       return Promise.reject(res.data.msg || '错误')
     } else {
       return res

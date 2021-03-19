@@ -25,7 +25,7 @@
         <el-form-item label="区域" prop="discRegJson">
 
           <el-select
-            v-model="formWeed.discRegJson"
+            v-model="formWeed.discReg"
             multiple
             collapse-tags
             size="medium"
@@ -39,10 +39,21 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="种类" prop="specyJson">
-          <el-select v-model="formWeed.specyJson" placeholder="请选择杂草所属种类">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+        <el-form-item label="种类" prop="specy">
+
+          <el-select v-model="formWeed.specy" placeholder="请选择杂草所属种类" @change="changea">
+            <el-option-group
+              v-for="group in options"
+              :key="group.lb"
+              :label="group.lb"
+            >
+              <el-option
+                v-for="item in group.option"
+                :key="item.lb2"
+                :label="item.lb2"
+                :value="JSON.stringify(item)"
+              />
+            </el-option-group>
           </el-select>
         </el-form-item>
         <el-form-item label="危害程度" prop="jydw">
@@ -82,7 +93,7 @@
 </template>
 
 <script>
-import { uploadImg, create, edit } from '@/api/zacao'
+import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 
@@ -98,13 +109,14 @@ export default {
         nameCn: '',
         nameLt: '',
         source: '',
-        discRegJson: [],
-        specyJson: '',
+        discReg: [],
+        specy: '',
         jydw: '',
         desc: '',
         piclistJson: '',
         imgList: []
       },
+      options: [],
       rules: {
         nameCn: [
           { required: true, message: '请输入杂草名称', trigger: 'blur' }
@@ -112,10 +124,10 @@ export default {
         source: [
           { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
-        discRegJson: [
+        discReg: [
           { required: true, message: '请选择杂草区域', trigger: 'change' }
         ],
-        specyJson: [
+        specy: [
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
         ],
         jydw: [
@@ -129,18 +141,42 @@ export default {
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
     }
+    this.getLbPage()
   },
   methods: {
+    changea(val) {
+      // console.log('%c 🍔 val: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', val)
+    },
+
+    async getLbPage() {
+      const params = { cunt: 1000, start: 0 }
+      await getLbPage(clean(params)).then((res) => {
+        var all = new Map()
+        const { data } = res
+        data.lblist.map((item) => {
+          const result = data.lblist.filter((item2) => {
+            return item2.lb1 === item.lb1
+          })
+          all.set(item.lb1, result)
+        })
+        for (const [k, v] of all) {
+          const obj = {}
+          obj.lb = k
+          obj.option = v
+          this.options.push(obj)
+        }
+      })
+    },
     async uploadImg(file) {
       const params = new FormData()
       params.append('file', file.file)
       uploadImg(params).then((res) => {
-        console.log('%c 🍛 res: ', 'font-size:20px;background-color: #42b983;color:#fff;', res)
         const { data } = res
         this.formWeed.imgList.push(JSON.stringify(data.result))
       })
     },
     async create() {
+      this.formWeed.specy = JSON.parse(this.formWeed.specy)
       await create({ json: JSON.stringify(clean(this.formWeed)) }).then((data) => {
         if (data.state === 1) {
           this.$message({

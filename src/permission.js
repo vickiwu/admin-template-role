@@ -33,7 +33,7 @@ router.beforeEach(async(to, from, next) => {
         } catch (error) {
           // 移除本地token 重新登录
           await store.dispatch('user/resetToken')
-          Message.error(error || 'Has Error')
+          Message.error(error || '错误')
           next(`/login`)
           NProgress.done()
         }

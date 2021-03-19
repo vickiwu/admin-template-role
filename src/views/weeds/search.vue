@@ -131,7 +131,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start * pagination.count + 1 }}至第{{ ( pagination.start +1 ) * pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>

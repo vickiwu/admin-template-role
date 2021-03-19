@@ -93,7 +93,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="create"
+          prop="update"
           label="更新时间"
           :show-overflow-tooltip="true"
         >
@@ -144,7 +144,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count -1 }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -153,7 +153,7 @@
 
 <script>
 import { getPage, xinwenDelete } from '@/api/xinwen'
-import { clean, parseTime } from '@/utils/index'
+parseTime
 
 export default {
   data() {

@@ -111,7 +111,7 @@ export function param2Obj(url) {
 export function clean(obj) {
   const objC = JSON.parse(JSON.stringify(obj))
   for (var propName in objC) {
-    if (objC[propName] === null || objC[propName] === undefined || objC[propName] === '') {
+    if (objC[propName] === null || objC[propName] === undefined || objC[propName] === '' || objC[propName].length === 0) {
       delete objC[propName]
     }
   }
