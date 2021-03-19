@@ -99,21 +99,57 @@
           label="名称"
           :show-overflow-tooltip="true"
         />
+
         <el-table-column
-          prop="specyJson"
+          prop="specy"
           label="种类"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span style="margin-right:10px"> {{ scope.row.specy.lb1 }}</span>科
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy.lb2 }}</span>属
+            </div>
+
+          </template>
+        </el-table-column>
+
         <el-table-column
           prop="jydw"
           label="危害程度"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              {{ scope.row.jydw ==0?'未发现有害生物' :scope.row.jydw ==1?'非检疫性有害生物':scope.row.jydw ==2? '检疫性有害生物' :'非鉴定性有害生物' }}
+            </div>
+
+          </template>
+        </el-table-column>
+
         <el-table-column
-          prop="piclistJson"
+          prop="piclist"
           label="图片"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <el-image
+              v-for="(item) in scope.row.piclist"
+              :key="item.httpUrl"
+              style="width: 40px; "
+              :src="item.httpUrl"
+              :preview-src-list="[item.httpUrl]"
+            >
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline" />
+              </div>
+            </el-image>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create"
           label="发现时间"
@@ -147,7 +183,6 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="totalCount > pagination.count"
         background
         :current-page="pagination.start"
         :page-size="pagination.count"
@@ -157,7 +192,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -210,11 +245,12 @@ export default {
       })
     },
     handleEdit(index, rowData) {
-      // 跳转页面
+      // 修改杂草
       this.$router.push({
         name: 'AddWeeds',
         params: {
-          index, rowData
+          index, rowData,
+          isEdit: true
         }
       })
     },

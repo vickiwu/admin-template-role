@@ -114,7 +114,7 @@ export default {
         jydw: '',
         desc: '',
         piclistJson: '',
-        imgList: []
+        piclist: []
       },
       options: [],
       rules: {
@@ -138,6 +138,7 @@ export default {
   },
   mounted() {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
+    console.log('%c 🧀 this.$route.params.isEdit: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', this.$route.params.isEdit)
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
     }
@@ -172,12 +173,14 @@ export default {
       params.append('file', file.file)
       uploadImg(params).then((res) => {
         const { data } = res
-        this.formWeed.imgList.push(JSON.stringify(data.result))
+        this.formWeed.piclist.push(data.result)
       })
     },
     async create() {
-      this.formWeed.specy = JSON.parse(this.formWeed.specy)
-      await create({ json: JSON.stringify(clean(this.formWeed)) }).then((data) => {
+      const params = JSON.parse(JSON.stringify(this.formWeed))
+      params.specy = JSON.parse(params.specy)
+      console.log('%c 🍭 params: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', params)
+      await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
           this.$message({
             type: 'success',
@@ -187,14 +190,17 @@ export default {
       })
     },
     async edit() { // id 必须存在
-      await edit({ json: JSON.stringify(this.formWeed) }).then((data) => {
-        if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
-        }
-      })
+      const params = JSON.parse(JSON.stringify(this.formWeed))
+      params.specy = JSON.parse(params.specy)
+      console.log('%c 🍭 params: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', params)
+      // await edit({ json: JSON.stringify(this.formWeed) }).then((data) => {
+      //   if (data.state === 1) {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '修改成功!'
+      //     })
+      //   }
+      // })
     },
     onSubmit() {
       if (this.isEdit) {
