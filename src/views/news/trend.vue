@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { getHotNews } from '@/api/xinwen'
+// import { clean, parseTime } from '@/utils/index'
 
 export default {
 
@@ -43,10 +45,16 @@ export default {
 
     }
   },
-  created() {
+  mounted() {
+    this.getHotNews()
   },
   methods: {
-
+    async getHotNews() {
+      await getHotNews().then((res) => {
+        const { data } = res
+        console.log('%c 🍔 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', data)
+      })
+    }
   }
 }
 </script>

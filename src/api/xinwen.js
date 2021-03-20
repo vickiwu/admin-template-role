@@ -43,4 +43,12 @@ export function getPage(data) {
     data
   })
 }
+export function getHotNews(data) {
+  // 热点新闻查询
+  return request({
+    url: '/xinwen/getHotNews',
+    method: 'POST',
+    data
+  })
+}
 
