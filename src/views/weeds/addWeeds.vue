@@ -193,8 +193,6 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
-      // params.specy = JSON.parse(params.specy)
-      console.log('%c 🍭 params: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', params)
       await edit({ json: JSON.stringify(params) }).then((data) => {
         console.log('%c 🍼️ data: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', data)
         if (data.state === 1) {
