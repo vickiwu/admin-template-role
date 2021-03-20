@@ -37,14 +37,16 @@
         <el-col :span="7" class="right-btn">
           <el-button type="primary" size="small" @click="searchHandle">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <!-- <el-button type="danger" size="small">删除</el-button> -->
+          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -72,7 +74,16 @@
           prop="specy"
           label="涉及杂草种类"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+            </div>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="username"
           label="发布人"
@@ -124,12 +135,12 @@
             >
               修改
             </span>
-            <span
+            <!-- <span
               style="color: #f78989;cursor:pointer;"
               @click="handleDel(scope.row.id)"
             >
               删除
-            </span>
+            </span> -->
           </template>
         </el-table-column>
       </el-table>
@@ -144,7 +155,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count) > totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -169,7 +180,8 @@ export default {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      multipleSelection: []
 
     }
   },
@@ -191,30 +203,56 @@ export default {
     searchHandle() {
       this.getPage()
     },
-    handleDel(id) {
-      this.$confirm('确认删除这条记录吗?', '删除', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        xinwenDelete({ id }).then((data) => {
-          if (data.state) {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            // 删除成功 执行查询更新
-            this.getPage() // 未测试
-          }
-        })
-      }).catch((e) => {
-        console.log(e, 'ee')
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     },
+    handleDel() {
+      const ids = this.multipleSelection.map((item) => {
+        return item.id
+      })
+      if (ids.length === 0) {
+        this.$confirm('请选择删除对象', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else {
+        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (ids.length === 1) {
+            xinwenDelete({ id: ids[0] }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          } else {
+            xinwenDelete({ ids: JSON.stringify(ids) }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
+    },
+
     async getPage() {
       const params = { ...this.pagination, ...this.formSearch }
       await getPage(clean(params)).then((res) => {
@@ -224,8 +262,7 @@ export default {
       })
     },
     handleEdit(rowData) {
-      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', rowData)
-      // 跳转页面
+      // 跳转到编辑页面
       this.$router.push({
         name: 'AddNews',
         params: {

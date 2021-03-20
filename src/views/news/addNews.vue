@@ -69,6 +69,10 @@ export default {
             type: 'success',
             message: '修改成功!'
           })
+          // 修改成功后返回新闻管理页
+          this.$router.push({
+            name: 'Management'
+          })
         }
       })
     },
@@ -78,7 +82,11 @@ export default {
           this.$message({
             type: 'success',
             message: '新增成功!'
+
           })
+          // this.$router.push({
+          //   name: 'Management'
+          // })
         }
       })
     },
