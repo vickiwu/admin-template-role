@@ -100,7 +100,7 @@ import sha256 from 'sha256'
 import { sendsms } from '@/api/admin'
 import { mapGetters } from 'vuex'
 import { clean } from '@/utils/index'
-import { createUser } from '@/api/admin'
+import { createUser, editUser } from '@/api/admin'
 const bumenJson = require('@/assets/json/bumen.json')
 
 export default {
@@ -200,6 +200,15 @@ export default {
   mounted() {
     console.log(this.$route.params, 'sss')
     this.queryValidate()
+    if (this.$route.params.isEdit) {
+      // 编辑
+      this.form = {
+        ...this.$route.params.rowData
+      }
+      this.form.bumen = this.form.bumen.length === 2 ? this.form.bumen[1] : ''
+      const filter = this.bumenJson.find(item => item.city === this.form.cityName)
+      this.bumenList = filter.bumenlist2
+    }
   },
   methods: {
     getBumenList(value) {
@@ -229,21 +238,36 @@ export default {
           delete this.form.password1
           this.form.password = sha256(this.form.password)
           this.form.bumen = [this.form.cityName, this.form.bumen]
-          console.log(this.form)
-          createUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
-            if (data.state === 1) {
-              this.$message({
-                type: 'success',
-                message: '新增成功!'
-              })
-            }
-            // if (this.isEdit !== undefined) {
-            // // 路由跳转
-            //   this.$router.push({
-            //     name: 'ExpertManagement'
-            //   })
-            // }
-          })
+
+          if (this.$route.params.isEdit) {
+            // 编辑
+            editUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+              if (data.state === 1) {
+                this.$message({
+                  type: 'success',
+                  message: '修改成功!'
+                })
+                this.$router.push({
+                  name: 'Account'
+                })
+              }
+            })
+          } else {
+            // 新增
+            createUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+              if (data.state === 1) {
+                this.$message({
+                  type: 'success',
+                  message: '新增成功!'
+                })
+              }
+              if (this.$route.params.isEdit !== undefined) {
+                this.$router.push({
+                  name: 'Account'
+                })
+              }
+            })
+          }
         }
       })
     }

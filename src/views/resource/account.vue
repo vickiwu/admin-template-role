@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="19" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="del">删除</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -27,6 +27,7 @@
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -125,7 +126,7 @@
 
 <script>
 import { clean } from '@/utils/index'
-import { getUserPage } from '@/api/admin'
+import { getUserPage, deleteUser } from '@/api/admin'
 
 export default {
 
@@ -136,7 +137,8 @@ export default {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      selected: []
     }
   },
   mounted() {
@@ -167,15 +169,53 @@ export default {
     },
     handleAdd() {
       this.$router.push({
-        name: 'AddAccount'
+        name: 'AddAccount',
+        params: {
+          isEdit: false
+        }
       })
     },
-    handleEdit() {
+    handleEdit(index, rowData) {
       this.$router.push({
-        name: 'EditAccount'
+        name: 'AddAccount',
+        params: {
+          rowData,
+          isEdit: true
+        }
+      })
+    },
+    handleSelectionChange(val) {
+      this.selected = val
+    },
+    del() {
+      if (this.selected.length === 0) {
+        this.$message.error('请选择要删除的账户！')
+        return
+      }
+      if (this.selected.length > 1) {
+        this.$message.error('请单独选择一个账户进行删除！')
+        return
+      }
+      const ids = []
+      this.selected.forEach(item => ids.push(item.id))
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser({ id: ids[0] }).then(res => {
+          if (res.state === 1) {
+            this.$message.success('删除成功！')
+          }
+          this.query()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
-
   }
 }
 </script>
