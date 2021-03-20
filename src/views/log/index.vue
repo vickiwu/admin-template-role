@@ -38,7 +38,7 @@
         </el-col>
         <el-col :span="8" class="right-btn">
           <el-button type="primary" size="small" @click="query">检索</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="delelteFile()">删除</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -46,54 +46,57 @@
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
           label="选择"
-          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           type="index"
           label="序号"
-          width="80"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
-          label="区域"
+          prop="content"
+          label="内容"
+          min-width="60%"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="name"
-          label="来源"
+          label="级别"
+          min-width="10%"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.level === 0">通知</span>
+            <span v-else-if="scope.row.level === 1">消息</span>
+            <span v-else-if="scope.row.level === 2">错误</span>
+            <span v-else>通知</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="address"
-          label="名称"
+          label="记录时间"
+          min-width="10%"
           :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          prop="name"
-          label="种类"
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column
+          label="操作"
+          min-width="10%"
           :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          prop="name"
-          label="危害程度"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          prop="name"
-          label="图片"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
-          prop="name"
-          label="发现时间"
-          :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <el-button type="text" @click="delelteFile(scope.row)">删除文件</el-button>
+            <el-button type="text" @click="deleteZacao(scope.row)">删除杂草</el-button>
+          </template>
+        </el-table-column> -->
 
       </el-table>
       <!-- 分页 -->
@@ -116,8 +119,8 @@
 </template>
 
 <script>
-import { getPage } from '@/api/log'
-import { clean } from '@/utils/index'
+import { getPage, logDelete } from '@/api/log'
+import { clean, parseTime } from '@/utils/index'
 
 export default {
 
@@ -134,13 +137,17 @@ export default {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      selected: []
     }
   },
   mounted() {
     this.queryLogs()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
     query() {
       this.queryLogs()
     },
@@ -152,7 +159,6 @@ export default {
       }
       await getPage(clean(params)).then(res => {
         const { data } = res
-        console.log('data loglist', data.loglist)
         this.tableData = data.loglist
         this.totalCount = data.totalCount
       })
@@ -176,6 +182,35 @@ export default {
     },
     handlePageChange(val) {
       this.pagination.start = (val - 1) * this.pagination.count
+      this.query()
+    },
+    handleSelectionChange(val) {
+      this.selected = val
+    },
+    delelteFile() {
+      if (this.selected.length === 0) {
+        this.$message.error('请选择要删除的日志！')
+        return
+      }
+      const ids = []
+      this.selected.forEach(item => ids.push(item.id))
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        logDelete({ ids: ids }).then(res => {
+          if (res.state === 1) {
+            this.$message.success('删除成功！')
+          }
+          this.query()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
