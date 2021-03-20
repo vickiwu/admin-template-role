@@ -27,14 +27,16 @@
         </el-col>
         <el-col :span="15" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -57,7 +59,16 @@
           prop="specy"
           label="涉及杂草种类"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+            </div>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="desc"
           label="摘要"
@@ -101,7 +112,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -109,7 +120,7 @@
 </template>
 
 <script>
-import { getPage } from '@/api/ziliao'
+import { getPage, ziliaoDelete } from '@/api/ziliao'
 import { getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 
@@ -121,17 +132,15 @@ export default {
         specy: '',
         name: ''
       },
-      tableData: [{
-        date: '2016-05-03',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [],
 
       pagination: {
         count: 10,
         start: 0
       },
       totalCount: 0,
-      options: []
+      options: [],
+      multipleSelection: []
     }
   },
   mounted() {
@@ -170,11 +179,60 @@ export default {
       const params = { ...this.pagination, ...searchParams }
       await getPage(clean(params)).then((res) => {
         const { data } = res
-        console.log('%c 🍼️ data: ', 'font-size:20px;background-color: #4b4b4b;color:#fff;', data)
+        this.tableData = data.ziliaolist
+        this.totalCount = data.totalCount
       })
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleDel() {
+      const ids = this.multipleSelection.map((item) => {
+        return item.id
+      })
+      if (ids.length === 0) {
+        this.$confirm('请选择删除对象', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else {
+        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (ids.length === 1) {
+            ziliaoDelete({ id: ids[0] }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          } else {
+            ziliaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
+    },
     handleEdit(index, rowData) { // 编辑页面
-      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转到编辑页面
       this.$router.push({
         name: 'InformationAdd',

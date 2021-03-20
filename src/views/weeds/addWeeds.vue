@@ -68,19 +68,21 @@
           <el-input v-model="formWeed.desc" type="textarea" :rows="4" />
         </el-form-item>
 
-        <el-form-item label="图片" prop="piclistJson">
-
+        <el-form-item label="图片">
           <el-upload
-            class="upload-demo"
-            drag
-            :on-remove="handleRemove"
             action="string"
             :http-request="uploadImg"
-            multiple
+            list-type="picture-card"
+            :file-list="fileList"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
           >
             <i class="el-icon-upload" />
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__text">将文件拖到此处，或点击上传</div>
           </el-upload>
+          <el-dialog :visible.sync="dialogImageVisible" width="30%">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
 
         </el-form-item>
         <el-form-item class="btn-center">
@@ -103,8 +105,8 @@ export default {
     return {
       cityJson: cityJson.cityies,
       isEdit: false,
-      dialogVisible: false,
-
+      dialogImageUrl: '', // 预览图片地址
+      dialogImageVisible: false, // 图片的预览模态框
       formWeed: {
         nameCn: '',
         nameLt: '',
@@ -117,6 +119,7 @@ export default {
         piclist: []
       },
       options: [],
+      fileList: [],
       rules: {
         nameCn: [
           { required: true, message: '请输入杂草名称', trigger: 'blur' }
@@ -138,9 +141,17 @@ export default {
   },
   mounted() {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
-    console.log('%c 🧀 this.$route.params.isEdit: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', this.$route.params.isEdit)
+
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
+      if (this.isEdit && this.formWeed.piclist !== 0) {
+        this.formWeed.piclist.map((item) => {
+          const file = {}
+          file.name = item.create
+          file.url = item.httpUrl
+          this.fileList.push(file)
+        })
+      }
     }
     this.getLbPage()
   },
@@ -148,7 +159,17 @@ export default {
     changea(val) {
       // console.log('%c 🍔 val: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', val)
     },
-
+    handleRemove(file, fileList) { // 删除图片
+      this.fileList = fileList
+      // 删除表单中piclist
+      this.formWeed.piclist = this.formWeed.piclist.filter(item => {
+        return item.create !== file.name
+      })
+    },
+    handlePictureCardPreview(file) { // 预览图片
+      this.dialogImageUrl = file.url
+      this.dialogImageVisible = true
+    },
     async getLbPage() {
       const params = { cunt: 1000, start: 0 }
       await getLbPage(clean(params)).then((res) => {
@@ -200,6 +221,10 @@ export default {
             type: 'success',
             message: '修改成功!'
           })
+          // 修改成功后跳转回管理页面
+          this.$router.push({
+            name: 'Weeds'
+          })
         }
       })
     },
@@ -209,14 +234,6 @@ export default {
       } else {
         this.create()
       }
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      console.log('%c 🌮 file: ', 'font-size:20px;background-color: #FCA650;color:#fff;', file)
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
     }
   }
 }
@@ -238,6 +255,16 @@ export default {
       margin: 0 15px;
     }
   }
+  ::v-deep.el-upload--picture-card {
+
+    width: 300px;
+    height: 148px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 }
+}
+
 </style>

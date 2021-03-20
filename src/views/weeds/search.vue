@@ -45,10 +45,19 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formSearch.specy" size="medium" placeholder="所有种类">
-            <el-option label="未研判" :value="0" />
-            <el-option label="研判中" :value="1" />
-            <el-option label="入库" :value="16" />
+          <el-select v-model="formSearch.specy" placeholder="所有种类">
+            <el-option-group
+              v-for="group in options"
+              :key="group.lb"
+              :label="group.lb"
+            >
+              <el-option
+                v-for="item in group.option"
+                :key="item.lb2"
+                :label="item.lb2"
+                :value="JSON.stringify(item)"
+              />
+            </el-option-group>
           </el-select>
         </el-col>
         <el-col :span="4">
@@ -116,17 +125,46 @@
           prop="jydw"
           label="危害程度"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              {{ scope.row.jydw ==0?'未发现有害生物' :scope.row.jydw ==1?'非检疫性有害生物':scope.row.jydw ==2? '检疫性有害生物' :'非鉴定性有害生物' }}
+            </div>
+
+          </template>
+        </el-table-column>
+
         <el-table-column
-          prop="piclistJson"
+          prop="piclist"
           label="图片"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <el-image
+              v-for="(item) in scope.row.piclist"
+              :key="item.httpUrl"
+              style="width: 40px; "
+              :src="item.httpUrl"
+              :preview-src-list="[item.httpUrl]"
+            >
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline" />
+              </div>
+            </el-image>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create"
           label="发现时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination
@@ -147,8 +185,8 @@
 </template>
 
 <script>
-import { getPage } from '@/api/zacao'
-import { clean } from '@/utils/index'
+import { getPage, getLbPage } from '@/api/zacao'
+import { clean, parseTime } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 
 export default {
@@ -168,13 +206,38 @@ export default {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      options: [] // 处理后的杂草数据
     }
   },
   mounted() {
+    this.getLbPage()
     this.getPage()
   },
   methods: {
+    parseTime(time) {
+      // 时间戳处理
+      return parseTime(time)
+    },
+    async getLbPage() {
+      const params = { cunt: 1000, start: 0 }
+      await getLbPage(clean(params)).then((res) => {
+        var all = new Map()
+        const { data } = res
+        data.lblist.map((item) => {
+          const result = data.lblist.filter((item2) => {
+            return item2.lb1 === item.lb1
+          })
+          all.set(item.lb1, result)
+        })
+        for (const [k, v] of all) {
+          const obj = {}
+          obj.lb = k
+          obj.option = v
+          this.options.push(obj)
+        }
+      })
+    },
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))
 

@@ -73,14 +73,16 @@
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -210,7 +212,7 @@
 </template>
 
 <script>
-import { getPage, getLbPage } from '@/api/zacao'
+import { getPage, getLbPage, zacaoDelete } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 
 const cityJson = require('@/assets/json/cities.json')
@@ -233,7 +235,8 @@ export default {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      multipleSelection: []
     }
   },
   mounted() {
@@ -275,6 +278,55 @@ export default {
         this.tableData = data.zacaolist
         this.totalCount = data.totalCount
       })
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleDel() {
+      const ids = this.multipleSelection.map((item) => {
+        return item.id
+      })
+      if (ids.length === 0) {
+        this.$confirm('请选择删除对象', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else {
+        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (ids.length === 1) {
+            zacaoDelete({ id: ids[0] }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          } else {
+            zacaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     },
     handleEdit(index, rowData) {
       // 修改杂草

@@ -100,4 +100,12 @@ export function delLb(data) {
     data
   })
 }
+export function heatmapTotal(data) {
+  // 杂草类别删除
+  return request({
+    url: '/zacao/heatmapTotal',
+    method: 'POST',
+    data
+  })
+}
 

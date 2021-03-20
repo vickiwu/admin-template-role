@@ -98,7 +98,7 @@ export default {
         desc: '', // 资料介绍
         specy: '', // 杂草种类对象字符串
         cover: '', // 封面图片 文件对象
-        filelist: '' // 文件对象数组
+        filelist: [] // 文件对象数组
       },
       rules: {
         name: [
@@ -144,6 +144,9 @@ export default {
     async create() {
       const params = JSON.parse(JSON.stringify(this.formZilao))
       params.specy = JSON.parse(params.specy)
+      // if (params.filelist.length !== 0) {
+      //   params.filelist = JSON.stringify(params.filelist)
+      // }
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
           this.$message({
@@ -154,29 +157,37 @@ export default {
       })
     },
     async edit() { // id 必须存在
-      await edit({ json: JSON.stringify(this.formZilao) }).then((data) => {
+      const params = JSON.parse(JSON.stringify(this.formZilao))
+      // if (params.filelist.length !== 0) {
+      //   params.filelist = JSON.stringify(params.filelist)
+      // }
+      await edit({ json: JSON.stringify(params) }).then((data) => {
         if (data.state === 1) {
           this.$message({
             type: 'success',
             message: '修改成功!'
           })
+          // 修改成功后返回上一页面
+          this.$router.go(-1)
         }
       })
     },
-    async uploadFile(file) {
+    async uploadFile(file) { // 资料文件上传
       const params = new FormData()
       params.append('file', file.file)
       uploadFile(params).then((res) => {
         const { data } = res
         console.log('%c 🍝 res: ', 'font-size:20px;background-color: #465975;color:#fff;', data)
-        // this.formZilao.imgList.push(JSON.stringify(data.result)) // 资料信息
+        // 存入表单数据中
+        this.formZilao.filelist.push(data.result)
       })
     },
-    async uploadAvatar(file) {
+    async uploadAvatar(file) { // 封面图片上传
       const params = new FormData()
       params.append('file', file.file)
       const { data } = await uploadAvatar(params)
       this.fileData = data.result // 返回的是表单格式
+      this.formZilao.cover = data.result // 存入表单数据中
     },
     handleAvatarSuccess(res, file) {
       console.log('%c 🍊 res, file: ', 'font-size:20px;background-color: #465975;color:#fff;', this.fileData, file)
@@ -186,11 +197,11 @@ export default {
       console.log(file)
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 格式!')
+        this.$message.error('上传图片只能是 JPG 或者PNG 格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传图片大小不能超过 2MB!')
@@ -251,9 +262,10 @@ export default {
     font-size: 24px;
   }
   }
-.avatar{
-  width: 300px;
-}
+  .avatar {
+    width: 178px;
+    height: 178px;
+  }
 }
 }
 </style>
