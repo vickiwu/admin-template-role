@@ -255,7 +255,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/expertJudge/index',
     name: 'ExpertIndex',
-    meta: { title: '专家中心', icon: 'el-icon-s-help' },
+    meta: { title: '专家评判', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'index',
@@ -273,7 +273,7 @@ export const constantRoutes = [
         path: 'records',
         name: 'Records',
         component: () => import('@/views/expertJudge/records'),
-        meta: { title: '调度管理', icon: 'tree' }
+        meta: { title: '研判记录', icon: 'tree' }
       }
     ]
   },

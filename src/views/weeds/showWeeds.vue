@@ -86,7 +86,7 @@ export default {
 
     }
   },
-  created() {
+  mounted() {
     console.log(this.$route.params, 'sss')
     this.form = { ...this.$route.params.rowData }
   },
