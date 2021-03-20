@@ -20,16 +20,39 @@
           <el-input v-model="form.nickname" suffix-icon="el-icon-refresh" placeholder="请输入昵称" />
         </el-form-item>
         <el-form-item label="登陆密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入登陆密码" />
+          <el-input v-model="form.password" type="password" placeholder="请输入登陆密码" />
         </el-form-item>
         <el-form-item label="确认密码" prop="password1">
-          <el-input v-model="form.password1" placeholder="请再次输入登陆密码" />
+          <el-input v-model="form.password1" type="password" placeholder="请再次输入登陆密码" />
         </el-form-item>
-        <el-form-item label="地市" prop="name6">
-          <el-input v-model="form.name6" placeholder="请输入地市" />
+        <el-form-item label="地市" prop="cityName">
+          <el-select
+            v-model="form.cityName"
+            size="medium"
+            placeholder="请选择地市"
+            @change="getBumenList"
+          >
+            <el-option
+              v-for="item in bumenJson"
+              :key="item.city"
+              :label="item.city"
+              :value="item.city"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="单位" prop="name7">
-          <el-input v-model="form.name7" placeholder="请输入单位" />
+        <el-form-item label="单位" prop="bumen">
+          <el-select
+            v-model="form.bumen"
+            size="medium"
+            placeholder="请选择单位"
+          >
+            <el-option
+              v-for="item in bumenList"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="工号" prop="jobNo">
           <el-input v-model="form.jobNo" placeholder="请输入工号" />
@@ -47,14 +70,19 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="验证码" prop="from">
-
+        <el-form-item label="验证码" prop="validate">
           <div class="yzm">
             <div class="yzm-box">
-              <ValidCode :value.sync="ValidCode" :width="width" :height="height" :refresh="refresh" @input="alert(ValidCode)" />
-
+              <ValidCode
+                v-if="code"
+                :value.sync="ValidCode"
+                :width="width"
+                :height="height"
+                :data="code"
+                @refresh="refresh"
+              />
             </div>
-            <el-input v-model="form.from" class="yzm-input" placeholder="请输入验证码" />
+            <el-input v-model="form.validate" class="yzm-input" placeholder="请输入验证码" />
           </div>
         </el-form-item>
         <el-form-item class="btn-center">
@@ -68,6 +96,12 @@
 
 <script>
 import ValidCode from '@/components/ValidCode/index'
+import sha256 from 'sha256'
+import { sendsms } from '@/api/admin'
+import { mapGetters } from 'vuex'
+import { clean } from '@/utils/index'
+import { createUser } from '@/api/admin'
+const bumenJson = require('@/assets/json/bumen.json')
 
 export default {
   components: {
@@ -90,29 +124,36 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.form.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
     }
+    var checkValidate = (rule, value, callback) => {
+      if (value !== this.code) {
+        callback(new Error('请输入正确的验证码！'))
+      } else {
+        callback()
+      }
+    }
     return {
+      bumenJson: bumenJson.bumenlist,
+      bumenList: [],
       ValidCode: '33',
-      width: '120px',
+      width: '150px',
       height: '50px',
-      refresh: '2',
       form: {
         username: '',
         realname: '',
         nickname: '',
         password: '',
         password1: '',
-        name6: '',
-        name7: '',
+        cityName: '',
+        bumen: '',
         jobNo: '',
         phone: '',
-        utype: '',
-        from: ''
+        utype: ''
       },
       rules: {
         username: [
@@ -130,10 +171,10 @@ export default {
         password1: [
           { required: true, validator: validatePass2, trigger: 'blur' }
         ],
-        name6: [
+        cityName: [
           { required: true, message: '请输入地市', trigger: 'blur' }
         ],
-        name7: [
+        bumen: [
           { required: true, message: '请输入单位', trigger: 'blur' }
         ],
         jobNo: [
@@ -142,20 +183,69 @@ export default {
         phone: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }
+        ],
+        validate: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { validator: checkValidate, trigger: 'blur' }
         ]
-
-      }
+      },
+      code: null
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
   },
   mounted() {
     console.log(this.$route.params, 'sss')
+    this.queryValidate()
   },
   methods: {
+    getBumenList(value) {
+      const filter = this.bumenJson.find(item => item.city === value)
+      this.bumenList = filter.bumenlist2
+    },
+    refresh() {
+      this.queryValidate()
+    },
+    queryValidate() {
+      sendsms({ phone: '13952031562' }).then((res) => {
+        const { data } = res
+        this.code = data.code
+      })
+    },
+
     alert(msg) {
       console.log('%c 🍐 msg: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', msg)
     },
     onSubmit() {
-      console.log('submit!')
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log('error submit!!')
+          return false
+        } else {
+          delete this.form.validate
+          delete this.form.password1
+          this.form.password = sha256(this.form.password)
+          this.form.bumen = [this.form.cityName, this.form.bumen]
+          console.log(this.form)
+          createUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+            if (data.state === 1) {
+              this.$message({
+                type: 'success',
+                message: '新增成功!'
+              })
+            }
+            // if (this.isEdit !== undefined) {
+            // // 路由跳转
+            //   this.$router.push({
+            //     name: 'ExpertManagement'
+            //   })
+            // }
+          })
+        }
+      })
     }
   }
 }
@@ -179,11 +269,11 @@ export default {
   }
   .yzm{
     display: flex;
+    cursor: pointer;
     .yzm-box{
       border: 1px solid #D0D0D0;
       border-radius: 3px;
       text-align: center;
-      width: 120px;
       height: 50px;
       line-height: 50px;
       margin-right: 20px;

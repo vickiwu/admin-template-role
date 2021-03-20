@@ -6,20 +6,24 @@
         <el-col :span="7">
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date1"
+              v-model="formInline.startTime"
               size="medium"
               type="date"
               placeholder="开始日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="11">
             <el-date-picker
-              v-model="formInline.date2"
+              v-model="formInline.endTime"
               size="medium"
               type="date"
               placeholder="结束日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
@@ -128,8 +132,8 @@ export default {
       formInline: {
         content: '',
         level: '',
-        date1: '',
-        date2: ''
+        startTime: '',
+        endTime: ''
       },
       tableData: [],
       pagination: {
@@ -198,7 +202,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        logDelete({ ids: ids }).then(res => {
+        logDelete({ ids: JSON.stringify(ids) }).then(res => {
           if (res.state === 1) {
             this.$message.success('删除成功！')
           }
