@@ -46,10 +46,20 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formSearch.specy" size="medium" placeholder="所有种类">
-            <el-option label="未研判" :value="0" />
-            <el-option label="研判中" :value="1" />
-            <el-option label="入库" :value="16" />
+
+          <el-select v-model="formSearch.specy" placeholder="请选择杂草所属种类">
+            <el-option-group
+              v-for="group in options"
+              :key="group.lb"
+              :label="group.lb"
+            >
+              <el-option
+                v-for="item in group.option"
+                :key="item.lb2"
+                :label="item.lb2"
+                :value="JSON.stringify(item)"
+              />
+            </el-option-group>
           </el-select>
         </el-col>
         <el-col :span="4">
@@ -63,14 +73,16 @@
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -102,14 +114,14 @@
 
         <el-table-column
           prop="specy"
-          label="种类"
+          label="涉及杂草种类"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy.lb1 }}</span>科
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy.lb2 }}</span>属
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
             </div>
 
           </template>
@@ -200,7 +212,7 @@
 </template>
 
 <script>
-import { getPage } from '@/api/zacao'
+import { getPage, getLbPage, zacaoDelete } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 
 const cityJson = require('@/assets/json/cities.json')
@@ -212,28 +224,51 @@ export default {
       cityJson: cityJson.cityies,
       formSearch: {
         reg: '',
-        specy: '',
+        specy: null,
         jydw: '',
         startTime: '',
         endTime: ''
       },
+      options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      multipleSelection: []
     }
   },
   mounted() {
+    this.getLbPage()
     this.getPage()
   },
   methods: {
     parseTime(time) {
       return parseTime(time)
     },
+    async getLbPage() {
+      const params = { cunt: 1000, start: 0 }
+      await getLbPage(clean(params)).then((res) => {
+        var all = new Map()
+        const { data } = res
+        data.lblist.map((item) => {
+          const result = data.lblist.filter((item2) => {
+            return item2.lb1 === item.lb1
+          })
+          all.set(item.lb1, result)
+        })
+        for (const [k, v] of all) {
+          const obj = {}
+          obj.lb = k
+          obj.option = v
+          this.options.push(obj)
+        }
+      })
+    },
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))
+      // searchParams.specy = JSON.parse(searchParams.specy)
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
@@ -243,6 +278,55 @@ export default {
         this.tableData = data.zacaolist
         this.totalCount = data.totalCount
       })
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleDel() {
+      const ids = this.multipleSelection.map((item) => {
+        return item.id
+      })
+      if (ids.length === 0) {
+        this.$confirm('请选择删除对象', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      } else {
+        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (ids.length === 1) {
+            zacaoDelete({ id: ids[0] }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          } else {
+            zacaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
+              if (data.state) {
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                })
+                // 删除成功 执行查询更新
+                this.getPage()
+              }
+            })
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     },
     handleEdit(index, rowData) {
       // 修改杂草
