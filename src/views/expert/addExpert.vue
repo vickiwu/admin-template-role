@@ -58,12 +58,25 @@
 
 <script>
 import { uploadImg } from '@/api/zacao'
-import { create } from '@/api/zhuanjia'
+import { create, edit } from '@/api/zhuanjia'
 import { clean } from '@/utils/index'
 
 export default {
 
   data() {
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'))
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        console.log(reg.test(value))
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的手机号'))
+        }
+      }
+    }
     return {
       isEdit: false,
       form: {
@@ -74,7 +87,7 @@ export default {
         phone: '',
         schedule: '',
         from: '',
-        avatar: []
+        avatar: null
       },
       imageUrl: '',
       rules: {
@@ -85,7 +98,8 @@ export default {
           { required: true, message: '请输入工号', trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' }
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
         ],
         cat: [
           { required: true, message: '请选择专业领域', trigger: 'change' }
@@ -97,12 +111,21 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.params)
     this.isEdit = this.$route.params.isEdit
+    if (this.isEdit) {
+      this.form = {
+        ... this.$route.params.rowData
+      }
+      this.imageUrl = this.form.avatar.httpUrl
+    }
   },
   methods: {
     onSubmit() {
-      this.create()
+      if (this.isEdit) {
+        this.edit()
+      } else {
+        this.create()
+      }
     },
     async create() {
       this.$refs.form.validate((valid) => {
@@ -117,6 +140,33 @@ export default {
                 message: '新增成功!'
               })
             }
+            if (this.isEdit !== undefined) {
+              // 路由跳转
+              this.$router.push({
+                name: 'ExpertManagement'
+              })
+            }
+          })
+        }
+      })
+    },
+    edit() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) {
+          console.log('error submit!!')
+          return false
+        } else {
+          edit({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+            if (data.state === 1) {
+              this.$message({
+                type: 'success',
+                message: '修改成功!'
+              })
+              // 路由跳转
+              this.$router.push({
+                name: 'ExpertManagement'
+              })
+            }
           })
         }
       })
@@ -126,10 +176,11 @@ export default {
       params.append('file', file.file)
       uploadImg(params).then((res) => {
         const { data } = res
-        this.formWeed.imgList.push(JSON.stringify(data.result))
+        this.form.avatar = data.result
       })
     },
     handleAvatarSuccess(res, file) {
+      console.log(file)
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
