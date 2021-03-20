@@ -7,6 +7,9 @@ const getters = {
   },
   name: state => {
     return state.user.user.realname
+  },
+  userId: state => {
+    return state.user.userId
   }
 }
 export default getters

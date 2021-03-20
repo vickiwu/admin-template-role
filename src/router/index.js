@@ -123,12 +123,12 @@ export const constantRoutes = [
     name: 'ExpertIndex',
     meta: { title: '专家中心', icon: 'el-icon-s-help' },
     children: [
-      {
-        path: 'index',
-        name: 'Expert',
-        component: () => import('@/views/expert/index'),
-        meta: { title: '专家调度', icon: 'form' }
-      },
+      // {
+      //   path: 'index',
+      //   name: 'Expert',
+      //   component: () => import('@/views/expert/index'),
+      //   meta: { title: '专家调度', icon: 'form' }
+      // },
       {
         path: 'addExpert',
         name: 'AddExpert',
@@ -142,14 +142,14 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/expert/management'),
         meta: { title: '专家管理', icon: 'tree' }
-      },
-      {
-        path: 'set',
-        name: 'ExpertSet',
-        // hidden: true,
-        component: () => import('@/views/expert/setExpert'),
-        meta: { title: '调度管理', icon: 'tree' }
       }
+      // {
+      //   path: 'set',
+      //   name: 'ExpertSet',
+      //   // hidden: true,
+      //   component: () => import('@/views/expert/setExpert'),
+      //   meta: { title: '调度管理', icon: 'tree' }
+      // }
     ]
   },
   {
@@ -247,6 +247,33 @@ export const constantRoutes = [
         name: 'Log',
         component: () => import('@/views/log/index'),
         meta: { title: '系统日志', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/expertJudge',
+    component: Layout,
+    redirect: '/expertJudge/index',
+    name: 'ExpertIndex',
+    meta: { title: '专家中心', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'ExpertJudge',
+        component: () => import('@/views/expertJudge/index'),
+        meta: { title: '研判任务', icon: 'form' }
+      },
+      {
+        path: 'judge',
+        name: 'Judge',
+        component: () => import('@/views/expertJudge/judge'),
+        meta: { title: '执行研判', icon: 'form' }
+      },
+      {
+        path: 'records',
+        name: 'Records',
+        component: () => import('@/views/expertJudge/records'),
+        meta: { title: '调度管理', icon: 'tree' }
       }
     ]
   },

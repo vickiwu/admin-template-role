@@ -12,22 +12,25 @@
         </el-col>
         <el-col :span="4">
           <el-select
-            v-model="formInline.region1"
+            v-model="formInline.reg"
+            multiple
+            collapse-tags
             size="medium"
             placeholder="所有区域"
           >
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+            <el-option
+              v-for="item in cityJson"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select
-            v-model="formInline.region2"
-            size="medium"
-            placeholder="所有种类"
-          >
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+          <el-select v-model="formInline.specy" size="medium" placeholder="所有种类">
+            <el-option label="未研判" :value="0" />
+            <el-option label="研判中" :value="1" />
+            <el-option label="入库" :value="16" />
           </el-select>
         </el-col>
         <el-col :span="5">
@@ -36,11 +39,10 @@
             size="medium"
             placeholder="搜索关键字"
             prefix-icon="el-icon-search"
-          >
-            <template slot="append">检索</template>
-          </el-input>
+          />
         </el-col>
         <el-col :span="5" class="right-btn">
+          <el-button type="primary" size="small" @click="query">检索</el-button>
           <el-button type="danger" size="small">忽略</el-button>
         </el-col>
       </el-row>
@@ -63,40 +65,71 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="discReg"
           label="区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="source"
           label="来源"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="nameCn"
           label="名称"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="specy"
           label="种类"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <div>
+              <span style="margin-right:10px"> {{ scope.row.specy.lb1 }}</span>科
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy.lb2 }}</span>属
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="name"
           label="危害程度"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <div>
+              {{ scope.row.jydw ==0?'未发现有害生物' :scope.row.jydw ==1?'非检疫性有害生物':scope.row.jydw ==2? '检疫性有害生物' :'非鉴定性有害生物' }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="name"
           label="图片"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              v-for="(item) in scope.row.piclist"
+              :key="item.httpUrl"
+              style="width: 40px; "
+              :src="item.httpUrl"
+              :preview-src-list="[item.httpUrl]"
+            >
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline" />
+              </div>
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="name"
           label="发现时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页 -->
       <el-pagination
@@ -174,54 +207,56 @@
 </template>
 
 <script>
+import { getPage } from '@/api/zacao'
+import { clean, parseTime } from '@/utils/index'
+
+const cityJson = require('@/assets/json/cities.json')
 
 export default {
 
   data() {
     return {
+      cityJson: cityJson.cityies,
       form: {
         name: '',
         img: '',
         desc: ''
       },
       formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        date1: '',
-        date2: ''
+        reg: '',
+        specy: '',
+        region3: ''
       },
       formInline2: {
         region1: ''
       },
-      tableData: [{
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },
-      {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      tableData: [],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0
     }
   },
-  created() {
+  mounted() {
+    this.query()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
+    query() {
+      const searchParams = JSON.parse(JSON.stringify(this.formInline))
+      if (searchParams.reg.length !== 0) {
+        searchParams.reg = JSON.stringify(searchParams.reg)
+      }
+      const params = { ...this.pagination, ...searchParams }
+      getPage(clean(params)).then((res) => {
+        const { data } = res
+        this.tableData = data.zacaolist
+        this.totalCount = data.totalCount
+      })
+    },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val

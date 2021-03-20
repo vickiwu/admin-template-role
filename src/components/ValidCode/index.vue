@@ -2,7 +2,7 @@
   <div
     class="ValidCode disabled-select"
     :style="`width:${width}; height:${height}`"
-    @click="refreshCode"
+    @click="refresh"
   >
     <span
       v-for="(item, index) in codeList"
@@ -32,9 +32,9 @@ export default {
       type: Number,
       default: 4
     },
-    refresh: {
-      type: Number,
-      default: 1
+    data: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -43,8 +43,7 @@ export default {
     }
   },
   watch: {
-    refresh() {
-      console.log('%c 🍓 refresh: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', 'refresh')
+    data() {
       this.createdCode()
     }
   },
@@ -56,29 +55,32 @@ export default {
       this.createdCode()
     },
     createdCode() {
-      const len = this.length
       const codeList = []
-      const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789'
-      const charsLen = chars.length
       // 生成
-      for (let i = 0; i < len; i++) {
-        const rgb = [Math.round(Math.random() * 220), Math.round(Math.random() * 240), Math.round(Math.random() * 200)]
-        codeList.push({
-          code: chars.charAt(Math.floor(Math.random() * charsLen)),
-          color: `rgb(${rgb})`,
-          fontSize: `${16 + (+[Math.floor(Math.random() * 10)] + 6)}px`,
-          padding: `${[Math.floor(Math.random() * 10)]}px`,
-          transform: `rotate(${Math.floor(Math.random() * 90) - Math.floor(Math.random() * 90)}deg)`
+      if (this.data) {
+        const chars = this.data.split('')
+        chars.forEach(element => {
+          const rgb = [Math.round(Math.random() * 220), Math.round(Math.random() * 240), Math.round(Math.random() * 200)]
+          codeList.push({
+            code: element,
+            color: `rgb(${rgb})`,
+            fontSize: `${16 + (+[Math.floor(Math.random() * 10)] + 6)}px`,
+            padding: `${[Math.floor(Math.random() * 10)]}px`,
+            transform: `rotate(${Math.floor(Math.random() * 90) - Math.floor(Math.random() * 90)}deg)`
+          })
         })
       }
+
       // 指向
       this.codeList = codeList
       // 将当前数据派发出去
-      console.log(codeList.map(item => item.code).join(''))
       this.$emit('input', codeList.map(item => item.code).join(''))
     },
     getStyle(data) {
       return `color: ${data.color}; font-size: ${data.fontSize}; padding: ${data.padding}; transform: ${data.transform}`
+    },
+    refresh() {
+      this.$emit('refresh')
     }
   }
 }
