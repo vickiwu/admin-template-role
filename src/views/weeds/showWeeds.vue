@@ -27,9 +27,10 @@
 
         </el-form-item>
         <el-form-item label="种类 ：">
+
           <div>
-            <span style="margin-right:10px"> {{ form.specy.lb1 }}</span>科
-            <span style="margin-left:10px;margin-right:10px">{{ form.specy.lb2 }}</span>属
+            <span style="margin-right:10px"> {{ form.specy ? form.specy.lb1 +'科' : '' }}</span>
+            <span style="margin-left:10px;margin-right:10px">{{ form.specy ? form.specy.lb2 + '属' : "" }}</span>
           </div>
 
         </el-form-item>

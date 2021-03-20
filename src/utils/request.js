@@ -6,7 +6,7 @@ import { getToken, removeToken, removeUserId, removeUser, removeSysConfig } from
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  timeout: 5000 // request timeout
+  timeout: 15000 // request timeout
 })
 
 // 请求拦截器

@@ -22,7 +22,7 @@
         <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
           <el-input v-model="formWeed.source" />
         </el-form-item>
-        <el-form-item label="区域" prop="discRegJson">
+        <el-form-item label="区域" prop="discReg">
 
           <el-select
             v-model="formWeed.discReg"

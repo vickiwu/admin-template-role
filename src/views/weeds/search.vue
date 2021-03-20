@@ -84,7 +84,7 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="discRegJson"
+          prop="discReg"
           label="区域"
           :show-overflow-tooltip="true"
         />
@@ -99,10 +99,19 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="specyJson"
+          prop="specy"
           label="种类"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+            </div>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="jydw"
           label="危害程度"
@@ -121,7 +130,6 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="totalCount > pagination.count"
         background
         :current-page="pagination.start"
         :page-size="pagination.count"
@@ -131,7 +139,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -169,7 +177,10 @@ export default {
   methods: {
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))
-      searchParams.reg = JSON.stringify(searchParams.reg)
+
+      if (searchParams.reg.length !== 0) {
+        searchParams.reg = JSON.stringify(searchParams.reg)
+      }
       const params = { ...this.pagination, ...searchParams }
 
       await getPage(clean(params)).then((res) => {
