@@ -4,7 +4,7 @@
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="4">
-          <el-input v-model="formInline.realname" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.name" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
         </el-col>
 
         <el-col :span="4">
@@ -22,7 +22,7 @@
 
           <el-button type="primary" size="small" @click="query">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button type="danger" size="small" @click="deleteZhuanjia">删除</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -30,6 +30,7 @@
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -89,12 +90,28 @@
           prop="avatarJson"
           label="头像"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <el-image
+              style="width: 40px; "
+              :src="scope.row.avatar && scope.row.avatar.httpUrl"
+              :preview-src-list="[scope.row.avatar && scope.row.avatar.httpUrl]"
+            >
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline" />
+              </div>
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create"
           label="录入时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column
           prop="name"
@@ -132,8 +149,8 @@
 </template>
 
 <script>
-import { getPage } from '@/api/zhuanjia'
-import { clean } from '@/utils/index'
+import { getPage, zhuanjiaDelete } from '@/api/zhuanjia'
+import { clean, parseTime } from '@/utils/index'
 
 export default {
 
@@ -142,29 +159,32 @@ export default {
       formInline: {
         cat: '',
         jobNo: '',
-        realname: ''
+        name: ''
       },
       tableData: [],
       pagination: {
         count: 10,
         start: 0
       },
-      totalCount: 0
+      totalCount: 0,
+      selected: []
     }
   },
   mounted() {
     this.query()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
     async query() {
       const params = {
         ...this.pagination,
         ...this.formInline
       }
-      console.log(params)
       await getPage(clean(params)).then((res) => {
         const { data } = res
-        this.tableData = data.lblist
+        this.tableData = data.zhuanjialist
         this.totalCount = data.totalCount
       })
     },
@@ -190,9 +210,42 @@ export default {
       })
     },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = (val - 1) * this.pagination.count
+      this.query()
+    },
+    handleSelectionChange(val) {
+      this.selected = val
+    },
+    deleteZhuanjia() {
+      if (this.selected.length === 0) {
+        this.$message.error('请选择要删除的专家！')
+        return
+      }
+      if (this.selected.length > 1) {
+        this.$message.error('请单独选择一个专家进行删除！')
+        return
+      }
+      const ids = []
+      this.selected.forEach(item => ids.push(item.id))
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        zhuanjiaDelete({ id: ids[0] }).then(res => {
+          if (res.state === 1) {
+            this.$message.success('删除成功！')
+          }
+          this.query()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
+
   }
 }
 </script>
