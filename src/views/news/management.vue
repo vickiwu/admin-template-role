@@ -153,7 +153,7 @@
 
 <script>
 import { getPage, xinwenDelete } from '@/api/xinwen'
-parseTime
+import { clean, parseTime } from '@/utils/index'
 
 export default {
   data() {

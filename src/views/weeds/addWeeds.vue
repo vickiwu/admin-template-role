@@ -173,13 +173,15 @@ export default {
       params.append('file', file.file)
       uploadImg(params).then((res) => {
         const { data } = res
+        if (!this.formWeed.piclist) {
+          this.formWeed.piclist = []
+        }
         this.formWeed.piclist.push(data.result)
       })
     },
     async create() {
       const params = JSON.parse(JSON.stringify(this.formWeed))
       params.specy = JSON.parse(params.specy)
-      console.log('%c 🍭 params: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', params)
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
           this.$message({
@@ -191,16 +193,17 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
-      params.specy = JSON.parse(params.specy)
+      // params.specy = JSON.parse(params.specy)
       console.log('%c 🍭 params: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', params)
-      // await edit({ json: JSON.stringify(this.formWeed) }).then((data) => {
-      //   if (data.state === 1) {
-      //     this.$message({
-      //       type: 'success',
-      //       message: '修改成功!'
-      //     })
-      //   }
-      // })
+      await edit({ json: JSON.stringify(params) }).then((data) => {
+        console.log('%c 🍼️ data: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', data)
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        }
+      })
     },
     onSubmit() {
       if (this.isEdit) {
