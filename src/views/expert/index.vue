@@ -133,15 +133,18 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
-        layout="prev, pager, next"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
+        layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
-      />
+      >
+        <template>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
+        </template>
+      </el-pagination>
     </el-card>
     <el-card shadow="always" class="bottom-card">
       <el-row class="report-row" type="flex" justify="space-between">

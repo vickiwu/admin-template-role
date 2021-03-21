@@ -32,32 +32,42 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="filePath"
           label="文件路径"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="httpUrl"
           label="访问链接"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="platform"
           label="平台位置"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.platform === 0">本地主机</span>
+            <span v-if="scope.row.platform === 0">平台云主机</span>
+            <span v-else>本地主机</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="fsize"
           label="大小（kb）"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="create"
           label="创建时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.create) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="name"
+          prop="username"
           label="创建账户"
           :show-overflow-tooltip="true"
         />
@@ -65,17 +75,16 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -84,7 +93,8 @@
 </template>
 
 <script>
-
+import { clean, parseTime } from '@/utils/index'
+import { getFilePage } from '@/api/sys'
 export default {
 
   data() {
@@ -102,37 +112,33 @@ export default {
         date2: ''
       },
       checked: false,
-      tableData: [{
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },
-      {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      tableData: [],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0,
+      selected: []
     }
   },
-  created() {
+  mounted() {
+    this.query()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
+    query() {
+      const params = { ... this.pagination }
+      getFilePage(clean(params)).then((res) => {
+        const { data } = res
+        this.tableData = data.filelist
+        this.totalCount = data.totalCount
+      })
+    },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
-      this.pagination.pageIndex = val
+      this.pagination.start = (val - 1) * this.pagination.count
+      this.query()
     },
     onSubmit() {
       console.log('submit!')
