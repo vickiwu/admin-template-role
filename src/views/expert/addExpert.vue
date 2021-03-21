@@ -145,6 +145,17 @@ export default {
               this.$router.push({
                 name: 'ExpertManagement'
               })
+            } else {
+              this.form = {
+                realname: '',
+                cat: '',
+                desc: '',
+                jobNo: '',
+                phone: '',
+                schedule: '',
+                from: '',
+                avatar: null
+              }
             }
           })
         }
