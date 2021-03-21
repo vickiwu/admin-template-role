@@ -8,7 +8,7 @@
         label-width="80px"
         label-position="left"
         class="news-form"
-        :rules="rules"
+        :rules="this.$route.params.isEdit? rulesEdit:rules"
       >
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名" />
@@ -19,10 +19,10 @@
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="form.nickname" suffix-icon="el-icon-refresh" placeholder="请输入昵称" />
         </el-form-item>
-        <el-form-item label="登陆密码" prop="password">
+        <el-form-item v-if="!this.$route.params.isEdit" label="登陆密码" prop="password">
           <el-input v-model="form.password" type="password" placeholder="请输入登陆密码" />
         </el-form-item>
-        <el-form-item label="确认密码" prop="password1">
+        <el-form-item v-if="!this.$route.params.isEdit" label="确认密码" prop="password1">
           <el-input v-model="form.password1" type="password" placeholder="请再次输入登陆密码" />
         </el-form-item>
         <el-form-item label="地市" prop="cityName">
@@ -189,6 +189,34 @@ export default {
           { validator: checkValidate, trigger: 'blur' }
         ]
       },
+      rulesEdit: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        realname: [
+          { required: true, message: '请输入真实姓名', trigger: 'blur' }
+        ],
+        nickname: [
+          { required: true, message: '请输入昵称', trigger: 'blur' }
+        ],
+        cityName: [
+          { required: true, message: '请输入地市', trigger: 'blur' }
+        ],
+        bumen: [
+          { required: true, message: '请输入单位', trigger: 'blur' }
+        ],
+        jobNo: [
+          { required: true, message: '请输入工号', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        validate: [
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { validator: checkValidate, trigger: 'blur' }
+        ]
+      },
       code: null
     }
   },
@@ -198,7 +226,6 @@ export default {
     ])
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
     this.queryValidate()
     if (this.$route.params.isEdit) {
       // 编辑
@@ -235,8 +262,6 @@ export default {
           return false
         } else {
           delete this.form.validate
-          delete this.form.password1
-          this.form.password = sha256(this.form.password)
           this.form.bumen = [this.form.cityName, this.form.bumen]
 
           if (this.$route.params.isEdit) {
@@ -253,6 +278,8 @@ export default {
               }
             })
           } else {
+            delete this.form.password1
+            this.form.password = sha256(this.form.password)
             // 新增
             createUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
               if (data.state === 1) {
