@@ -15,7 +15,7 @@
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="20">
         <el-col :span="4" style="text-align:left">
-          <span class="row-title">下属账户总数量：10个</span>
+          <span class="row-title">下属账户总数量：{{ totalCount }}个</span>
         </el-col>
         <el-col :span="19" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
