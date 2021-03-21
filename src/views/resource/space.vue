@@ -32,50 +32,53 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="date"
+          prop="name"
           label="服务器"
           :show-overflow-tooltip="true"
         />
         <el-table-column
           prop="name"
-          label="IP"
+          label="lanIp"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="address"
+          prop="diskTotal"
           label="总空间（GB）"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="diskUsed"
           label="已用空间（GB）"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="diskLeft"
           label="剩余空间（GB）"
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
+          prop="update"
           label="更新时间"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.update) }}</span>
+          </template>
+        </el-table-column>
 
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="pagination.total > pagination.pageSize"
         background
-        :current-page="pagination.pageIndex"
-        :page-size="pagination.pageSize"
-        :total="pagination.total"
+        :current-page="pagination.start"
+        :page-size="pagination.count"
+        :total="totalCount"
         layout="prev, pager, next,slot"
         style="margin-top: 15px"
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ (pagination.pageIndex - 1) * pagination.pageSize + 1 }}至第{{ pagination.pageIndex * pagination.pageSize }}项结果，共{{ pagination.total }}项</span>
+          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ (pagination.start + pagination.count)>totalCount ? totalCount : (pagination.start + pagination.count) }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -84,52 +87,37 @@
 </template>
 
 <script>
+import { getServerList } from '@/api/sys'
+import { clean, parseTime } from '@/utils/index'
 
 export default {
 
   data() {
     return {
-      form: {
-        name: '',
-        img: '',
-        desc: ''
-      },
-      formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        date1: '',
-        date2: ''
-      },
-      checked: false,
-      tableData: [{
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      },
-      {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      tableData: [],
       pagination: {
-        pageSize: 10,
-        total: 100,
-        pageIndex: 1
-      }
+        count: 10,
+        start: 0
+      },
+      totalCount: 0,
+      selected: []
     }
   },
-  created() {
+  mounted() {
+    this.query()
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
+    query() {
+      const params = { ... this.pagination }
+      getServerList(clean(params)).then((res) => {
+        const { data } = res
+        this.tableData = data.serverlist
+        this.totalCount = data.totalCount
+      })
+    },
     handlePageChange(val) {
       console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val

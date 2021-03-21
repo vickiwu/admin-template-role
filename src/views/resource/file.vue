@@ -99,19 +99,6 @@ export default {
 
   data() {
     return {
-      form: {
-        name: '',
-        img: '',
-        desc: ''
-      },
-      formInline: {
-        region1: '',
-        region2: '',
-        region3: '',
-        date1: '',
-        date2: ''
-      },
-      checked: false,
       tableData: [],
       pagination: {
         count: 10,
