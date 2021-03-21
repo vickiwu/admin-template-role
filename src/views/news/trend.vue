@@ -5,7 +5,7 @@
       <el-row type="flex" justify="space-around" class="news-row">
         <el-col :span="15" class="col-left">
           <div class="left-title">热点精选</div>
-          <div v-for="o in 3" :key="o">
+          <div v-for="(o,index) in topList" :key="o.id">
             <el-row type="flex" justify="space-around">
               <el-col :span="7">
                 <el-image
@@ -17,16 +17,16 @@
                 </el-image>
               </el-col>
               <el-col :span="15">
-                <div class="img-title">宁海发现新入侵植物！</div>
+                <div class="img-title">{{ o.content }}</div>
               </el-col>
             </el-row>
-            <el-divider v-if="o < 3" />
+            <el-divider v-if="index < topList.length-1" />
           </div>
         </el-col>
         <el-col :span="7" class="col-right">
           <div class="right-title">热点排行榜：</div>
-          <div v-for="o in 10" :key="o" class="right-list">
-            {{ `某入侵植物${o}...` }}
+          <div v-for="o in topList" :key="o.id" class="right-list">
+            <span class="top-span" style="cursor: pointer;">{{ `${o.title}...` }}</span>
           </div>
         </el-col>
       </el-row>
@@ -42,7 +42,7 @@ export default {
 
   data() {
     return {
-
+      topList: []
     }
   },
   mounted() {
@@ -52,6 +52,7 @@ export default {
     async getHotNews() {
       await getHotNews().then((res) => {
         const { data } = res
+        this.topList = data.xinwenHotlist
         console.log('%c 🍔 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', data)
       })
     }
@@ -99,6 +100,12 @@ export default {
       .right-list{
         margin: 5px 15px 15px 15px;
       }
+    }
+  }
+  .top-span{
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
     }
   }
 }

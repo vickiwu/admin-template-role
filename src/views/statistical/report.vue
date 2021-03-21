@@ -214,7 +214,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { getPage, getLbPage } from '@/api/zacao'
+import { getPage, getLbPage, tongji } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 
@@ -236,16 +236,18 @@ export default {
         start: 0
       },
       totalCount: 0,
-      options: [] // 处理后的杂草数据
+      options: [], // 处理后的杂草数据
+      countStatX: [],
+      countStatY: [],
+      regionStatX: [],
+      regionStatY: [],
+      specyStat: []
     }
   },
   mounted() {
     this.getLbPage()
     this.getPage()
-
-    this.loadChart1()
-    this.loadChart2()
-    this.loadChart3()
+    this.tongji()
   },
   methods: {
     parseTime(time) {
@@ -285,6 +287,29 @@ export default {
         this.totalCount = data.totalCount
       })
     },
+    async tongji() {
+      await tongji().then((res) => {
+        const { data } = res
+        for (const i in data.countStat) {
+          this.countStatX.push(i)
+          this.countStatY.push(data.countStat[i])
+        }
+        for (const i in data.regionStat) {
+          this.regionStatX.push(i)
+          this.regionStatY.push(data.regionStat[i])
+        }
+        for (const i in data.specyStat) {
+          const item = {}
+          item.name = i
+          item.value = data.specyStat[i]
+          this.specyStat.push(item)
+        }
+        this.loadChart1()
+        this.loadChart2()
+        this.loadChart3()
+      })
+    },
+
     handleSearch() {
       this.getPage()
     },
@@ -302,13 +327,13 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+          data: this.countStatX
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: [82, 92, 91, 94, 90, 83, 62, 72, 81, 54, 60, 70],
+          data: this.countStatY,
           type: 'line',
           // smooth: true,
           areaStyle: {
@@ -336,13 +361,13 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['鼓楼区', '江宁区', '栖霞区', '浦口区', '玄武区']
+          data: this.regionStatX
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: [120, 200, 150, 80, 70],
+          data: this.regionStatY,
           type: 'bar'
         }]
       })
@@ -377,13 +402,7 @@ export default {
             labelLine: {
               show: false
             },
-            data: [
-              { value: 1048, name: '种类一' },
-              { value: 735, name: '种类二' },
-              { value: 580, name: '种类三' },
-              { value: 484, name: '种类四' },
-              { value: 300, name: '种类五' }
-            ]
+            data: this.specyStat
           }
         ]
       })

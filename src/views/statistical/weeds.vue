@@ -46,6 +46,9 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel } from 'vue-baidu-map'
+import { totalCount, getDistPage, heatmap, heatmapTotal } from '@/api/zacao'
+import { getSysConfig } from '@/utils/auth'
+import { clean, parseTime } from '@/utils/index'
 
 export default {
   components: {
@@ -60,7 +63,7 @@ export default {
   data() {
     return {
       appMainHeight: '', // 容器高度
-      center: { // 地图中心点
+      center: { // 地图中心点- 用户登录可以获取到
         lng: 118.846,
         lat: 32.063
       },
@@ -129,7 +132,9 @@ export default {
         address: '检疫口岸一',
         from: '东南亚',
         img: require('@/assets/logo.png')
-      }
+      },
+      start: 0,
+      count: 10
     }
   },
   computed: {
@@ -139,9 +144,40 @@ export default {
     this.appMainHeight = parseInt(window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')) - 50 + 'px'
   },
   created() {
+    // 获取中心位置 cookie中获取
+    const sysConfig = JSON.parse(getSysConfig())
+    this.center = sysConfig.home // 设置地图中心点
 
+    this.totalCount() // 获取杂草总数 便于分页查询
+    this.heatmapTotal() // 获取热力图总数量
+    this.getDistPage() // 获取杂草数据
+    this.heatmap() // 获取热力图数据
   },
   methods: {
+    async totalCount() {
+      await totalCount().then((res) => {
+        const { data } = res
+        console.log('%c 🥦 data: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+      })
+    },
+    async heatmapTotal() {
+      await heatmapTotal().then((res) => {
+        const { data } = res
+        console.log('%c 🥦 data: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+      })
+    },
+    async getDistPage() {
+      await getDistPage({ count: this.count, start: this.start }).then((res) => {
+        const { data } = res
+        console.log('%c 🥦 getDistPage: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+      })
+    },
+    async heatmap() {
+      await heatmap({ count: this.count, start: this.start }).then((res) => {
+        const { data } = res
+        console.log('%c 🥦 heatmap: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+      })
+    },
     showDetail() {
       this.$router.push({
         name: 'ShowWeeds'

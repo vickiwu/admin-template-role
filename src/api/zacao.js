@@ -101,11 +101,43 @@ export function delLb(data) {
   })
 }
 export function heatmapTotal(data) {
-  // 杂草类别删除
+  // 杂草热力图总数
   return request({
     url: '/zacao/heatmapTotal',
     method: 'POST',
     data
   })
 }
+export function heatmap(data) {
+  // 杂草热力图-分页获取
+  return request({
+    url: '/zacao/heatmap',
+    method: 'POST',
+    data
+  })
+}
+export function totalCount(data) {
+  // 杂草总数量-地图
+  return request({
+    url: '/zacao/totalCount',
+    method: 'POST',
+    data
+  })
+}
+export function getDistPage(data) {
+  // 分页获取杂草分布-地图
+  return request({
+    url: '/zacao/getDistPage',
+    method: 'POST',
+    data
+  })
+}
 
+export function tongji(data) {
+  // 杂草统计表
+  return request({
+    url: '/zacao/tongji',
+    method: 'POST',
+    data
+  })
+}
