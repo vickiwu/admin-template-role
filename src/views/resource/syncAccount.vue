@@ -6,14 +6,13 @@
       <el-row class="report-row" :gutter="20">
         <el-col :span="8" style="text-align:left">
           <span class="row-title">
-            <div class="sub-title">上次同步时间：2020-09-20 14：20：20</div>
-            <div class="sub-title">上次同步数量：50个</div>
+            <div class="sub-title">上次同步时间：2020-09-20 14:20:20</div>
+            <div class="sub-title">上次同步数量：{{ sysConfig.h4aSynEnable ? sysConfig.h4aSynEnable : 0 }}个</div>
           </span>
         </el-col>
         <el-col :span="15" class="right-btn">
           <el-checkbox v-model="checked">显示密码</el-checkbox>
-          <el-button type="primary" size="small">开始同步</el-button>
-          <el-button type="danger" size="small">停止同步</el-button>
+          <el-button type="primary" size="small" @click="sync">开始同步</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -104,7 +103,8 @@
 
 <script>
 import { clean } from '@/utils/index'
-import { getUserPage } from '@/api/admin'
+import { getUserPage, synH4a } from '@/api/admin'
+import { getSysConfig } from '@/utils/auth'
 
 export default {
 
@@ -129,7 +129,8 @@ export default {
         index: 1
       },
       totalCount: 0,
-      selected: []
+      selected: [],
+      sysConfig: null
     }
   },
   computed: {
@@ -142,6 +143,7 @@ export default {
   },
   mounted() {
     this.query()
+    this.sysConfig = getSysConfig()
   },
   methods: {
     query() {
@@ -156,12 +158,14 @@ export default {
       this.pagination.index = val
       this.query()
     },
-    onSubmit() {
-      console.log('submit!')
-    },
-    jumpManageMent() {
-      this.$router.push({
-        name: 'ExpertManagement'
+    sync() {
+      synH4a().then((data) => {
+        if (data.state === 1) {
+          this.$message({
+            type: 'success',
+            message: '新增成功!'
+          })
+        }
       })
     }
   }

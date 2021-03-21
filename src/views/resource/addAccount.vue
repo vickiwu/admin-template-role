@@ -153,7 +153,8 @@ export default {
         bumen: '',
         jobNo: '',
         phone: '',
-        utype: ''
+        utype: '',
+        validate: ''
       },
       rules: {
         username: [
@@ -261,12 +262,13 @@ export default {
           console.log('error submit!!')
           return false
         } else {
-          delete this.form.validate
-          this.form.bumen = [this.form.cityName, this.form.bumen]
-
           if (this.$route.params.isEdit) {
+            const params = { ...this.form }
+            params.bumen = [params.cityName, params.bumen]
+            delete params.validate
+
             // 编辑
-            editUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+            editUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
                 this.$message({
                   type: 'success',
@@ -278,10 +280,14 @@ export default {
               }
             })
           } else {
-            delete this.form.password1
-            this.form.password = sha256(this.form.password)
+            const params = { ...this.form }
+            delete params.password1
+            delete params.validate
+            params.password = sha256(this.form.password)
+            params.bumen = [params.cityName, params.bumen]
+
             // 新增
-            createUser({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+            createUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
                 this.$message({
                   type: 'success',
@@ -292,6 +298,20 @@ export default {
                 this.$router.push({
                   name: 'Account'
                 })
+              } else {
+                this.form = {
+                  username: '',
+                  realname: '',
+                  nickname: '',
+                  password: '',
+                  password1: '',
+                  cityName: '',
+                  bumen: '',
+                  jobNo: '',
+                  phone: '',
+                  utype: '',
+                  validate: ''
+                }
               }
             })
           }

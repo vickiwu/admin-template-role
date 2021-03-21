@@ -8,9 +8,9 @@
             <el-date-picker
               v-model="formInline.startTime"
               size="medium"
-              type="date"
+              type="datetime"
               placeholder="开始日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy年MM月dd日"
               value-format="timestamp"
               style="width: 100%"
             />
@@ -20,10 +20,11 @@
             <el-date-picker
               v-model="formInline.endTime"
               size="medium"
-              type="date"
+              type="datetime"
               placeholder="结束日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy年MM月dd日 "
               value-format="timestamp"
+              default-time="23:59:59"
               style="width: 100%"
             />
           </el-col>
