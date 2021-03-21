@@ -93,9 +93,8 @@
       </el-table>
       <!-- 分页 -->
       <el-pagination
-        v-if="totalCount > pagination.count"
         background
-        :current-page="pagination.start"
+        :current-page="pagination.index"
         :page-size="pagination.count"
         :total="totalCount"
         layout="prev, pager, next,slot"
@@ -103,7 +102,7 @@
         @current-change="handlePageChange"
       >
         <template>
-          <span class="slot-span">显示第{{ pagination.start + 1 }}至第{{ pagination.start + pagination.count }}项结果，共{{ totalCount }}项</span>
+          <span class="slot-span">显示第{{ (pagination.index -1 ) * pagination.count + 1 }}至第{{ totalCount > pagination.index * pagination.count ? pagination.index * pagination.count : totalCount }}项结果，共{{ totalCount }}项</span>
         </template>
       </el-pagination>
     </el-card>
@@ -121,10 +120,18 @@ export default {
       tableData: [],
       pagination: {
         count: 10,
-        start: 0
+        index: 1
       },
       totalCount: 0,
       selected: []
+    }
+  },
+  computed: {
+    queryPageination() {
+      return {
+        count: this.pagination.count,
+        start: (this.pagination.index - 1) * this.pagination.count
+      }
     }
   },
   mounted() {
@@ -135,12 +142,16 @@ export default {
       return parseTime(time)
     },
     query() {
-      const params = { ... this.pagination }
+      const params = { ... this.queryPageination }
       getTaskPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.tasklist
         this.totalCount = data.totalCount
       })
+    },
+    handlePageChange(val) {
+      this.pagination.index = val
+      this.query()
     },
     handleSelectionChange(val) {
       this.selected = val
@@ -172,5 +183,10 @@ export default {
         text-align: right;
     }
 }
-
+::v-deep.el-pagination {
+  text-align: right;
+  .slot-span {
+    float: left;
+  }
+}
 </style>
