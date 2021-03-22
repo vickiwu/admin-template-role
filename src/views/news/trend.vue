@@ -5,9 +5,10 @@
       <el-row type="flex" justify="space-around" class="news-row">
         <el-col :span="15" class="col-left">
           <div class="left-title">热点精选</div>
-          <div v-for="(o,index) in topList" :key="o.id">
-            <el-row type="flex" justify="space-around">
-              <el-col :span="7">
+          <div v-for="(o,index) in xinwenlist" :key="o.id">
+            <el-row>
+              <div v-html="o.content" />
+              <!-- <el-col :span="7">
                 <el-image
                   src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
                 >
@@ -18,9 +19,9 @@
               </el-col>
               <el-col :span="15">
                 <div class="img-title">{{ o.content }}</div>
-              </el-col>
+              </el-col> -->
             </el-row>
-            <el-divider v-if="index < topList.length-1" />
+            <el-divider v-if="index < xinwenlist.length-1" />
           </div>
         </el-col>
         <el-col :span="7" class="col-right">
@@ -35,18 +36,23 @@
 </template>
 
 <script>
-import { getHotNews } from '@/api/xinwen'
-// import { clean, parseTime } from '@/utils/index'
+import { getHotNews, getPage } from '@/api/xinwen'
+import { clean } from '@/utils/index'
 
 export default {
-
   data() {
     return {
-      topList: []
+      topList: [],
+      xinwenlist: [],
+      pagination: {
+        count: 10,
+        start: 0
+      }
     }
   },
   mounted() {
     this.getHotNews()
+    this.getPage()
   },
   methods: {
     async getHotNews() {
@@ -54,6 +60,14 @@ export default {
         const { data } = res
         this.topList = data.xinwenHotlist
         console.log('%c 🍔 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', data)
+      })
+    },
+    async getPage() {
+      const params = { ...this.pagination }
+      await getPage(clean(params)).then((res) => {
+        const { data } = res
+        console.log('%c 🍶 data: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', data)
+        this.xinwenlist = data.xinwenlist
       })
     }
   }

@@ -65,11 +65,11 @@
           label="标题"
           :show-overflow-tooltip="true"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="content"
           label="内容"
           :show-overflow-tooltip="true"
-        />
+        /> -->
         <el-table-column
           prop="specy"
           label="涉及杂草种类"

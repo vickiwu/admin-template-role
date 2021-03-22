@@ -48,7 +48,7 @@ import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel } from 'vue-baidu-map'
 import { totalCount, getDistPage, heatmap, heatmapTotal } from '@/api/zacao'
 import { getSysConfig } from '@/utils/auth'
-import { clean, parseTime } from '@/utils/index'
+// import { clean, parseTime } from '@/utils/index'
 
 export default {
   components: {
@@ -169,13 +169,18 @@ export default {
     async getDistPage() {
       await getDistPage({ count: this.count, start: this.start }).then((res) => {
         const { data } = res
-        console.log('%c 🥦 getDistPage: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+        this.centerList = data.distlist
       })
     },
     async heatmap() {
       await heatmap({ count: this.count, start: this.start }).then((res) => {
         const { data } = res
-        console.log('%c 🥦 heatmap: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
+        this.data = data.heatmaplist.map((item) => {
+          item.lat = item.lat / 1000000
+          item.lng = item.lng / 1000000
+          item.count = item.count * 2
+          return item
+        })
       })
     },
     showDetail() {

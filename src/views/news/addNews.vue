@@ -27,13 +27,13 @@
           </div>
         </el-form-item>
 
-        <el-form-item label="可见性" prop="state">
+        <!-- <el-form-item label="可见性" prop="state">
           <el-radio-group v-model="formNews.state">
             <el-radio :label="0">未审核</el-radio>
             <el-radio :label="1">可见</el-radio>
             <el-radio :label="-1">不可见</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item class="btn-center">
           <el-button>取消</el-button>
           <el-button type="primary" @click="onSubmit">提交</el-button>
