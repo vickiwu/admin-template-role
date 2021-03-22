@@ -214,6 +214,20 @@ export default {
     },
     reject() {
       // 驳回
+      const params = {
+        taskId: this.$route.params.taskId,
+        bohui: 1,
+        jydw: this.formWeed.jydw,
+        comment: this.formWeed.comment
+      }
+      commit(params).then(data => {
+        if (data.state === 1) {
+          this.$message.success('研判成功！')
+        }
+        this.$router.push({
+          name: 'ExpertJudge'
+        })
+      })
     },
     onSubmit() {
       // 提交
