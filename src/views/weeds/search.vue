@@ -71,7 +71,7 @@
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <el-button type="primary" size="small" @click="handleDownLoad()">下载图片</el-button>
-          <el-button type="primary" size="small" @click="handleExport()">导出</el-button>
+          <el-button type="primary" size="small" :loading="downloadLoading" @click="handleExport()">导出</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -194,6 +194,7 @@ export default {
   data() {
     return {
       cityJson: cityJson.cityies,
+      downloadLoading: false,
       formSearch: {
         reg: '',
         specy: '',
@@ -265,7 +266,36 @@ export default {
       // 处理下载函数
 
     },
-    handleExport() {},
+    handleExport() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['区域', '来源', '名称', '种类', '危害程度', '图片', '发现时间']
+        const filterVal = ['discReg', 'source', 'nameCn', 'specy', 'jydw', 'piclist', 'create']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '杂草信息',
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'create') {
+          return parseTime(v[j])
+        } else if (j === 'piclist') {
+          return v[j].httpUrl
+        } else if (j === 'specy') {
+          return (v[j].lb1 + v[j].lb2)
+        } else {
+          return v[j]
+        }
+      }))
+    },
     handleSearch() {
       this.getPage()
     },
