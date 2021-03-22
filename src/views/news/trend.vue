@@ -59,14 +59,12 @@ export default {
       await getHotNews().then((res) => {
         const { data } = res
         this.topList = data.xinwenHotlist
-        console.log('%c 🍔 res: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', data)
       })
     },
     async getPage() {
       const params = { ...this.pagination }
       await getPage(clean(params)).then((res) => {
         const { data } = res
-        console.log('%c 🍶 data: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', data)
         this.xinwenlist = data.xinwenlist
       })
     }

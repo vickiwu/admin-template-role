@@ -168,17 +168,6 @@ export default {
             // 新增完成 更新列表
             this.getLbPage()
           })
-          // console.log(ids) // 后面改成ids 实现多条删除
-          // delLb({ id: JSON.stringify(ids) }).then((res) => {
-          //   if (res.state === 1) {
-          //     this.$message({
-          //       type: 'success',
-          //       message: '删除成功!'
-          //     })
-          //   }
-          //   // 新增完成 更新列表
-          //   this.getLbPage()
-          // })
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -236,7 +225,6 @@ export default {
     },
 
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
       this.pagination.start = (val - 1) * this.pagination.count
     }
   }

@@ -253,7 +253,6 @@ export default {
       })
     },
     handleEdit(index, rowData) {
-      console.log('%c 🌮 index,rowData: ', 'font-size:20px;background-color: #FFDD4D;color:#fff;', index, rowData)
       // 跳转到修改页面
       // this.$router.push({
       //   name: 'AddNews',

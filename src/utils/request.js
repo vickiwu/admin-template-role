@@ -48,7 +48,6 @@ service.interceptors.response.use(
       })
       if (res.data.msg === '您还没有登录') {
         // 移除token 重置到登录页
-        console.log('%c 🥘 移除token 重置到登录页: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', 'this')
         removeToken() // 首先移除token
         removeUserId()
         removeUser()

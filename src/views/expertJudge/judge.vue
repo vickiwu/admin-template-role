@@ -170,7 +170,6 @@ export default {
   },
   methods: {
     changea(val) {
-      // console.log('%c 🍔 val: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', val)
     },
     handleRemove(file, fileList) { // 删除图片
       this.fileList = fileList

@@ -60,7 +60,6 @@ const actions = {
   // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      console.log(state.token, 'sss')
       getInfo({ id: state.userId }).then(response => {
         const { data } = response
         if (!data) {

@@ -157,7 +157,6 @@ export default {
   },
   methods: {
     changea(val) {
-      // console.log('%c 🍔 val: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', val)
     },
     handleRemove(file, fileList) { // 删除图片
       this.fileList = fileList
@@ -215,7 +214,6 @@ export default {
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
       await edit({ json: JSON.stringify(params) }).then((data) => {
-        console.log('%c 🍼️ data: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', data)
         if (data.state === 1) {
           this.$message({
             type: 'success',

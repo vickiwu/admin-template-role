@@ -177,7 +177,6 @@ export default {
       params.append('file', file.file)
       uploadFile(params).then((res) => {
         const { data } = res
-        console.log('%c 🍝 res: ', 'font-size:20px;background-color: #465975;color:#fff;', data)
         // 存入表单数据中
         this.formZilao.filelist.push(data.result)
       })
@@ -190,7 +189,6 @@ export default {
       this.formZilao.cover = data.result // 存入表单数据中
     },
     handleAvatarSuccess(res, file) {
-      console.log('%c 🍊 res, file: ', 'font-size:20px;background-color: #465975;color:#fff;', this.fileData, file)
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     handlePreview(file) {

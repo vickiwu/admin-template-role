@@ -31,7 +31,6 @@ export default {
       'sidebar'
     ]),
     routes() {
-      console.log('%c 🥤 this.$router.options.routes: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', this.$router)
       return this.$router.options.routes
     },
     activeMenu() {

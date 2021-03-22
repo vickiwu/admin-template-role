@@ -354,7 +354,6 @@ export default {
       })
     },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
       this.pagination.start = (val - 1) * this.pagination.count
       this.getPage()
     },
