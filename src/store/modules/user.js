@@ -1,5 +1,7 @@
 import { login, logout, getInfo } from '@/api/admin'
-import { getToken, setToken, removeToken, getUserId, setUserId, removeUserId, getUser, setUser, removeUser, getSysConfig, setSysConfig, removeSysConfig } from '@/utils/auth'
+import { getToken, setToken, removeToken, getUserId, setUserId,
+  removeUserId, getUser, setUser, removeUser, getSysConfig,
+  setSysConfig, removeSysConfig, removeUserPriv, getUserPriv, setUserPriv } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -7,7 +9,8 @@ const getDefaultState = () => {
     token: getToken(),
     userId: getUserId(),
     sysconfig: getSysConfig() ? JSON.parse(getSysConfig()) : '',
-    user: getUser() ? JSON.parse(getUser()) : ''
+    user: getUser() ? JSON.parse(getUser()) : '',
+    privGroup: getUserPriv()
   }
 }
 
@@ -28,6 +31,9 @@ const mutations = {
   },
   SET_USERID: (state, userId) => {
     state.userId = userId
+  },
+  SET_PRIV: (state, privGroup) => {
+    state.privGroup = privGroup
   }
 }
 
@@ -44,11 +50,14 @@ const actions = {
         commit('SET_SYSCONFIG', data.sysconfig)
         commit('SET_TOKEN', sessionId)
         commit('SET_USERID', id) // 存用户id
+        // 存当前用户的权限
+        commit('SET_PRIV', data.user.privGroup)
         // 缓存token等登录信息到cook中
         setToken(sessionId)
         setUserId(id)
         setUser(data.user)
         setSysConfig(data.sysconfig)
+        setUserPriv(data.user.privGroup)
 
         resolve()
       }).catch(error => {
@@ -81,6 +90,7 @@ const actions = {
         removeUserId()
         removeUser()
         removeSysConfig()
+        removeUserPriv()
 
         resetRouter()
         commit('RESET_STATE')

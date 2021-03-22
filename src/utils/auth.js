@@ -4,6 +4,7 @@ const TokenKey = 'vue_token'
 const UserIdKey = 'user_id'
 const UserKey = 'user'
 const SysConfigKey = 'sys_config'
+const privKey = 'user_priv'
 
 // token
 export function getToken() {
@@ -25,6 +26,18 @@ export function setUserId(MyUserId) {
 }
 export function removeUserId() {
   return Cookies.remove(UserIdKey)
+}
+
+export function getUserPriv() {
+  return Cookies.get(privKey)
+}
+
+export function setUserPriv(priv) {
+  Cookies.set(privKey, priv)
+}
+
+export function removeUserPriv() {
+  Cookies.remove(privKey)
 }
 
 // user

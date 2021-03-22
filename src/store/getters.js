@@ -10,6 +10,8 @@ const getters = {
   },
   userId: state => {
     return state.user.userId
-  }
+  },
+  hasSetPermission: state => state.permission.hasSetPermission,
+  privGroup: state => state.user.privGroup
 }
 export default getters

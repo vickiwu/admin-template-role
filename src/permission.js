@@ -23,21 +23,27 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.name // 验证是否有登录信息
-      if (hasGetUserInfo) { // 刷新store会丢失 将用户数据缓存到cook中
+      if (hasGetUserInfo) {
         next()
       } else {
-        try {
-          // 获取用户信息
-          // await store.dispatch('user/getInfo')
+        const hasSetPermission = store.getters.hasSetPermission // 验证是否有登录信息
+        if (hasSetPermission) { // 刷新store会丢失 将用户数据缓存到cook中
           next()
-        } catch (error) {
-          // 移除本地token 重新登录
-          await store.dispatch('user/resetToken')
-          Message.error(error || '错误')
-          next(`/login`)
-          NProgress.done()
+        } else {
+          try {
+            // 获取当前用户的有权限的路由
+            await store.dispatch('permission/generateRoutes', store.getters.privGroup)
+            next({ ...to, replace: true })
+          } catch (error) {
+            // 移除本地token 重新登录
+            await store.dispatch('user/resetToken')
+            Message.error(error || '错误')
+            next(`/login`)
+            NProgress.done()
+          }
         }
       }
+
       // next()
     }
   } else {
