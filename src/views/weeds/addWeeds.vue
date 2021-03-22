@@ -64,6 +64,21 @@
             <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
         </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <!-- 112.2222 -->
+            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度">
+              <el-input v-model="formWeed.lng" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <!-- 23.2222 -->
+            <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
+              <el-input v-model="formWeed.lat" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
           <el-input v-model="formWeed.desc" type="textarea" :rows="4" />
         </el-form-item>
@@ -102,6 +117,32 @@ const cityJson = require('@/assets/json/cities.json')
 export default {
 
   data() {
+    // 验证经度输入范围在-180-180之间，且小数可7位
+    const checkLong = (rule, value, callback) => {
+      if (value) {
+        value += ''
+        if (value.match(/^(\-|\+)?(((\d|[1-9]\d|1[0-7]\d|0{1,3})\.\d{0,7})|(\d|[1-9]\d|1[0-7]\d|0{1,3})|180\.0{0,6}|180)$/)) {
+          callback()
+        } else {
+          callback(new Error('经度为-180~180,小数7位!'))
+        }
+      } else {
+        callback()
+      }
+    }
+    // 验证纬度输入范围在-180-180之间，且小数可7位
+    const checkLat = (rule, value, callback) => {
+      if (value) {
+        value += ''
+        if (value.match(/^(\-|\+)?([0-8]?\d{1}\.\d{0,7}|90\.0{0,6}|[0-8]?\d{1}|90)$/)) {
+          callback()
+        } else {
+          callback(new Error('纬度为-90~90,小数7位'))
+        }
+      } else {
+        callback()
+      }
+    }
     return {
       cityJson: cityJson.cityies,
       isEdit: false,
@@ -116,7 +157,9 @@ export default {
         jydw: '',
         desc: '',
         piclistJson: '',
-        piclist: []
+        piclist: [],
+        lng: '',
+        lat: ''
       },
       options: [],
       fileList: [],
@@ -124,6 +167,8 @@ export default {
         nameCn: [
           { required: true, message: '请输入杂草名称', trigger: 'blur' }
         ],
+        lng: [{ validator: checkLong, length: 18, trigger: 'blur' }],
+        lat: [{ validator: checkLat, length: 18, trigger: 'blur' }],
         source: [
           { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
@@ -144,13 +189,21 @@ export default {
 
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
-      if (this.isEdit && this.formWeed.piclist !== 0) {
-        this.formWeed.piclist.map((item) => {
-          const file = {}
-          file.name = item.create
-          file.url = item.httpUrl
-          this.fileList.push(file)
-        })
+      if (this.isEdit) {
+        if (this.formWeed.piclist !== 0) {
+          this.formWeed.piclist.map((item) => {
+            const file = {}
+            file.name = item.create
+            file.url = item.httpUrl
+            this.fileList.push(file)
+          })
+        }
+        if (this.formWeed.lat) {
+          this.formWeed.lat = this.formWeed.lat / 10000000
+        }
+        if (this.formWeed.lng) {
+          this.formWeed.lng = this.formWeed.lng / 10000000
+        }
       }
     }
     this.getLbPage()
@@ -202,6 +255,8 @@ export default {
     async create() {
       const params = JSON.parse(JSON.stringify(this.formWeed))
       params.specy = JSON.parse(params.specy)
+      params.lat = params.lat * Math.pow(10, 7)
+      params.lng = params.lng * Math.pow(10, 7)
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
           this.$message({
@@ -213,6 +268,8 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
+      params.lat = params.lat * Math.pow(10, 7)
+      params.lng = params.lng * Math.pow(10, 7)
       await edit({ json: JSON.stringify(params) }).then((data) => {
         if (data.state === 1) {
           this.$message({

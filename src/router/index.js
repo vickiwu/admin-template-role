@@ -255,7 +255,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/expertJudge/index',
     name: 'ExpertIndex',
-    meta: { title: '专家评判', icon: 'el-icon-s-help' },
+    meta: { title: '专家研判', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'index',

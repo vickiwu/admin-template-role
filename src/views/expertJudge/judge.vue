@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="news-title">专家评判 <span class="news-sub">/</span> <span class="news-sub-title">
+    <div class="news-title">专家研判 <span class="news-sub">/</span> <span class="news-sub-title">
       执行研判
     </span>
     </div>
