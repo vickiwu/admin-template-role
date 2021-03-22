@@ -40,7 +40,7 @@ const actions = {
 export function setRoutes(constantRoutes, priv) {
   const arr = []
   constantRoutes.forEach(element => {
-    if (element.meta && element.meta.title === '公共') {
+    if (element.meta && element.meta.title === '公共' || element.meta && element.meta.title === '统计分析') {
       arr.push(element)
     } else {
       if (!priv.includes(element.meta && element.meta.title)) {
