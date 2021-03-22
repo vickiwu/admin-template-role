@@ -58,7 +58,7 @@
             </span>
           </el-col>
           <el-col :span="6">
-            <el-button style="margin-left ：20px" type="primary">  地图查看</el-button>
+            <el-button style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
           </el-col>
 
         </el-form-item>
@@ -71,25 +71,57 @@
 
       </el-form>
     </el-card>
+    <el-dialog
+      title="地图查看"
+      :visible.sync="mapDialogVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <baidu-map
+        ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
+        class="bm-view"
+        :zoom="12"
+        :center="home"
+        :scroll-wheel-zoom="true"
+      >
+        <bm-label :content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+      </baidu-map>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { mapGetters } from 'vuex'
+import { BmLabel } from 'vue-baidu-map'
 
 export default {
-
+  components: {
+    BaiduMap,
+    BmLabel
+  },
   data() {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
-      form: {}
+      form: {},
+      mapDialogVisible: false,
+      labelStyle: { color: '#000000', fontSize: '13px', border: 'none' }
 
     }
+  },
+  computed: {
+    ...mapGetters([
+      'home'
+    ])
   },
   mounted() {
     this.form = { ...this.$route.params.rowData }
   },
   methods: {
+    showMap() {
+      this.mapDialogVisible = true
+    },
     onSubmit() {
       console.log('submit!')
     },
@@ -99,13 +131,19 @@ export default {
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    handleClose() {
+      this.mapDialogVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.bm-view {
+  width: 100%;
+  height: 500px;
+}
 .news-card {
 .news-form{
   width: 80%;
