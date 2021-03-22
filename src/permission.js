@@ -24,25 +24,25 @@ router.beforeEach(async(to, from, next) => {
     } else {
       const hasGetUserInfo = store.getters.name // 验证是否有登录信息
       if (hasGetUserInfo) {
-        next()
-      } else {
-        const hasSetPermission = store.getters.hasSetPermission // 验证是否有登录信息
-        if (hasSetPermission) { // 刷新store会丢失 将用户数据缓存到cook中
+        const hasSetPermission = store.getters.hasSetPermission // 验证是否设置路由权限信息
+        if (hasSetPermission) {
           next()
-        } else {
-          try {
-            // 获取当前用户的有权限的路由
-            await store.dispatch('permission/generateRoutes', store.getters.privGroup)
-            next({ ...to, replace: true })
-          } catch (error) {
-            // 移除本地token 重新登录
-            await store.dispatch('user/resetToken')
-            Message.error(error || '错误')
-            next(`/login`)
-            NProgress.done()
-          }
+        }
+        await store.dispatch('permission/generateRoutes', store.getters.privGroup)
+        next({ ...to, replace: true })
+      } else {
+        try {
+          // 获取当前用户的有权限的路由
+          next()
+        } catch (error) {
+          // 移除本地token 重新登录
+          await store.dispatch('user/resetToken')
+          Message.error(error || '错误')
+          next(`/login`)
+          NProgress.done()
         }
       }
+      // }
 
       // next()
     }

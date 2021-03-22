@@ -14,8 +14,10 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, priv) {
+    priv = (typeof priv === 'string' ? JSON.parse(priv) : priv)
     return new Promise(resolve => {
       const arr1 = []
+
       priv.forEach(element => {
         arr1.push(element.pageName)
       })
@@ -38,17 +40,20 @@ const actions = {
 export function setRoutes(constantRoutes, priv) {
   const arr = []
   constantRoutes.forEach(element => {
-    if (element.hidden) {
+    if (element.meta && element.meta.title === '公共') {
       arr.push(element)
     } else {
       if (!priv.includes(element.meta && element.meta.title)) {
         element.hidden = true
       } else {
+        element.hidden = false
         if (element.meta.title === '资源管理') {
           const child = []
           element.children.forEach(item => {
             if (!priv.includes(item.meta && item.meta.title)) {
               item.hidden = true
+            } else {
+              item.hidden = false
             }
             child.push(item)
           })
