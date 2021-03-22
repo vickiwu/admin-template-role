@@ -28,11 +28,13 @@ const actions = {
       if (arr1.includes('账户管理') || arr1.includes('账户同步') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
         arr1.push('资源管理')
       }
-      if (!(priv.length === 1 && priv.pageName === '*')) {
+      if (!(priv.length === 1 && priv[0].pageName === '*')) {
         const routes = setRoutes(constantRoutes, arr1)
-        commit('SET_PERMISSION_STATE')
         resolve(routes)
+      } else {
+        resolve(constantRoutes)
       }
+      commit('SET_PERMISSION_STATE')
     })
   }
 }
