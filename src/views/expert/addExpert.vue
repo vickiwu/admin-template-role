@@ -69,7 +69,6 @@ export default {
         return callback(new Error('手机号不能为空'))
       } else {
         const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-        console.log(reg.test(value))
         if (reg.test(value)) {
           callback()
         } else {
@@ -130,7 +129,6 @@ export default {
     async create() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
-          console.log('error submit!!')
           return false
         } else {
           create({ json: JSON.stringify(clean(this.form)) }).then((data) => {

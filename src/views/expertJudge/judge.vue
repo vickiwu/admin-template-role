@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="news-title">专家评判 <span class="news-sub">/</span> <span class="news-sub-title">
+    <div class="news-title">专家研判 <span class="news-sub">/</span> <span class="news-sub-title">
       执行研判
     </span>
     </div>
@@ -170,7 +170,6 @@ export default {
   },
   methods: {
     changea(val) {
-      // console.log('%c 🍔 val: ', 'font-size:20px;background-color: #F5CE50;color:#fff;', val)
     },
     handleRemove(file, fileList) { // 删除图片
       this.fileList = fileList

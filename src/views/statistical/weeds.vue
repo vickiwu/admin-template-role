@@ -157,13 +157,11 @@ export default {
     async totalCount() {
       await totalCount().then((res) => {
         const { data } = res
-        console.log('%c 🥦 data: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
       })
     },
     async heatmapTotal() {
       await heatmapTotal().then((res) => {
         const { data } = res
-        console.log('%c 🥦 data: ', 'font-size:20px;background-color: #42b983;color:#fff;', data)
       })
     },
     async getDistPage() {

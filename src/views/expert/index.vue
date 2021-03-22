@@ -261,7 +261,6 @@ export default {
       })
     },
     handlePageChange(val) {
-      console.log(`当前页: ${val}`)
       this.pagination.pageIndex = val
     },
     onSubmit() {

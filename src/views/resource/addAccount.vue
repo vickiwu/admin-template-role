@@ -254,7 +254,6 @@ export default {
     },
 
     alert(msg) {
-      console.log('%c 🍐 msg: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', msg)
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {

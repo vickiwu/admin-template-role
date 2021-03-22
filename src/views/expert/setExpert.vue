@@ -41,7 +41,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
   },
   methods: {
     onSubmit() {
