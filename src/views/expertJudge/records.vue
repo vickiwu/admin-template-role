@@ -158,6 +158,10 @@ export default {
     },
     details() {
       if (this.selected.length === 0) {
+        this.$message.error('请选择至少一条记录')
+        return
+      }
+      if (this.selected.length > 1) {
         this.$message.error('请选择一条记录')
         return
       }

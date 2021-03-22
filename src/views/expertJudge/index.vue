@@ -10,6 +10,7 @@
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -93,6 +94,7 @@
 <script>
 import { clean, parseTime } from '@/utils/index'
 import { getTaskPage } from '@/api/yanpan'
+import { getZacao } from '@/api/zacao'
 
 export default {
   data() {
@@ -102,7 +104,8 @@ export default {
         count: 10,
         index: 1
       },
-      totalCount: 0
+      totalCount: 0,
+      selected: []
     }
   },
   computed: {
@@ -132,10 +135,29 @@ export default {
       this.pagination.index = val
       this.query()
     },
+    handleSelectionChange(val) {
+      this.selected = val
+    },
     set() {
-      // 路由跳转
-      this.$router.push({
-        name: 'Judge'
+      if (this.selected.length === 0) {
+        this.$message.error('请选择至少一条记录')
+        return
+      }
+      if (this.selected.length > 1) {
+        this.$message.error('请选择一条记录')
+        return
+      }
+      // 查询杂草记录
+      getZacao(clean({ id: this.selected[0].zacaoId })).then((res) => {
+        const { data } = res
+        // 路由跳转
+        this.$router.push({
+          name: 'Judge',
+          params: {
+            taskId: this.selected[0].id,
+            rowData: data.zacao
+          }
+        })
       })
     }
   }

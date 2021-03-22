@@ -266,6 +266,7 @@ export const constantRoutes = [
       {
         path: 'judge',
         name: 'Judge',
+        hidden: true,
         component: () => import('@/views/expertJudge/judge'),
         meta: { title: '执行研判', icon: 'form' }
       },

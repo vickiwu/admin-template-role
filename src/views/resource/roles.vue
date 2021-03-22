@@ -17,25 +17,22 @@
         <el-form-item label="访问控制" prop="name" placeholder="请输入杂草来源">
           <el-checkbox-group v-model="checkList">
             <div>
-              <el-checkbox label="杂草管理" />
-              <el-checkbox label="杂草检索" />
+              <el-checkbox label="杂草库" />
             </div>
             <div>
-              <el-checkbox label="资料管理" />
-              <el-checkbox label="资料检索" />
+              <el-checkbox label="资料中心" />
             </div>
             <div>
-              <el-checkbox label="专家管理" />
-              <el-checkbox label="专家检索" />
-              <el-checkbox label="专家调度" />
+              <el-checkbox label="专家中心" />
+              <el-checkbox label="专家研判" />
             </div>
 
             <div>
-              <el-checkbox label="新闻管理" />
+              <el-checkbox label="新闻中心" />
             </div>
 
             <div>
-              <el-checkbox label="日志管理" />
+              <el-checkbox label="系统日志" />
             </div>
 
             <div>
@@ -75,19 +72,7 @@ export default {
       },
       options: [],
       checkList: [],
-      privGroup: [
-        { pageName: 'WeedsManagement', visible: 0, label: '杂草管理' },
-        { pageName: 'Search', visible: 0, label: '杂草检索' },
-        { pageName: 'Information', visible: 0, label: '资料管理' },
-        { pageName: 'InformationSearch', visible: 0, label: '资料检索' },
-        { pageName: 'ExpertManagement', visible: 0, label: '专家管理' },
-        { pageName: 'Management', visible: 0, label: '新闻管理' },
-        { pageName: 'Log', visible: 0, label: '日志管理' },
-        { pageName: 'Account', visible: 0, label: '账户管理' },
-        { pageName: 'SyncAccount', visible: 0, label: '账户同步' },
-        { pageName: 'File', visible: 0, label: '文件管理' },
-        { pageName: 'Space', visible: 0, label: '空间管理' }
-      ]
+      defaultAll: ['杂草库', '资料中心', '专家中心', '专家研判', '新闻中心', '系统日志', '账户管理', '账户同步', '文件管理', '空间管理']
     }
   },
   computed: {
@@ -109,27 +94,29 @@ export default {
     setRoles() {
       const user = this.options.find(item => item.id === this.form.userId)
       const { privGroup } = user
-      if (privGroup && privGroup.length === 1 && privGroup[0].pageName === '*' && privGroup[0].visible === 1) {
-        // 设置权限
-        const arr = []
-        this.privGroup.forEach(item => {
-          arr.push(item.label)
-        })
-        this.checkList = arr
+      if (privGroup && privGroup.length > 0) {
+        if (privGroup[0].pageName === '*' && privGroup[0].visible === 1) {
+          // 设置权限
+          this.checkList = this.defaultAll
+        } else {
+          const arr = []
+          privGroup.forEach(item => {
+            arr.push(item.pageName)
+          })
+          this.checkList = arr
+        }
       }
     },
     onSubmit() {
       const arr = []
-      this.privGroup.forEach(item => {
-        if (this.checkList.includes(item.label)) {
-          arr.push({
-            pageName: item.pageName,
-            visible: 1
-          })
-        }
+      this.checkList.forEach(item => {
+        arr.push({
+          pageName: item,
+          visible: 1
+        })
       })
       const params = {
-        userId: this.userId,
+        userId: this.form.userId,
         privGroup: JSON.stringify(arr)
       }
       setPrivGroup(params).then(data => {

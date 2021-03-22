@@ -94,7 +94,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="研判意见" placeholder="请输入专家研判意见">
-          <el-input v-model="formWeed.desc" type="textarea" :rows="4" />
+          <el-input v-model="formWeed.comment" type="textarea" :rows="4" />
         </el-form-item>
         <el-form-item class="btn-center">
           <el-button @click="reject">驳回</el-button>
@@ -106,8 +106,9 @@
 </template>
 
 <script>
-import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
+import { uploadImg, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
+import { commit } from '@/api/yanpan'
 const cityJson = require('@/assets/json/cities.json')
 
 export default {
@@ -127,7 +128,8 @@ export default {
         jydw: '',
         desc: '',
         piclistJson: '',
-        piclist: []
+        piclist: [],
+        comment: ''
       },
       options: [],
       fileList: [],
@@ -211,43 +213,25 @@ export default {
         this.formWeed.piclist.push(data.result)
       })
     },
-    async create() {
-      const params = JSON.parse(JSON.stringify(this.formWeed))
-      params.specy = JSON.parse(params.specy)
-      await create({ json: JSON.stringify(clean(params)) }).then((data) => {
-        if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '新增成功!'
-          })
-        }
-      })
-    },
-    async edit() { // id 必须存在
-      const params = JSON.parse(JSON.stringify(this.formWeed))
-      await edit({ json: JSON.stringify(params) }).then((data) => {
-        console.log('%c 🍼️ data: ', 'font-size:20px;background-color: #33A5FF;color:#fff;', data)
-        if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
-          // 修改成功后跳转回管理页面
-          this.$router.push({
-            name: 'Weeds'
-          })
-        }
-      })
-    },
-    onSubmit() {
-      if (this.isEdit) {
-        this.edit()
-      } else {
-        this.create()
-      }
-    },
     reject() {
       // 驳回
+    },
+    onSubmit() {
+      // 提交
+      const params = {
+        taskId: this.$route.params.taskId,
+        bohui: 0,
+        jydw: this.formWeed.jydw,
+        comment: this.formWeed.comment
+      }
+      commit(params).then(data => {
+        if (data.state === 1) {
+          this.$message.success('研判成功！')
+        }
+        this.$router.push({
+          name: 'ExpertJudge'
+        })
+      })
     }
   }
 }
