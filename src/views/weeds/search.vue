@@ -75,10 +75,12 @@
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
         <el-table-column
           type="selection"
@@ -208,7 +210,8 @@ export default {
         start: 0
       },
       totalCount: 0,
-      options: [] // 处理后的杂草数据
+      options: [], // 处理后的杂草数据
+      multipleSelection: []
     }
   },
   mounted() {
@@ -253,6 +256,9 @@ export default {
         this.totalCount = data.totalCount
       })
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     handleEdit(index, rowData) {
       // 跳转到修改页面
       // this.$router.push({
@@ -264,7 +270,52 @@ export default {
     },
     handleDownLoad() {
       // 处理下载函数
+      const piclist = []
 
+      this.multipleSelection.map((item) => {
+        if (item.piclist && item.piclist.length !== 0) {
+          piclist.push(...item.piclist)
+        }
+      })
+      if (this.multipleSelection.length === 0) {
+        this.$alert('请选择下载对象', '提示', {
+          confirmButtonText: '确定'
+
+        })
+      } else {
+        if (piclist.length !== 0) {
+          piclist.map((item) => {
+            this.downloadByBlob(item.httpUrl, item.create)
+          })
+        } else {
+          this.$message.warning('当前无图片可下载')
+        }
+      }
+    },
+    downloadByBlob(url, name) {
+      const image = new Image()
+      image.setAttribute('crossOrigin', 'anonymous')
+      image.src = url
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0, image.width, image.height)
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob)
+          this.download(url, name)
+          // 用完释放URL对象
+          URL.revokeObjectURL(url)
+        })
+      }
+    },
+    download(href, name) {
+      const eleLink = document.createElement('a')
+      eleLink.download = name
+      eleLink.href = href
+      eleLink.click()
+      eleLink.remove()
     },
     handleExport() {
       this.downloadLoading = true

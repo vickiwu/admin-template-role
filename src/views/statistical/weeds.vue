@@ -127,12 +127,7 @@ export default {
         { lng: 118.848332, lat: 32.050532, count: 51 },
         { lng: 118.879787, lat: 32.042658, count: 15 }
       ],
-      item: {
-        name: '杂草B',
-        address: '检疫口岸一',
-        from: '东南亚',
-        img: require('@/assets/logo.png')
-      },
+
       start: 0,
       count: 10
     }
@@ -156,12 +151,12 @@ export default {
   methods: {
     async totalCount() {
       await totalCount().then((res) => {
-        const { data } = res
+        // const { data } = res
       })
     },
     async heatmapTotal() {
       await heatmapTotal().then((res) => {
-        const { data } = res
+        // const { data } = res
       })
     },
     async getDistPage() {
