@@ -10,21 +10,18 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true,
-    meta: { title: '公共', icon: 'el-icon-s-help' }
+    hidden: true
   },
 
   {
     path: '/404',
     component: () => import('@/views/404'),
-    meta: { title: '公共', icon: 'el-icon-s-help' },
     hidden: true
   },
   {
     path: '/', // 首页的设定
     redirect: '/statistical/weeds',
-    hidden: true,
-    meta: { title: '公共', icon: 'el-icon-s-help' }
+    hidden: true
   },
   {
     path: '/statistical',
@@ -283,7 +280,7 @@ export const constantRoutes = [
     ]
   },
   // 404 页面
-  { path: '*', redirect: '/404', hidden: true, meta: { title: '公共', icon: 'el-icon-s-help' }}
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
