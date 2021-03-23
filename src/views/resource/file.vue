@@ -6,7 +6,7 @@
       <el-row class="report-row" :gutter="20">
         <el-col :span="10" style="text-align:left">
           <span class="row-title">
-            当前文件总数量：1024个，占用磁盘空间：1020.56GB
+            当前文件总数量：{{ totalCount }}个，占用磁盘空间：1020.56GB
           </span>
         </el-col>
         <el-col :span="13" class="right-btn">

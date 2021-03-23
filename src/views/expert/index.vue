@@ -27,15 +27,24 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.specy" size="medium" placeholder="所有种类">
-            <el-option label="未研判" :value="0" />
-            <el-option label="研判中" :value="1" />
-            <el-option label="入库" :value="16" />
+          <el-select v-model="formInline.specy" placeholder="所有种类">
+            <el-option-group
+              v-for="group in options"
+              :key="group.lb"
+              :label="group.lb"
+            >
+              <el-option
+                v-for="item in group.option"
+                :key="item.lb2"
+                :label="item.lb2"
+                :value="JSON.stringify(item)"
+              />
+            </el-option-group>
           </el-select>
         </el-col>
         <el-col :span="5">
           <el-input
-            v-model="formInline.region2"
+            v-model="formInline.name"
             size="medium"
             placeholder="搜索关键字"
             prefix-icon="el-icon-search"
@@ -43,7 +52,7 @@
         </el-col>
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="query">检索</el-button>
-          <el-button type="danger" size="small">忽略</el-button>
+          <!-- <el-button type="danger" size="small">忽略</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -213,7 +222,7 @@
 </template>
 
 <script>
-import { getPage } from '@/api/zacao'
+import { getPage, getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import { getPage as getZhuanjia } from '@/api/zhuanjia'
 import { create } from '@/api/yanpan'
@@ -234,11 +243,12 @@ export default {
       formInline: {
         reg: '',
         specy: '',
-        region3: ''
+        name: ''
       },
       formInline2: {
         region1: '人工调度'
       },
+      options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
         count: 5,
@@ -259,9 +269,29 @@ export default {
   },
   mounted() {
     this.query()
+    this.getLbPage()
     this.queryZhuanjia()
   },
   methods: {
+    async getLbPage() {
+      const params = { cunt: 1000, start: 0 }
+      await getLbPage(clean(params)).then((res) => {
+        var all = new Map()
+        const { data } = res
+        data.lblist.map((item) => {
+          const result = data.lblist.filter((item2) => {
+            return item2.lb1 === item.lb1
+          })
+          all.set(item.lb1, result)
+        })
+        for (const [k, v] of all) {
+          const obj = {}
+          obj.lb = k
+          obj.option = v
+          this.options.push(obj)
+        }
+      })
+    },
     parseTime(time) {
       return parseTime(time)
     },
