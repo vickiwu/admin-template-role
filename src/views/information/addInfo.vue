@@ -117,6 +117,7 @@ export default {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formZilao = this.$route.params.rowData
+      this.imageUrl = this.$route.params.rowData.cover.httpUrl
     }
     this.getLbPage()
   },
