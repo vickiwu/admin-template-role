@@ -59,6 +59,14 @@ export const constantRoutes = [
         meta: { title: '新闻发布', icon: 'tree' }
       },
       {
+        path: 'newsDetail',
+        name: 'NewsDetail',
+        hidden: true,
+        component: () => import('@/views/news/news'),
+        meta: { title: '新闻内容', icon: 'tree' }
+      },
+
+      {
         path: 'trend',
         name: 'Trend',
         component: () => import('@/views/news/trend'),

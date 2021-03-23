@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+const defaultSettings = require('@/settings')
 // 系统管理员创建账户
 export function createUser(data) {
   return request({
@@ -52,7 +53,7 @@ export function getInfo(data) {
 // 用户登陆
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: defaultSettings.loginUrl,
     method: 'POST',
     data
   })
