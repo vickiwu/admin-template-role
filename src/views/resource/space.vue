@@ -37,8 +37,13 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="name"
-          label="lanIp"
+          prop="lanIp"
+          label="局域网IP"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="wanIp"
+          label="公网IP"
           :show-overflow-tooltip="true"
         />
         <el-table-column
