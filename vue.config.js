@@ -26,17 +26,17 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    proxy: {
-      '/': {
-        target: `http://${GlobalConfig.serverIP}:${GlobalConfig.serverPort}`,
-        changeOrigin: true,
-        xfwd: true,
-        pathRewrite: {
-          '^/': ''
-        }
-      }
     }
+    // proxy: {
+    //   '/test': {
+    //     target: `http://${GlobalConfig.serverIP}:${GlobalConfig.serverPort}`,
+    //     changeOrigin: true,
+    //     xfwd: true,
+    //     pathRewrite: {
+    //       '^/test': ''
+    //     }
+    //   }
+    // }
   },
   configureWebpack: {
     name: name,

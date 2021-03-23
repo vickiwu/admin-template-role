@@ -3,9 +3,11 @@ import qs from 'qs'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken, removeUserId, removeUser, removeSysConfig } from '@/utils/auth'
+const GlobalConfig = require('@/globalConfig')
+
 // 创建axios实例
 const service = axios.create({
-  baseURL: '/', // url = base url + request url
+  baseURL: `http://${GlobalConfig.serverIP}:${GlobalConfig.serverPort}`, // url = base url + request url
   timeout: 15000 // request timeout
 })
 
