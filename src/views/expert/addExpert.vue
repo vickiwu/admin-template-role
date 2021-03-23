@@ -20,7 +20,7 @@
           <el-input v-model="form.phone" />
         </el-form-item>
         <el-form-item label="专业领域" prop="cat">
-          <el-select v-model="form.cat" placeholder="请选择专业领域">
+          <el-select v-model="form.cat" placeholder="请选择专业领域" clearable>
             <el-option label="杂草研判" :value="1" />
             <el-option label="杂草危害分析" :value="2" />
           </el-select>

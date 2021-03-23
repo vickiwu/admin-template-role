@@ -13,7 +13,7 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.cat" size="medium" placeholder="专业领域">
+          <el-select v-model="formInline.cat" size="medium" clearable placeholder="专业领域">
             <el-option label="杂草研判" :value="1" />
             <el-option label="杂草危害分析" :value="2" />
           </el-select>

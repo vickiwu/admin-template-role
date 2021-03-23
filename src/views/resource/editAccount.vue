@@ -34,7 +34,7 @@
         </el-form-item>
 
         <el-form-item label="类型" prop="region1" placeholder="现场工作人员">
-          <el-select v-model="form.region1" placeholder="请选择发现地域">
+          <el-select v-model="form.region1" clearable placeholder="请选择发现地域">
             <el-option label="区域一" value="shanghai" />
             <el-option label="区域二" value="beijing" />
           </el-select>

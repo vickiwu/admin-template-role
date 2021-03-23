@@ -47,34 +47,35 @@
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="用户名" prop="username" placeholder="请输入用户名">
-          <el-input v-model="userInfoForm.username" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="userInfoForm.username" disabled placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="真实姓名" prop="realname" placeholder="请输入真实姓名">
-          <el-input v-model="userInfoForm.realname" />
+        <el-form-item label="真实姓名" prop="realname">
+          <el-input v-model="userInfoForm.realname" disabled placeholder="请输入真实姓名" />
         </el-form-item>
-        <el-form-item label="昵称" prop="nickname" placeholder="请输入昵称">
-          <el-input v-model="userInfoForm.nickname" />
+        <el-form-item label="昵称" prop="nickname">
+          <el-input v-model="userInfoForm.nickname" disabled placeholder="请输入昵称" />
         </el-form-item>
-
-        <el-form-item label="地市" prop="cityName" placeholder="请输入地市">
-          <el-input v-model="userInfoForm.cityName" />
+        <el-form-item label="地市" prop="cityName">
+          <el-input v-model="userInfoForm.cityName" disabled placeholder="请输入地市" />
         </el-form-item>
-        <el-form-item label="单位" prop="group" placeholder="请输入单位">
-          <el-input v-model="userInfoForm.group" />
+        <el-form-item label="单位" prop="group">
+          <el-input v-model="userInfoForm.group" disabled placeholder="请输入单位" />
         </el-form-item>
-        <el-form-item label="工号" prop="jobNo" placeholder="请输入工号">
-          <el-input v-model="userInfoForm.jobNo" />
+        <el-form-item label="工号" prop="jobNo">
+          <el-input v-model="userInfoForm.jobNo" disabled placeholder="请输入工号" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="phone" placeholder="请输入手机号码">
-          <el-input v-model.number="userInfoForm.phone" />
+        <el-form-item label="手机号码" prop="phone">
+          <el-input v-model.number="userInfoForm.phone" disabled placeholder="请输入手机号码" />
         </el-form-item>
-
-        <el-form-item label="类型" prop="utype" placeholder="现场工作人员">
-          <el-select v-model="userInfoForm.utype" placeholder="请选择发现地域">
-            <el-option label="区域一" value="shanghai" />
-            <el-option label="区域二" value="beijing" />
+        <el-form-item label="类型" prop="utype">
+          <el-select v-model="userInfoForm.utype" disabled clearable placeholder="请选择类型">
+            <el-option label="系统管理员" :value="1" />
+            <el-option label="专家调度用户" :value="2" />
+            <el-option label="研判专家" :value="3" />
+            <el-option label="图像采集操作员" :value="4" />
           </el-select>
+
         </el-form-item>
         <div style="text-align:center">
           <el-button type="primary" @click="dialogUserInfo = false">关 闭</el-button>
@@ -96,14 +97,14 @@
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="当前密码2" prop="oldPass" placeholder="请输入当前密码">
-          <el-input v-model="formChangePassword.oldPass" />
+        <el-form-item label="当前密码2" prop="oldPass">
+          <el-input v-model="formChangePassword.oldPass" placeholder="请输入当前密码" />
         </el-form-item>
-        <el-form-item label="新密码" prop="newPass" placeholder="请输入新密码">
-          <el-input v-model="formChangePassword.newPass" />
+        <el-form-item label="新密码" prop="newPass">
+          <el-input v-model="formChangePassword.newPass" placeholder="请输入新密码" />
         </el-form-item>
-        <el-form-item label="确认新密码" prop="newPass2" placeholder="请输入确认新密码">
-          <el-input v-model="formChangePassword.newPass2" />
+        <el-form-item label="确认新密码" prop="newPass2">
+          <el-input v-model="formChangePassword.newPass2" placeholder="请输入确认新密码" />
         </el-form-item>
 
         <div style="text-align:center">

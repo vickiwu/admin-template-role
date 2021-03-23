@@ -32,6 +32,7 @@
 
           <el-select
             v-model="formSearch.reg"
+            clearable
             multiple
             collapse-tags
             size="medium"
@@ -47,7 +48,7 @@
         </el-col>
         <el-col :span="4">
 
-          <el-select v-model="formSearch.specy" placeholder="请选择杂草所属种类">
+          <el-select v-model="formSearch.specy" clearable placeholder="请选择杂草所属种类">
             <el-option-group
               v-for="group in options"
               :key="group.lb"
@@ -63,7 +64,7 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formSearch.jydw" size="medium" placeholder="所有程度">
+          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />

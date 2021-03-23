@@ -26,6 +26,7 @@
 
           <el-select
             v-model="formWeed.discReg"
+            clearable
             multiple
             collapse-tags
             size="medium"
@@ -41,7 +42,7 @@
         </el-form-item>
         <el-form-item label="种类" prop="specy">
 
-          <el-select v-model="formWeed.specy" placeholder="请选择杂草所属种类" @change="changea">
+          <el-select v-model="formWeed.specy" clearable placeholder="请选择杂草所属种类" @change="changea">
             <el-option-group
               v-for="group in options"
               :key="group.lb"
@@ -57,7 +58,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="危害程度" prop="jydw">
-          <el-select v-model="formWeed.jydw" placeholder="请选择杂草危害程度">
+          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />

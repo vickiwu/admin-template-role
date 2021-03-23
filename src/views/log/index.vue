@@ -30,7 +30,7 @@
           </el-col>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.level" size="medium" placeholder="所有级别">
+          <el-select v-model="formInline.level" size="medium" clearable placeholder="所有级别">
             <el-option label="通知" :value="0" />
             <el-option label="消息" :value="1" />
             <el-option label="错误" :value="2" />
