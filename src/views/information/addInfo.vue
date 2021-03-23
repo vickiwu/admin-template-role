@@ -205,7 +205,7 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     handlePreview(file) {
-      window.open(file.url)
+      window.open(file.httpUrl)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
