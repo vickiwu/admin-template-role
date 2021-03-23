@@ -27,9 +27,10 @@ router.beforeEach(async(to, from, next) => {
         const hasSetPermission = store.getters.hasSetPermission // 验证是否设置路由权限信息
         if (hasSetPermission) {
           next()
+        } else {
+          await store.dispatch('permission/generateRoutes', store.getters.privGroup)
+          next({ ...to, replace: true })
         }
-        await store.dispatch('permission/generateRoutes', store.getters.privGroup)
-        next({ ...to, replace: true })
       } else {
         try {
           // 获取当前用户的有权限的路由
