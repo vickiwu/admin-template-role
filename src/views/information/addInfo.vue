@@ -64,6 +64,7 @@
             action="string"
             :http-request="uploadFile"
             :on-preview="handlePreview"
+            :file-list="fileList"
             multiple
           >
             <i class="el-icon-upload" />
@@ -93,6 +94,7 @@ export default {
       isEdit: false,
       fileData: null,
       imageUrl: '',
+      fileList: [],
       formZilao: {
         name: '', // 资料名称
         desc: '', // 资料介绍
@@ -117,7 +119,17 @@ export default {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formZilao = this.$route.params.rowData
-      this.imageUrl = this.$route.params.rowData.cover.httpUrl
+      this.imageUrl = this.$route.params.rowData.cover && this.$route.params.rowData.cover.httpUrl
+      this.filelist = this.formZilao.filelist
+      const arr = []
+      this.formZilao.filelist.forEach((element, idx) => {
+        arr.push({
+          ...element,
+          name: `文件${idx + 1}`,
+          url: element['httpUrl']
+        })
+      })
+      this.fileList = arr
     }
     this.getLbPage()
   },
@@ -193,7 +205,7 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     handlePreview(file) {
-      console.log(file)
+      window.open(file.url)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -225,7 +237,8 @@ export default {
       return isPDF
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList)
+      this.fileList = fileList
+      this.formZilao.filelist = fileList
     }
   }
 }
