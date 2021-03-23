@@ -67,7 +67,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <!-- 112.2222 -->
-            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度">
+            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
               <el-input v-model="formWeed.lng" />
             </el-form-item>
           </el-col>
