@@ -14,5 +14,7 @@ module.exports = {
    */
   sidebarLogo: true,
   apiCreateUser: '/admin/createUser',
-  apiEditUser: '/admin/editUser'
+  apiEditUser: '/admin/editUser',
+  setAvatarUrl: '/user/setAvatar',
+  loginUrl: '/user/login'
 }

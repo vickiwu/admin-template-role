@@ -73,7 +73,7 @@
         />
 
       </el-table>
-      <!-- 分页 -->
+      <!-- 分页 新 -->
       <el-pagination
         background
         :current-page="pagination.index"

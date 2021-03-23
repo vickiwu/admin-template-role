@@ -27,7 +27,7 @@
         <el-col :span="7" class="col-right">
           <div class="right-title">热点排行榜：</div>
           <div v-for="o in topList" :key="o.id" class="right-list">
-            <span class="top-span" style="cursor: pointer;">{{ `${o.title}...` }}</span>
+            <span class="top-span" style="cursor: pointer;" @click="jumpNews(o)">{{ `${o.title}...` }}</span>
           </div>
         </el-col>
       </el-row>
@@ -46,7 +46,7 @@ export default {
       xinwenlist: [],
       pagination: {
         count: 10,
-        start: 0
+        index: 1
       }
     }
   },
@@ -66,6 +66,14 @@ export default {
       await getPage(clean(params)).then((res) => {
         const { data } = res
         this.xinwenlist = data.xinwenlist
+      })
+    },
+    jumpNews(news) {
+      this.$router.push({
+        name: 'NewsDetail',
+        params: {
+          news
+        }
       })
     }
   }
