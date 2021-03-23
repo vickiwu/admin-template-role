@@ -123,12 +123,12 @@ export const constantRoutes = [
     name: 'ExpertIndex',
     meta: { title: '专家中心', icon: 'el-icon-s-help' },
     children: [
-      // {
-      //   path: 'index',
-      //   name: 'Expert',
-      //   component: () => import('@/views/expert/index'),
-      //   meta: { title: '专家调度', icon: 'form' }
-      // },
+      {
+        path: 'index',
+        name: 'Expert',
+        component: () => import('@/views/expert/index'),
+        meta: { title: '专家调度', icon: 'form' }
+      },
       {
         path: 'addExpert',
         name: 'AddExpert',
