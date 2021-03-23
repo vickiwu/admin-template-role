@@ -3,6 +3,7 @@ import { getToken, setToken, removeToken, getUserId, setUserId,
   removeUserId, getUser, setUser, removeUser, getSysConfig,
   setSysConfig, removeSysConfig, removeUserPriv, getUserPriv, setUserPriv } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import sha256 from 'sha256'
 
 const getDefaultState = () => {
   return {
@@ -42,7 +43,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login({ username: username.trim(), password: sha256(password) }).then(response => {
         const { data } = response
         const { sessionId, id } = data.user
         // store 存token
