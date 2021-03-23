@@ -50,7 +50,10 @@
                 <i class="el-icon-picture-outline" />
               </div>
             </el-image>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
+            <div v-else class="avatar-uploader-icon">
+              <i class="el-icon-plus " />
+            </div>
+
           </el-upload>
 
         </el-form-item>
@@ -264,6 +267,16 @@ export default {
   .avatar {
     width: 178px;
     height: 178px;
+  }
+  .avatar-uploader-icon{
+    width: 138px;
+    height: 138px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #DCDFE6;
+    border-radius: 5px;
+    font-size: 18px;
   }
 }
 }
