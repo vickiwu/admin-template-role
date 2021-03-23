@@ -346,8 +346,12 @@ export default {
       return jsonData.map(v => filterVal.map(j => {
         if (j === 'create') {
           return parseTime(v[j])
-        } else if (j === 'piclist') {
-          return v[j].httpUrl
+        } else if (j === 'piclist' && v[j]) {
+          const url = []
+          for (let a = 0; a < v[j].length; a++) {
+            url.push(v[j][a].httpUrl)
+          }
+          return url.join(',')
         } else if (j === 'specy') {
           return (v[j].lb1 + v[j].lb2)
         } else {

@@ -8,32 +8,32 @@
       :zoom="zoom"
       :scroll-wheel-zoom="true"
     >
-      <bm-marker v-for="(item , i) in centerList" :key="i" :position="item" :dragging="true" @click="infoWindowOpen(i)">
+      <bm-marker v-for="(item , i) in centerList" :key="i" :position="item" :dragging="false" @click="infoWindowOpen(item.id)">
         <bm-info-window
-          :show="i===currentI"
-          @close="infoWindowClose(i)"
+          :show="item.id===currentI"
+          @close="infoWindowClose(item.id)"
         >
           <div>
             <div class="info-title">杂草信息</div>
             <ul class="weed-info">
               <li>
                 <span class="info-key">名称:</span>
-                <span class="info-value">{{ item.name }}{{ i }}</span>
+                <span class="info-value">{{ zacao.nameCn }}</span>
               </li>
               <li>
                 <span class="info-key">位置:</span>
-                <span class="info-value">{{ item.address }}{{ i }}</span>
+                <span v-for="wz in zacao.discReg" :key="wz" class="info-value">{{ wz }}</span>
               </li>
               <li>
                 <span class="info-key">来源:</span>
-                <span class="info-value">{{ item.from }}{{ i }}</span>
+                <span class="info-value">{{ zacao.source }}</span>
               </li>
               <li>
                 <span class="info-key">图片:</span>
-                <span class="info-value"> <img :src="item.img" alt=""></span>
+                <span class="info-value"> <img v-for="img in zacao.piclist" :key="img.httpUrl" :src="img.httpUrl" alt=""></span>
               </li>
             </ul>
-            <div class="weed-detail" @click="showDetail()">查看详细内容 ></div>
+            <div class="weed-detail" @click="showDetail(zacao)">查看详细内容 ></div>
           </div>
         </bm-info-window>
         <bm-label :content="`${item.name} 位置${item.from }`" :label-style="labelStyle" :offset="{width: 25, height:5}" />
@@ -46,7 +46,7 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel } from 'vue-baidu-map'
-import { totalCount, getDistPage, heatmap, heatmapTotal } from '@/api/zacao'
+import { totalCount, getDistPage, heatmap, heatmapTotal, getZacao } from '@/api/zacao'
 import { getSysConfig } from '@/utils/auth'
 // import { clean, parseTime } from '@/utils/index'
 
@@ -71,63 +71,10 @@ export default {
       labelStyle: { color: '#000000', fontSize: '13px', border: 'none' },
       currentI: -1,
       // mark点位数据
-      centerList: [{
-        lng: 118.816,
-        lat: 32.023,
-        count: 50,
-        name: '杂草A',
-        address: '检疫口岸一',
-        from: '东南亚一',
-        img: require('@/assets/logo.png')
-      },
-      {
-        lng: 118.846,
-        lat: 32.043,
-        count: 15,
-        name: '杂草B',
-        address: '检疫口岸二',
-        from: '东南亚二',
-        img: require('@/assets/logo.png')
-      },
-      {
-        lng: 118.836,
-        lat: 31.989,
-        count: 51,
-        name: '杂草C',
-        address: '检疫口岸三',
-        from: '东南亚三',
-        img: require('@/assets/logo.png')
-      },
-      {
-        lng: 118.817,
-        lat: 32.063,
-        count: 53,
-        name: '杂草D',
-        address: '检疫口岸四',
-        from: '东南亚四',
-        img: require('@/assets/logo.png')
-      },
-      {
-        lng: 118.846,
-        lat: 32.103,
-        count: 15,
-        name: '杂草E',
-        address: '检疫口岸五',
-        from: '东南亚五',
-        img: require('@/assets/logo.png')
-
-      }],
+      centerList: [], // {lng: 118.816,lat: 32.023,count: 50, name: '杂草A',address: '检疫口岸一',from: '东南亚一',img: require('@/assets/logo.png')},
       // 热力图数据
-      data: [
-        { lng: 118.818261, lat: 32.021984, count: 50 },
-        { lng: 118.823332, lat: 32.016532, count: 51 },
-        { lng: 118.819787, lat: 32.030658, count: 15 },
-        // ...此处添加更多的数据集
-        { lng: 118.848261, lat: 32.041984, count: 50 },
-        { lng: 118.848332, lat: 32.050532, count: 51 },
-        { lng: 118.879787, lat: 32.042658, count: 15 }
-      ],
-
+      data: [], // { lng: 118.818261, lat: 32.021984, count: 50 }
+      zacao: {},
       start: 0,
       count: 10
     }
@@ -154,6 +101,7 @@ export default {
         // const { data } = res
       })
     },
+
     async heatmapTotal() {
       await heatmapTotal().then((res) => {
         // const { data } = res
@@ -162,7 +110,15 @@ export default {
     async getDistPage() {
       await getDistPage({ count: this.count, start: this.start }).then((res) => {
         const { data } = res
-        this.centerList = data.distlist
+        this.centerList = data.distlist.map((item) => {
+          const centerItem = {}
+          centerItem.lat = item.lat / 10000000
+          centerItem.lng = item.lng / 10000000
+          centerItem.name = item.name
+          centerItem.from = item.discReg.join(',')
+          centerItem.id = item.id
+          return centerItem
+        })
       })
     },
     async heatmap() {
@@ -176,16 +132,24 @@ export default {
         })
       })
     },
-    showDetail() {
+    showDetail(zacao) {
       this.$router.push({
-        name: 'ShowWeeds'
+        name: 'ShowWeeds',
+        params: {
+          rowData: zacao
+        }
       })
     },
-    infoWindowClose(i) {
-      // this.currentI = -1
+    infoWindowClose(id) {
+      this.currentI = -1
     },
-    infoWindowOpen(i) {
-      this.currentI = i
+    infoWindowOpen(id) {
+      // 根据杂草id获取杂草信息
+      getZacao({ id }).then((res) => {
+        const { data } = res
+        this.zacao = data.zacao
+      })
+      this.currentI = id
     }
 
   }

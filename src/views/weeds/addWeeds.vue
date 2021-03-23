@@ -67,7 +67,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <!-- 112.2222 -->
-            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度">
+            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
               <el-input v-model="formWeed.lng" />
             </el-form-item>
           </el-col>
@@ -190,7 +190,7 @@ export default {
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
       if (this.isEdit) {
-        if (this.formWeed.piclist !== 0) {
+        if (this.formWeed.piclist && this.formWeed.piclist !== 0) {
           this.formWeed.piclist.map((item) => {
             const file = {}
             file.name = item.create
