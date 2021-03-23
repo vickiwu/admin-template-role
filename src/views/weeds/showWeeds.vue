@@ -84,7 +84,9 @@
         :center="home"
         :scroll-wheel-zoom="true"
       >
-        <bm-label :content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+        <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
+          <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+        </bm-marker>
       </baidu-map>
     </el-dialog>
   </div>
@@ -93,12 +95,13 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmLabel } from 'vue-baidu-map'
+import { BmLabel, BmMarker } from 'vue-baidu-map'
 
 export default {
   components: {
     BaiduMap,
-    BmLabel
+    BmLabel,
+    BmMarker
   },
   data() {
     return {
