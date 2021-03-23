@@ -190,7 +190,8 @@ export default {
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
       if (this.isEdit) {
-        if (this.formWeed.piclist !== 0) {
+        if (this.formWeed.piclist && this.formWeed.piclist !== 0) {
+          console.log('%c 🥦 this.formWeed.piclist: ', 'font-size:20px;background-color: #FCA650;color:#fff;', this.formWeed.piclist)
           this.formWeed.piclist.map((item) => {
             const file = {}
             file.name = item.create
