@@ -17,7 +17,7 @@
         </el-form-item>
         <el-form-item label="杂草种类" prop="specy">
 
-          <el-select v-model="formZilao.specy" placeholder="请选择杂草所属种类">
+          <el-select v-model="formZilao.specy" clearable placeholder="请选择杂草所属种类">
             <el-option-group
               v-for="group in options"
               :key="group.lb"

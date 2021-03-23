@@ -22,7 +22,7 @@
         </el-col>
 
         <el-col :span="5">
-          <el-input v-model="formInline.name" size="medium" placeholder="资料名称" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.name" size="medium" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
 
         </el-col>
         <el-col :span="14" class="right-btn">

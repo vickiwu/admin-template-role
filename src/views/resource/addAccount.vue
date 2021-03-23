@@ -28,6 +28,7 @@
         <el-form-item label="地市" prop="cityName">
           <el-select
             v-model="form.cityName"
+            clearable
             size="medium"
             placeholder="请选择地市"
             @change="getBumenList"
@@ -43,6 +44,7 @@
         <el-form-item label="单位" prop="bumen">
           <el-select
             v-model="form.bumen"
+            clearable
             size="medium"
             placeholder="请选择单位"
           >
@@ -62,7 +64,7 @@
         </el-form-item>
 
         <el-form-item label="类型" prop="utype">
-          <el-select v-model="form.utype" placeholder="请选择类型">
+          <el-select v-model="form.utype" clearable placeholder="请选择类型">
             <el-option label="系统管理员" :value="1" />
             <el-option label="专家调度用户" :value="2" />
             <el-option label="研判专家" :value="3" />

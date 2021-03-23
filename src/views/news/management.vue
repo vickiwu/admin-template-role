@@ -25,7 +25,7 @@
           </el-col>
         </el-col>
         <el-col :span="5">
-          <el-select v-model="formSearch.ntype" size="medium" placeholder="类别">
+          <el-select v-model="formSearch.ntype" size="medium" clearable placeholder="类别">
             <el-option label="通用新闻" :value="1" />
           </el-select>
         </el-col>

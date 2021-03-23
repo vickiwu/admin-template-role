@@ -13,6 +13,7 @@
         <el-col :span="4">
           <el-select
             v-model="formInline.reg"
+            clearable
             multiple
             collapse-tags
             size="medium"
@@ -27,7 +28,7 @@
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.specy" placeholder="所有种类">
+          <el-select v-model="formInline.specy" clearable placeholder="所有种类">
             <el-option-group
               v-for="group in options"
               :key="group.lb"
@@ -188,6 +189,7 @@
         <el-form-item label="选择专家" prop="name">
           <el-select
             v-model="form.id"
+            clearable
             size="medium"
             placeholder="请选择一位专家"
             @change="setZhuanjiaInfo"

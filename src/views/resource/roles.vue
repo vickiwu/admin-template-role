@@ -10,7 +10,7 @@
         class="news-form"
       >
         <el-form-item label="用户" prop="userId">
-          <el-select v-model="form.userId" placeholder="请选择下属账户" @change="setRoles">
+          <el-select v-model="form.userId" clearable placeholder="请选择下属账户" @change="setRoles">
             <el-option v-for="item in options" :key="item.id" :label="item.username" :value="item.id" />
           </el-select>
         </el-form-item>
