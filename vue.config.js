@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const GlobalConfig = require('./src/globalConfig.js')
+// const GlobalConfig = require('./src/globalConfig.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -14,7 +14,7 @@ const port = 9528
 
 module.exports = {
 
-  publicPath: '/',
+  publicPath: '/zacao',
   outputDir: 'dist',
   assetsDir: 'static',
   filenameHashing: false,
