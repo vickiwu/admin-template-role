@@ -159,14 +159,11 @@
               <span class="row-title">当前调度模式：</span>
             </el-col>
             <el-col :span="11">
-              <el-select
+              <el-input
                 v-model="formInline2.region1"
+                disabled
                 size="medium"
-                placeholder="人工调度"
-              >
-                <el-option label="区域一" value="shanghai" />
-                <el-option label="区域二" value="beijing" />
-              </el-select>
+              />
             </el-col>
           </el-row>
 
@@ -188,7 +185,7 @@
           >
             <el-option
               v-for="item in zhuanjialist"
-              :key="item.id"
+              :key="item.id+ item.create"
               :label="item.realname"
               :value="item.id"
             />
@@ -197,7 +194,7 @@
         <el-row type="flex" justify="space-between">
           <el-col :span="13">
             <el-form-item label="专家介绍" prop="desc">
-              <el-input v-model="form.desc" type="textarea" :rows="3" placeholder="该专家详细情况：" />
+              <el-input v-model="form.desc" disabled type="textarea" :rows="3" placeholder="该专家详细情况：" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -240,7 +237,7 @@ export default {
         region3: ''
       },
       formInline2: {
-        region1: ''
+        region1: '人工调度'
       },
       tableData: [],
       pagination: {
@@ -293,9 +290,9 @@ export default {
     handleSelectionChange(val) {
       this.selected = val
     },
-    setZhuanjiaInfo() {
-      const zhuanjia = this.zhuanjialist.find(item => item.id === this.form.id)
-      this.form = zhuanjia
+    setZhuanjiaInfo(val) {
+      const zhuanjia = this.zhuanjialist.find(item => item.id === val)
+      this.form.desc = zhuanjia.desc
       this.form.img = zhuanjia.avatar && zhuanjia.avatar.httpUrl
     },
     onSubmit() {
@@ -317,9 +314,15 @@ export default {
             type: 'success',
             message: '派发成功!'
           })
+          this.selected = []
+          this.form = {
+            id: '',
+            name: '',
+            img: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+            desc: ''
+          }
         }
       })
-      console.log('submit!')
     },
     jumpManageMent() {
       this.$router.push({
