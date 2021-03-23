@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_token'
+const TokenKey = 'weed_token'
 const UserIdKey = 'user_id'
 const UserKey = 'user'
 const SysConfigKey = 'sys_config'

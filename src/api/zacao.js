@@ -1,9 +1,10 @@
 import request from '@/utils/request'
+const WeedGlobalConfig = require('@/globalConfig')
 
 export function uploadImg(data) {
   // 用户向平台上传一张图片
   return request({
-    url: '/upload/img',
+    url: WeedGlobalConfig.zaocao.uploadImg,
     method: 'POST',
     data
   })
@@ -12,7 +13,7 @@ export function uploadImg(data) {
 export function create(data) {
   // 杂草录入
   return request({
-    url: '/zacao/create',
+    url: WeedGlobalConfig.zaocao.create,
     method: 'POST',
     data
   })
@@ -21,7 +22,7 @@ export function create(data) {
 export function edit(data) {
   // 杂草信息修改
   return request({
-    url: '/zacao/edit',
+    url: WeedGlobalConfig.zaocao.edit,
     method: 'POST',
     data
   })
@@ -30,7 +31,7 @@ export function edit(data) {
 export function zacaoDelete(data) {
   // 杂草删除
   return request({
-    url: '/zacao/delete',
+    url: WeedGlobalConfig.zaocao.zacaoDelete,
     method: 'POST',
     data
   })
@@ -39,7 +40,7 @@ export function zacaoDelete(data) {
 export function getZacao(data) {
   // 杂草单个查询
   return request({
-    url: '/zacao/get',
+    url: WeedGlobalConfig.zaocao.getZacao,
     method: 'POST',
     data
   })
@@ -47,7 +48,7 @@ export function getZacao(data) {
 export function getPage(data) {
   // 杂草批量查询
   return request({
-    url: '/zacao/getPage',
+    url: WeedGlobalConfig.zaocao.getPage,
     method: 'POST',
     data
   })
@@ -55,7 +56,7 @@ export function getPage(data) {
 export function getTaskPage(data) {
   // 研判任务查询
   return request({
-    url: '/yanpan/getTaskPage',
+    url: WeedGlobalConfig.zaocao.getTaskPage,
     method: 'POST',
     data
   })
@@ -63,7 +64,7 @@ export function getTaskPage(data) {
 export function commit(data) {
   // 杂草研判
   return request({
-    url: '/yanpan/commit',
+    url: WeedGlobalConfig.zaocao.commit,
     method: 'POST',
     data
   })
@@ -71,7 +72,7 @@ export function commit(data) {
 export function getLbPage(data) {
   // 杂草类别查询
   return request({
-    url: '/zacao/getLbPage',
+    url: WeedGlobalConfig.zaocao.getLbPage,
     method: 'POST',
     data
   })
@@ -79,7 +80,7 @@ export function getLbPage(data) {
 export function addLb(data) {
   // 杂草类别新增
   return request({
-    url: '/zacao/addLb',
+    url: WeedGlobalConfig.zaocao.addLb,
     method: 'POST',
     data
   })
@@ -87,7 +88,7 @@ export function addLb(data) {
 export function editLb(data) {
   // 杂草类别修改
   return request({
-    url: '/zacao/editLb',
+    url: WeedGlobalConfig.zaocao.editLb,
     method: 'POST',
     data
   })
@@ -95,7 +96,7 @@ export function editLb(data) {
 export function delLb(data) {
   // 杂草类别删除
   return request({
-    url: '/zacao/delLb',
+    url: WeedGlobalConfig.zaocao.delLb,
     method: 'POST',
     data
   })
@@ -103,7 +104,7 @@ export function delLb(data) {
 export function heatmapTotal(data) {
   // 杂草热力图总数
   return request({
-    url: '/zacao/heatmapTotal',
+    url: WeedGlobalConfig.zaocao.heatmapTotal,
     method: 'POST',
     data
   })
@@ -111,7 +112,7 @@ export function heatmapTotal(data) {
 export function heatmap(data) {
   // 杂草热力图-分页获取
   return request({
-    url: '/zacao/heatmap',
+    url: WeedGlobalConfig.zaocao.heatmap,
     method: 'POST',
     data
   })
@@ -119,7 +120,7 @@ export function heatmap(data) {
 export function totalCount(data) {
   // 杂草总数量-地图
   return request({
-    url: '/zacao/totalCount',
+    url: WeedGlobalConfig.zaocao.totalCount,
     method: 'POST',
     data
   })
@@ -127,7 +128,7 @@ export function totalCount(data) {
 export function getDistPage(data) {
   // 分页获取杂草分布-地图
   return request({
-    url: '/zacao/getDistPage',
+    url: WeedGlobalConfig.zaocao.getDistPage,
     method: 'POST',
     data
   })
@@ -136,7 +137,7 @@ export function getDistPage(data) {
 export function tongji(data) {
   // 杂草统计表
   return request({
-    url: '/zacao/tongji',
+    url: WeedGlobalConfig.zaocao.tongji,
     method: 'POST',
     data
   })

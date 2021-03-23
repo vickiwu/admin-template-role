@@ -5,7 +5,7 @@ import store from '@/store'
 import { getToken, removeToken, removeUserId, removeUser, removeSysConfig } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: '/', // url = base url + request url
   timeout: 15000 // request timeout
 })
 

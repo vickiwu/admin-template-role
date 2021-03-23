@@ -1,8 +1,6 @@
 # 生物杂草信息处理系统
 
-> 这是一个极简的 vue admin 管理后台。它只包含了 Element UI & axios & iconfont & permission control & lint，这些搭建后台必要的东西。
 
-[线上地址](http://panjiachen.github.io/vue-admin-template)
 
 
 目前版本为 `v4.0+` 基于 `vue-cli` 进行构建
@@ -14,7 +12,7 @@
 ```bash
 
 # 进入项目目录
-cd vue-admin-template
+cd vue-weed
 
 # 安装依赖
 npm install
@@ -45,14 +43,9 @@ npm run preview
 # 预览发布环境效果 + 静态资源分析
 npm run preview -- --report
 
-# 代码格式检查
-npm run lint
+
 
 # 代码格式检查并自动修复
 npm run lint -- --fix
 ```
-问题
-修改图片后，再登录获取不到头像
-新闻动态的接口 没找到
 
-新闻单个查询接口，怎么会存在查多条？

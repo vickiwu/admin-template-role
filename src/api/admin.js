@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-const defaultSettings = require('@/settings')
+const WeedGlobalConfig = require('@/globalConfig')
 // 系统管理员创建账户
 export function createUser(data) {
   return request({
-    url: '/admin/createUser',
+    url: WeedGlobalConfig.admin.createUser,
     method: 'POST',
     data
   })
@@ -12,7 +12,7 @@ export function createUser(data) {
 // 系统管理员修改下属账户资料
 export function editUser(data) {
   return request({
-    url: '/admin/editUser',
+    url: WeedGlobalConfig.admin.editUser,
     method: 'POST',
     data
   })
@@ -20,7 +20,7 @@ export function editUser(data) {
 // 删除账户
 export function deleteUser(data) {
   return request({
-    url: '/admin/deleteUser',
+    url: WeedGlobalConfig.admin.deleteUser,
     method: 'POST',
     data
   })
@@ -28,7 +28,7 @@ export function deleteUser(data) {
 // 查询账户
 export function getUserPage(data) {
   return request({
-    url: '/admin/getUserPage',
+    url: WeedGlobalConfig.admin.getUserPage,
     method: 'POST',
     data
   })
@@ -36,7 +36,7 @@ export function getUserPage(data) {
 // 用户自身资料修改
 export function userEdit(data) {
   return request({
-    url: '/user/edit',
+    url: WeedGlobalConfig.admin.userEdit,
     method: 'POST',
     data
   })
@@ -44,16 +44,15 @@ export function userEdit(data) {
 // 用户信息查询
 export function getInfo(data) {
   return request({
-    url: '/user/getInfo',
+    url: WeedGlobalConfig.admin.getInfo,
     method: 'POST',
-    // params: { ...data }
     data
   })
 }
 // 用户登陆
 export function login(data) {
   return request({
-    url: defaultSettings.loginUrl,
+    url: WeedGlobalConfig.admin.login,
     method: 'POST',
     data
   })
@@ -61,7 +60,7 @@ export function login(data) {
 // 用户登出
 export function logout(data) {
   return request({
-    url: '/user/logout',
+    url: WeedGlobalConfig.admin.logout,
     method: 'POST',
     data
   })
@@ -69,7 +68,7 @@ export function logout(data) {
 // 发送验证码
 export function sendsms(data) {
   return request({
-    url: '/user/sendsms',
+    url: WeedGlobalConfig.admin.sendsms,
     method: 'POST',
     data
   })
@@ -77,7 +76,7 @@ export function sendsms(data) {
 // 密码修改
 export function changePassword(data) {
   return request({
-    url: '/user/changePassword',
+    url: WeedGlobalConfig.admin.changePassword,
     method: 'POST',
     data
   })
@@ -85,7 +84,7 @@ export function changePassword(data) {
 // 密码重置
 export function resetPassword(data) {
   return request({
-    url: '/user/resetPassword',
+    url: WeedGlobalConfig.admin.resetPassword,
     method: 'POST',
     data
   })
@@ -93,7 +92,7 @@ export function resetPassword(data) {
 // 头像设置
 export function setAvatar(data) {
   return request({
-    url: '/user/setAvatar',
+    url: WeedGlobalConfig.admin.setAvatar,
     method: 'POST',
     data
   })
@@ -101,7 +100,7 @@ export function setAvatar(data) {
 // 头像上传
 export function uploadAvatar(data) {
   return request({
-    url: '/upload/avatar',
+    url: WeedGlobalConfig.admin.uploadAvatar,
     method: 'POST',
     data
   })
@@ -109,7 +108,7 @@ export function uploadAvatar(data) {
 // h4a 账户同步
 export function synH4a(data) {
   return request({
-    url: '/admin/synH4a',
+    url: WeedGlobalConfig.admin.synH4a,
     method: 'POST',
     data
   })
@@ -117,7 +116,7 @@ export function synH4a(data) {
 // 权限设置
 export function setPrivGroup(data) {
   return request({
-    url: '/admin/setPrivGroup',
+    url: WeedGlobalConfig.admin.setPrivGroup,
     method: 'POST',
     data
   })

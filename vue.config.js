@@ -1,15 +1,16 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const GlobalConfig = require('./src/globalConfig.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '后台管理系统框架' // page title
+const name = defaultSettings.title || '生物杂草信息处理系统' // 页面标题
 
 // 启动端口 9528
-const port = process.env.port || process.env.npm_config_port || 9528
+const port = 9528
 
 module.exports = {
 
@@ -27,17 +28,15 @@ module.exports = {
       errors: true
     },
     proxy: {
-      [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_BASE_URL,
+      '/': {
+        target: `http://${GlobalConfig.serverIP}:${GlobalConfig.serverPort}`,
         changeOrigin: true,
         xfwd: true,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
+          '^/': ''
         }
       }
     }
-
-    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     name: name,
@@ -102,9 +101,9 @@ module.exports = {
                   test: /[\\/]node_modules[\\/]_?element-ui(.*)/
                 },
                 weedConfig: {
-                  name: 'chunk-weedConfig',
+                  name: 'weedGlobalConfig',
                   priority: 20,
-                  test: resolve('src/settings.js')
+                  test: resolve('src/globalConfig.js')
                 },
                 cityJson: {
                   name: 'chunk-cityJson',
