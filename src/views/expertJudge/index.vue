@@ -155,7 +155,8 @@ export default {
           name: 'Judge',
           params: {
             taskId: this.selected[0].id,
-            rowData: data.zacao
+            rowData: data.zacao,
+            isEdit: true
           }
         })
       })

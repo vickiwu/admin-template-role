@@ -41,21 +41,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="种类" prop="specy">
+          <el-select-tree
+            v-model="selectId"
+            style="width:100%"
+            placeholder="请选择杂草所属种类"
+            clearable
+            :data="options"
+            :props="treeProps"
+            size="medium"
+            @change="changeSpecy"
+          />
 
-          <el-select v-model="formWeed.specy" clearable placeholder="请选择杂草所属种类" @change="changea">
-            <el-option-group
-              v-for="group in options"
-              :key="group.lb"
-              :label="group.lb"
-            >
-              <el-option
-                v-for="item in group.option"
-                :key="item.lb2"
-                :label="item.lb2"
-                :value="JSON.stringify(item)"
-              />
-            </el-option-group>
-          </el-select>
         </el-form-item>
         <el-form-item label="危害程度" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
@@ -114,9 +110,12 @@
 import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
+import ElSelectTree from 'el-select-tree'
 
 export default {
-
+  components: {
+    ElSelectTree
+  },
   data() {
     // 验证经度输入范围在-180-180之间，且小数可7位
     const checkLong = (rule, value, callback) => {
@@ -182,6 +181,13 @@ export default {
         jydw: [
           { required: true, message: '请选择杂草危害程度', trigger: 'change' }
         ]
+      },
+      selectId: '',
+      specyList: [],
+      treeProps: {
+        value: 'id',
+        children: 'option',
+        label: 'lb2'
       }
     }
   },
@@ -190,6 +196,9 @@ export default {
 
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
+      if (this.isEdit && this.formWeed.specy) {
+        this.selectId = this.formWeed.specy.id
+      }
       if (this.isEdit) {
         if (this.formWeed.piclist && this.formWeed.piclist !== 0) {
           this.formWeed.piclist.map((item) => {
@@ -210,7 +219,10 @@ export default {
     this.getLbPage()
   },
   methods: {
-    changea(val) {
+
+    changeSpecy(val) {
+      const specy = this.specyList.find((obj) => obj.id === val)
+      this.formWeed.specy = JSON.stringify(specy)
     },
     handleRemove(file, fileList) { // 删除图片
       this.fileList = fileList
@@ -228,6 +240,7 @@ export default {
       await getLbPage(clean(params)).then((res) => {
         var all = new Map()
         const { data } = res
+        this.specyList = data.lblist
         data.lblist.map((item) => {
           const result = data.lblist.filter((item2) => {
             return item2.lb1 === item.lb1
@@ -236,7 +249,7 @@ export default {
         })
         for (const [k, v] of all) {
           const obj = {}
-          obj.lb = k
+          obj.lb2 = k
           obj.option = v
           this.options.push(obj)
         }

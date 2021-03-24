@@ -48,20 +48,16 @@
         </el-col>
         <el-col :span="4">
 
-          <el-select v-model="formSearch.specy" clearable placeholder="请选择杂草所属种类">
-            <el-option-group
-              v-for="group in options"
-              :key="group.lb"
-              :label="group.lb"
-            >
-              <el-option
-                v-for="item in group.option"
-                :key="item.lb2"
-                :label="item.lb2"
-                :value="JSON.stringify(item)"
-              />
-            </el-option-group>
-          </el-select>
+          <el-select-tree
+            v-model="selectId"
+            style="width:100%"
+            placeholder="请选择杂草所属种类"
+            clearable
+            :data="options"
+            :props="treeProps"
+            size="medium"
+            @change="changeSpecy"
+          />
         </el-col>
         <el-col :span="4">
           <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
@@ -215,11 +211,13 @@
 <script>
 import { getPage, getLbPage, zacaoDelete } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
-
+import ElSelectTree from 'el-select-tree'
 const cityJson = require('@/assets/json/cities.json')
 
 export default {
-
+  components: {
+    ElSelectTree
+  },
   data() {
     return {
       cityJson: cityJson.cityies,
@@ -229,6 +227,13 @@ export default {
         jydw: '',
         startTime: '',
         endTime: ''
+      },
+      selectId: '',
+      specyList: [],
+      treeProps: {
+        value: 'id',
+        children: 'option',
+        label: 'lb2'
       },
       options: [], // 处理后的杂草数据
       tableData: [],
@@ -261,6 +266,7 @@ export default {
       await getLbPage(clean(params)).then((res) => {
         var all = new Map()
         const { data } = res
+        this.specyList = data.lblist
         data.lblist.map((item) => {
           const result = data.lblist.filter((item2) => {
             return item2.lb1 === item.lb1
@@ -269,11 +275,15 @@ export default {
         })
         for (const [k, v] of all) {
           const obj = {}
-          obj.lb = k
+          obj.lb2 = k
           obj.option = v
           this.options.push(obj)
         }
       })
+    },
+    changeSpecy(val) {
+      const specy = this.specyList.find((obj) => obj.id === val)
+      this.formSearch.specy = JSON.stringify(specy)
     },
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))
