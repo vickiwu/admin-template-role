@@ -13,8 +13,6 @@
           <el-select
             v-model="formInline.reg"
             clearable
-            multiple
-            collapse-tags
             size="medium"
             placeholder="所有区域"
           >

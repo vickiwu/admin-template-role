@@ -23,8 +23,6 @@
           <el-select
             v-model="formWeed.discReg"
             clearable
-            multiple
-            collapse-tags
             size="medium"
             placeholder="请选择发现地域"
           >

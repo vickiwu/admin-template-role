@@ -33,8 +33,6 @@
               <el-select
                 v-model="formSearch.reg"
                 clearable
-                multiple
-                collapse-tags
                 size="medium"
                 placeholder="所有区域"
               >
