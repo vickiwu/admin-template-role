@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken, removeUserId, removeUser, removeSysConfig } from '@/utils/auth'
 const GlobalConfig = require('@/globalConfig')
@@ -43,10 +43,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.state !== 1) {
-      Message({
-        message: res.data.msg || '错误',
-        type: 'error',
-        duration: 5 * 1000
+      MessageBox.alert(res.data.msg || '错误', {
+        confirmButtonText: '确定'
       })
       if (res.data.msg === '您还没有登录') {
         // 移除token 重置到登录页

@@ -253,7 +253,9 @@ export default {
           return false
         } else {
           if (this.privilege > 128) {
-            this.$message.error('权限不足！')
+            this.$alert('权限不足！', {
+              confirmButtonText: '确定'
+            })
             return
           }
           if (this.$route.params.isEdit) {
@@ -264,12 +266,13 @@ export default {
             // 编辑
             editUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
-                this.$message({
-                  type: 'success',
-                  message: '修改成功!'
-                })
-                this.$router.push({
-                  name: 'Account'
+                this.$alert('修改成功', {
+                  confirmButtonText: '确定',
+                  callback: () => {
+                    this.$router.push({
+                      name: 'Account'
+                    })
+                  }
                 })
               }
             })
@@ -283,9 +286,8 @@ export default {
             // 新增
             createUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
-                this.$message({
-                  type: 'success',
-                  message: '新增成功!'
+                this.$alert('新增成功', {
+                  confirmButtonText: '确定'
                 })
               }
               if (this.$route.params.isEdit !== undefined) {

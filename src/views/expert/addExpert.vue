@@ -132,9 +132,8 @@ export default {
         } else {
           create({ json: JSON.stringify(clean(this.form)) }).then((data) => {
             if (data.state === 1) {
-              this.$message({
-                type: 'success',
-                message: '新增成功!'
+              this.$alert('新增成功', {
+                confirmButtonText: '确定'
               })
             }
             if (this.isEdit !== undefined) {
@@ -168,13 +167,14 @@ export default {
         } else {
           edit({ json: JSON.stringify(clean(this.form)) }).then((data) => {
             if (data.state === 1) {
-              this.$message({
-                type: 'success',
-                message: '修改成功!'
-              })
-              // 路由跳转
-              this.$router.push({
-                name: 'ExpertManagement'
+              this.$alert('修改成功', {
+                confirmButtonText: '确定',
+                callback: () => {
+                  // 路由跳转
+                  this.$router.push({
+                    name: 'ExpertManagement'
+                  })
+                }
               })
             }
           })
@@ -197,10 +197,14 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error('上传图片只能是 JPG 或者PNG 格式!')
+        this.$alert('上传图片只能是 JPG 或者PNG 格式!', {
+          confirmButtonText: '确定'
+        })
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+        this.$alert('上传头像图片大小不能超过 2MB!', {
+          confirmButtonText: '确定'
+        })
       }
       return isJPG && isLt2M
     }

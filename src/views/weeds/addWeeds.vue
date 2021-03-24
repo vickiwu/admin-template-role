@@ -269,9 +269,8 @@ export default {
       params.lng = params.lng * Math.pow(10, 7)
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '新增成功!'
+          this.$alert('新增成功', {
+            confirmButtonText: '确定'
           })
         }
       })
@@ -282,13 +281,14 @@ export default {
       params.lng = params.lng * Math.pow(10, 7)
       await edit({ json: JSON.stringify(params) }).then((data) => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
-          // 修改成功后跳转回管理页面
-          this.$router.push({
-            name: 'Weeds'
+          this.$alert('修改成功', {
+            confirmButtonText: '确定',
+            callback: () => {
+              // 修改成功后跳转回管理页面
+              this.$router.push({
+                name: 'Weeds'
+              })
+            }
           })
         }
       })
