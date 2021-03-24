@@ -168,6 +168,12 @@ export const constantRoutes = [
     meta: { title: '资料中心', icon: 'el-icon-s-help' },
     children: [
       {
+        path: 'addInformation',
+        name: 'InformationAdd',
+        component: () => import('@/views/information/addInfo'),
+        meta: { title: '资料录入', icon: 'tree' }
+      },
+      {
         path: 'index',
         name: 'Information',
         component: () => import('@/views/information/index'),
@@ -179,14 +185,7 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/information/search'),
         meta: { title: '资料检索', icon: 'tree' }
-      },
-      {
-        path: 'addInformation',
-        name: 'InformationAdd',
-        component: () => import('@/views/information/addInfo'),
-        meta: { title: '资料录入', icon: 'tree' }
       }
-
     ]
   },
   {
@@ -196,6 +195,13 @@ export const constantRoutes = [
     name: 'Resource',
     meta: { title: '资源管理', icon: 'el-icon-s-help' },
     children: [
+      {
+        path: 'addAccount',
+        name: 'AddAccount',
+        // hidden: true,
+        component: () => import('@/views/resource/addAccount'),
+        meta: { title: '账户新增', icon: 'tree' }
+      },
       {
         path: 'account',
         name: 'Account',
@@ -215,13 +221,6 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/resource/roles'),
         meta: { title: '权限设置', icon: 'tree' }
-      },
-      {
-        path: 'addAccount',
-        name: 'AddAccount',
-        // hidden: true,
-        component: () => import('@/views/resource/addAccount'),
-        meta: { title: '账户新增', icon: 'tree' }
       },
       {
         path: 'editAccount',
