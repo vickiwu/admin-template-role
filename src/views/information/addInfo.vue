@@ -205,7 +205,12 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     handlePreview(file) {
-      window.open(file.httpUrl)
+      if (file.raw) {
+        const url = URL.createObjectURL(file.raw)
+        window.open(url)
+      } else {
+        window.open(file.httpUrl)
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png'
@@ -243,7 +248,15 @@ export default {
   }
 }
 </script>
+<style>
 
+.upload-demo .el-upload__tip {
+  color: #999
+}
+.upload-demo .el-upload-list__item-name {
+  font-size: 16px;
+}
+</style>
 <style lang="scss" scoped>
 
 .news-card {
