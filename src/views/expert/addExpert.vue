@@ -153,6 +153,7 @@ export default {
                 from: '',
                 avatar: null
               }
+              this.imageUrl = ''
             }
           })
         }
@@ -188,7 +189,6 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-      console.log(file)
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {
