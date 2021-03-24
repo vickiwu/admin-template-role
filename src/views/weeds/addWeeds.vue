@@ -270,6 +270,22 @@ export default {
           this.$alert('新增成功', {
             confirmButtonText: '确定'
           })
+          // 清空表单
+          this.formWeed = {
+            nameCn: '',
+            nameLt: '',
+            source: '',
+            discReg: [],
+            specy: '',
+            jydw: '',
+            desc: '',
+            piclistJson: '',
+            piclist: [],
+            lng: '',
+            lat: ''
+          }
+          this.fileList = []
+          this.selectId = ''
         }
       })
     },
