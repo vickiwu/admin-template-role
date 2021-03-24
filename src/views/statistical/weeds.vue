@@ -3,6 +3,7 @@
     <baidu-map
       ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
       class="map"
+      auto-resize
       :style="{ height: appMainHeight }"
       :center="center"
       :zoom="zoom"
@@ -48,6 +49,8 @@ import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel } from 'vue-baidu-map'
 import { totalCount, getDistPage, heatmap, heatmapTotal, getZacao } from '@/api/zacao'
 import { getSysConfig } from '@/utils/auth'
+import debounce from 'lodash.debounce'
+
 // import { clean, parseTime } from '@/utils/index'
 
 export default {
@@ -83,6 +86,7 @@ export default {
 
   },
   mounted() {
+    this.listenWindow()
     this.appMainHeight = parseInt(window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')) - 50 + 'px'
   },
   created() {
@@ -96,6 +100,11 @@ export default {
     this.heatmap() // 获取热力图数据
   },
   methods: {
+    listenWindow() {
+      window.onresize = debounce(() => {
+        this.appMainHeight = parseInt(window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')) - 50 + 'px'
+      }, 100)
+    },
     async totalCount() {
       await totalCount().then((res) => {
         // const { data } = res
