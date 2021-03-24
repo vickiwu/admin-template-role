@@ -39,11 +39,6 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          prop="password"
-          label="密码"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
           prop="realname"
           label="姓名"
           :show-overflow-tooltip="true"
