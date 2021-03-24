@@ -4,21 +4,16 @@
       <el-row type="flex" class="report-row" justify="space-between">
 
         <el-col :span="4">
-
-          <el-select v-model="formInline.specy" placeholder="请选择杂草所属种类">
-            <el-option-group
-              v-for="group in options"
-              :key="group.lb"
-              :label="group.lb"
-            >
-              <el-option
-                v-for="item in group.option"
-                :key="item.lb2"
-                :label="item.lb2"
-                :value="JSON.stringify(item)"
-              />
-            </el-option-group>
-          </el-select>
+          <el-select-tree
+            v-model="selectId"
+            width="120px"
+            placeholder="请选择杂草所属种类"
+            clearable
+            :data="options"
+            :props="treeProps"
+            size="medium"
+            @change="changeSpecy"
+          />
         </el-col>
         <el-col :span="4">
           <el-input v-model="formInline.name" size="medium" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
@@ -123,9 +118,12 @@
 import { getPage, ziliaoDelete } from '@/api/ziliao'
 import { getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
+import ElSelectTree from 'el-select-tree'
 
 export default {
-
+  components: {
+    ElSelectTree
+  },
   data() {
     return {
       formInline: {
@@ -133,7 +131,13 @@ export default {
         name: ''
       },
       tableData: [],
-
+      selectId: '',
+      specyList: [],
+      treeProps: {
+        value: 'id',
+        children: 'option',
+        label: 'lb2'
+      },
       pagination: {
         count: 10,
         index: 1
@@ -157,12 +161,17 @@ export default {
     this.getLbPage()
   },
   methods: {
+    changeSpecy(val) {
+      const specy = this.specyList.find((obj) => obj.id === val)
+      this.formInline.specy = JSON.stringify(specy)
+    },
     async getLbPage() {
       // 获取杂草类别
       const params = { cunt: 1000, start: 0 }
       await getLbPage(clean(params)).then((res) => {
         var all = new Map()
         const { data } = res
+        this.specyList = data.lblist
         data.lblist.map((item) => {
           const result = data.lblist.filter((item2) => {
             return item2.lb1 === item.lb1
@@ -171,7 +180,7 @@ export default {
         })
         for (const [k, v] of all) {
           const obj = {}
-          obj.lb = k
+          obj.lb2 = k
           obj.option = v
           this.options.push(obj)
         }

@@ -14,20 +14,16 @@
         </el-form-item>
         <el-form-item label="杂草种类" prop="specy">
 
-          <el-select v-model="formZilao.specy" clearable placeholder="请选择杂草所属种类">
-            <el-option-group
-              v-for="group in options"
-              :key="group.lb"
-              :label="group.lb"
-            >
-              <el-option
-                v-for="item in group.option"
-                :key="item.lb2"
-                :label="item.lb2"
-                :value="JSON.stringify(item)"
-              />
-            </el-option-group>
-          </el-select>
+          <el-select-tree
+            v-model="selectId"
+            style="width:100%"
+            placeholder="请选择杂草所属种类"
+            clearable
+            :data="options"
+            :props="treeProps"
+            size="medium"
+            @change="changeSpecy"
+          />
         </el-form-item>
         <el-form-item label="资料介绍" prop="desc">
           <el-input v-model="formZilao.desc" type="textarea" :rows="4" placeholder="请输入资料内容摘要" />
@@ -86,9 +82,12 @@ import { create, edit, uploadFile } from '@/api/ziliao'
 import { getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 import { uploadAvatar } from '@/api/admin'
+import ElSelectTree from 'el-select-tree'
 
 export default {
-
+  components: {
+    ElSelectTree
+  },
   data() {
     return {
       isEdit: false,
@@ -112,6 +111,13 @@ export default {
         ]
 
       },
+      selectId: '',
+      specyList: [],
+      treeProps: {
+        value: 'id',
+        children: 'option',
+        label: 'lb2'
+      },
       options: [] // 格式化后的杂草类别
     }
   },
@@ -121,6 +127,9 @@ export default {
       this.formZilao = this.$route.params.rowData
       this.imageUrl = this.$route.params.rowData.cover && this.$route.params.rowData.cover.httpUrl
       this.filelist = this.formZilao.filelist
+      if (this.isEdit && this.formZilao.specy) {
+        this.selectId = this.formZilao.specy.id
+      }
       const arr = []
       this.formZilao.filelist.forEach((element, idx) => {
         arr.push({
@@ -134,12 +143,17 @@ export default {
     this.getLbPage()
   },
   methods: {
+    changeSpecy(val) {
+      const specy = this.specyList.find((obj) => obj.id === val)
+      this.formZilao.specy = JSON.stringify(specy)
+    },
     async getLbPage() {
       // 获取杂草类别
       const params = { cunt: 1000, start: 0 }
       await getLbPage(clean(params)).then((res) => {
         var all = new Map()
         const { data } = res
+        this.specyList = data.lblist
         data.lblist.map((item) => {
           const result = data.lblist.filter((item2) => {
             return item2.lb1 === item.lb1
@@ -148,7 +162,7 @@ export default {
         })
         for (const [k, v] of all) {
           const obj = {}
-          obj.lb = k
+          obj.lb2 = k
           obj.option = v
           this.options.push(obj)
         }
