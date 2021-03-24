@@ -214,7 +214,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userId'
+      'userId',
+      'privilege'
     ])
   },
   mounted() {
@@ -252,6 +253,10 @@ export default {
           console.log('error submit!!')
           return false
         } else {
+          if (this.privilege > 128) {
+            this.$message.error('权限不足！')
+            return
+          }
           if (this.$route.params.isEdit) {
             const params = { ...this.form }
             params.bumen = [params.cityName, params.bumen]
