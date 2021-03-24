@@ -357,12 +357,19 @@ export default {
       })
     },
     handleDetail(index, rowData) {
-      this.$router.push({
-        name: 'ShowWeeds',
-        params: {
-          index, rowData
+      const routeUrl = this.$router.resolve({
+        path: 'ShowWeeds',
+        query: {
+          rowData: JSON.stringify(rowData)
         }
       })
+      window.open(routeUrl.href, '_blank')
+      // this.$router.push({
+      //   name: 'ShowWeeds',
+      //   params: {
+      //     index, rowData
+      //   }
+      // })
     },
     handleAdd() {
       // 跳转页面

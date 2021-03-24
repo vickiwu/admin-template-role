@@ -160,13 +160,21 @@ export default {
       // 查询杂草记录
       getZacao(clean({ id: row.zacaoId })).then((res) => {
         const { data } = res
-        // 路由跳转
-        this.$router.push({
-          name: 'ShowWeeds',
-          params: {
-            rowData: data.zacao
+        const routeUrl = this.$router.resolve({
+          path: '/weeds/ShowWeeds',
+          query: {
+            rowData: JSON.stringify(data.zacao)
           }
         })
+        window.open(routeUrl.href, '_blank')
+
+        // 路由跳转
+        // this.$router.push({
+        //   name: 'ShowWeeds',
+        //   params: {
+        //     rowData: data.zacao
+        //   }
+        // })
       })
     }
   }
