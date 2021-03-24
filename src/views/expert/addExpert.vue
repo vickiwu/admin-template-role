@@ -143,15 +143,17 @@ export default {
               })
             } else {
               this.form = {
+                ...this.form,
                 realname: '',
                 cat: '',
                 desc: '',
                 jobNo: '',
                 phone: '',
                 schedule: '',
-                from: '',
-                avatar: null
+                from: ''
+                // avatar: null
               }
+              // this.imageUrl = ''
             }
           })
         }
@@ -188,7 +190,6 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-      console.log(file)
       this.imageUrl = URL.createObjectURL(file.raw)
     },
     beforeAvatarUpload(file) {

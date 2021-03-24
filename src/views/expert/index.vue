@@ -159,60 +159,72 @@
           <span class="row-title">专家调度</span>
         </el-col>
 
-        <el-col :span="10" class="right-btn">
+        <!-- <el-col :span="10" class="right-btn">
           <el-row :gutter="10">
             <el-col :span="11">
               <span class="row-title">当前调度模式：</span>
             </el-col>
-            <el-col :span="11">
-              <el-input
-                v-model="formInline2.region1"
-                disabled
-                size="medium"
-              />
-            </el-col>
+            <el-col :span="11" />
           </el-row>
 
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-form
         ref="form"
         :model="form"
-        label-width="90px"
+        label-width="100px"
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="选择专家" prop="name">
-          <el-select
-            v-model="form.id"
-            clearable
-            size="medium"
-            placeholder="请选择一位专家"
-            @change="setZhuanjiaInfo"
-          >
-            <el-option
-              v-for="item in zhuanjialist"
-              :key="item.id+ item.create"
-              :label="item.realname"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-row type="flex" justify="space-between">
+        <el-row :gutter="30">
+          <el-col :span="13">
+            <el-form-item label="选择专家" prop="name">
+              <el-select
+                v-model="form.id"
+                clearable
+                size="medium"
+                placeholder="请选择一位专家"
+                style="width: 100%"
+                @change="setZhuanjiaInfo"
+              >
+                <el-option
+                  v-for="item in zhuanjialist"
+                  :key="item.id+ item.create"
+                  :label="item.realname"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="当前调度模式">
+              <el-input
+                v-model="formInline2.region1"
+                disabled
+                style="width: 100%"
+                size="medium"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="30">
           <el-col :span="13">
             <el-form-item label="专家介绍" prop="desc">
               <el-input v-model="form.desc" disabled type="textarea" :rows="3" placeholder="该专家详细情况：" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="专家头像：" prop="img">
+          <el-col :span="11">
+            <el-form-item label="专家头像" prop="img">
               <el-avatar shape="square" :size="80" :src="form.img" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item class="btn-center">
-          <el-button type="primary" @click="onSubmit">派发</el-button>
-        </el-form-item>
+        <el-row>
+          <el-form-item class="btn-center">
+            <el-button type="primary" @click="onSubmit">派发</el-button>
+          </el-form-item>
+        </el-row>
+
       </el-form>
 
     </el-card>
