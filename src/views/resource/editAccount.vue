@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">账户管理 <span class="news-sub">/</span> <span class="news-sub-title">账户编辑</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"

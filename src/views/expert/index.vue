@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">专家调度</div>
     <div class="blue-bg" @click="jumpManageMent()">
       <svg-icon icon-class="zhuanjiaguanli" class="bg-icon" />
       专家管理

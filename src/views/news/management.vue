@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">新闻管理</div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-around">
         <el-col :span="6">
@@ -77,8 +76,8 @@
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 : "" }}</span>
             </div>
 
           </template>

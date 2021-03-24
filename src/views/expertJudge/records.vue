@@ -3,21 +3,13 @@
     <el-card shadow="always" class="news-card">
       <el-col :span="24" class="right-btn">
         <el-button type="primary" size="small" @click="query">刷新</el-button>
-        <el-button type="primary" size="small" @click="details">杂草详情</el-button>
       </el-col>
       <el-table
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
-        />
         <el-table-column
           type="index"
           label="序号"
@@ -90,6 +82,18 @@
           label="研判意见"
           :show-overflow-tooltip="true"
         />
+        <el-table-column
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <span
+              style="color: #409EFF;cursor:pointer;"
+              @click="details(scope.row)"
+            >
+              杂草详情
+            </span>
+          </template>
+        </el-table-column>
       </el-table>
       <!-- 分页 新 -->
       <el-pagination
@@ -122,8 +126,7 @@ export default {
         count: 10,
         index: 1
       },
-      totalCount: 0,
-      selected: []
+      totalCount: 0
     }
   },
   computed: {
@@ -142,7 +145,7 @@ export default {
       return parseTime(time)
     },
     query() {
-      const params = { ... this.queryPageination }
+      const params = { ... this.queryPageination, stateJson: JSON.stringify([-1, 1]) }
       getTaskPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.tasklist
@@ -153,20 +156,9 @@ export default {
       this.pagination.index = val
       this.query()
     },
-    handleSelectionChange(val) {
-      this.selected = val
-    },
-    details() {
-      if (this.selected.length === 0) {
-        this.$message.error('请选择至少一条记录')
-        return
-      }
-      if (this.selected.length > 1) {
-        this.$message.error('请选择一条记录')
-        return
-      }
+    details(row) {
       // 查询杂草记录
-      getZacao(clean({ id: this.selected[0].zacaoId })).then((res) => {
+      getZacao(clean({ id: row.zacaoId })).then((res) => {
         const { data } = res
         // 路由跳转
         this.$router.push({

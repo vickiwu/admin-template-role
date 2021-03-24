@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">{{ news.title }}</div>
     <el-card shadow="always" class="news-card">
       <div v-html="news.content" />
     </el-card>

@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草检索</span> </div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="6">

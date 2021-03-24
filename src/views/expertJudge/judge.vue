@@ -1,9 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">专家研判 <span class="news-sub">/</span> <span class="news-sub-title">
-      执行研判
-    </span>
-    </div>
     <el-card shadow="always" class="news-card">
       <el-row style="text-align:center"><h2>杂草研判</h2></el-row>
       <el-form

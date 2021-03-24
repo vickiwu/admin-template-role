@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">账户同步</div>
-
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="20">
         <el-col :span="8" style="text-align:left">
@@ -11,7 +9,7 @@
           </span>
         </el-col>
         <el-col :span="15" class="right-btn">
-          <el-checkbox v-model="checked">显示密码</el-checkbox>
+          <!-- <el-checkbox v-model="checked">显示密码</el-checkbox> -->
           <el-button type="primary" size="small" @click="sync">开始同步</el-button>
         </el-col>
       </el-row>
