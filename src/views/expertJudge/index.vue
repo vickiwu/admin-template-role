@@ -3,7 +3,7 @@
     <el-card shadow="always" class="news-card">
       <el-col :span="24" class="right-btn">
         <el-button type="primary" size="small" @click="query">刷新</el-button>
-        <el-button type="primary" size="small" @click="set">评判处理</el-button>
+        <el-button type="primary" size="small" @click="set">研判处理</el-button>
       </el-col>
       <el-table
         :data="tableData"
