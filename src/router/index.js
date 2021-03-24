@@ -247,19 +247,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/log',
-    component: Layout,
-    meta: { title: '系统日志', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'index',
-        name: 'Log',
-        component: () => import('@/views/log/index'),
-        meta: { title: '系统日志', icon: 'form' }
-      }
-    ]
-  },
-  {
     path: '/expertJudge',
     component: Layout,
     redirect: '/expertJudge/index',
@@ -284,6 +271,19 @@ export const constantRoutes = [
         name: 'Records',
         component: () => import('@/views/expertJudge/records'),
         meta: { title: '研判记录', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/log',
+    component: Layout,
+    meta: { title: '系统日志', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'index',
+        name: 'Log',
+        component: () => import('@/views/log/index'),
+        meta: { title: '系统日志', icon: 'form' }
       }
     ]
   },
