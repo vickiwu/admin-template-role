@@ -145,7 +145,7 @@ export default {
       return parseTime(time)
     },
     query() {
-      const params = { ... this.queryPageination }
+      const params = { ... this.queryPageination, stateJson: JSON.stringify([-1, 1]) }
       getTaskPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.tasklist
