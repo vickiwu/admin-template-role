@@ -230,7 +230,9 @@ export default {
       }
       commit(params).then(data => {
         if (data.state === 1) {
-          this.$message.success('研判成功！')
+          this.$alert('研判成功！', {
+            confirmButtonText: '确定'
+          })
         }
         this.$router.push({
           name: 'ExpertJudge'
@@ -247,7 +249,9 @@ export default {
       }
       commit(params).then(data => {
         if (data.state === 1) {
-          this.$message.success('研判成功！')
+          this.$alert('研判成功！', {
+            confirmButtonText: '确定'
+          })
         }
         this.$router.push({
           name: 'ExpertJudge'

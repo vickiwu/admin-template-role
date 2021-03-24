@@ -307,7 +307,9 @@ export default {
             this.downloadByBlob(item.httpUrl, item.create)
           })
         } else {
-          this.$message.warning('当前无图片可下载')
+          this.$alert('当前无图片可下载', {
+            confirmButtonText: '确定'
+          })
         }
       }
     },

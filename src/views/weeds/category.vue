@@ -167,19 +167,20 @@ export default {
         }).then(() => {
           delLb({ id: ids[0] }).then((res) => {
             if (res.state === 1) {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
+              this.$alert('删除成功', {
+                confirmButtonText: '确定',
+                callback: () => {
+                  // 新增完成 更新列表
+                  this.getLbPage()
+                }
               })
             }
-            // 新增完成 更新列表
-            this.getLbPage()
           })
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // })
         })
       }
     },
@@ -207,25 +208,27 @@ export default {
         // 修改逻辑
         editLb({ json: JSON.stringify(params) }).then((res) => {
           if (res.state === 1) {
-            this.$message({
-              type: 'success',
-              message: '修改成功!'
+            this.$alert('修改成功', {
+              confirmButtonText: '确定',
+              callback: () => {
+                // 新增完成 更新列表
+                this.getLbPage()
+              }
             })
           }
-          // 新增完成 更新列表
-          this.getLbPage()
         })
       } else {
         // 新增
         addLb({ json: JSON.stringify(params) }).then((res) => {
           if (res.state === 1) {
-            this.$message({
-              type: 'success',
-              message: '新增成功!'
+            this.$alert('新增成功', {
+              confirmButtonText: '确定',
+              callback: () => {
+                // 新增完成 更新列表
+                this.getLbPage()
+              }
             })
           }
-          // 新增完成 更新列表
-          this.getLbPage()
         })
       }
       this.dialogVisible = false

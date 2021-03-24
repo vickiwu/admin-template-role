@@ -194,13 +194,16 @@ $light_gray: #eee;
   background: url('../../assets/login.png') no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
+  display: flex;
+    justify-content: center;
+    align-items: center;
 
   .login-form {
     position: relative;
-    width: 520px;
+    width: 480px;
     max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
+    // padding: 160px 35px 0;
+    // margin: 0 auto;
     overflow: hidden;
     ::v-deep.el-button--primary:focus,
     .el-button--primary:hover {

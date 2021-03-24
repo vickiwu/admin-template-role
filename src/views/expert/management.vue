@@ -224,15 +224,17 @@ export default {
       }).then(() => {
         zhuanjiaDelete({ id: row.id }).then(res => {
           if (res.state === 1) {
-            this.$message.success('删除成功！')
+            this.$alert('删除成功！', {
+              confirmButtonText: '确定'
+            })
           }
           this.query()
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // })
       })
     }
 

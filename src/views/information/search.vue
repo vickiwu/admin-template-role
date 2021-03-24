@@ -228,31 +228,33 @@ export default {
           if (ids.length === 1) {
             ziliaoDelete({ id: ids[0] }).then((data) => {
               if (data.state) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
+                this.$alert('删除成功!', {
+                  confirmButtonText: '确定',
+                  callback: () => {
+                    // 删除成功 执行查询更新
+                    this.getPage()
+                  }
                 })
-                // 删除成功 执行查询更新
-                this.getPage()
               }
             })
           } else {
             ziliaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
               if (data.state) {
-                this.$message({
-                  type: 'success',
-                  message: '删除成功!'
+                this.$alert('删除成功!', {
+                  confirmButtonText: '确定',
+                  callback: () => {
+                    // 删除成功 执行查询更新
+                    this.getPage()
+                  }
                 })
-                // 删除成功 执行查询更新
-                this.getPage()
               }
             })
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // })
         })
       }
     },

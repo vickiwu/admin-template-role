@@ -120,9 +120,8 @@ export default {
       }
       setPrivGroup(params).then(data => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '设置成功!'
+          this.$alert('设置成功', {
+            confirmButtonText: '确定'
           })
         }
       })

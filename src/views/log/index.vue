@@ -199,7 +199,10 @@ export default {
     },
     delelteFile() {
       if (this.selected.length === 0) {
-        this.$message.error('请选择要删除的日志！')
+        this.$alert('请选择要删除的日志!', {
+          confirmButtonText: '确定'
+
+        })
         return
       }
       const ids = []
@@ -211,15 +214,19 @@ export default {
       }).then(() => {
         logDelete({ ids: JSON.stringify(ids) }).then(res => {
           if (res.state === 1) {
-            this.$message.success('删除成功！')
+            this.$alert('删除成功！', {
+              confirmButtonText: '确定',
+              callback: () => {
+                this.query()
+              }
+            })
           }
-          this.query()
         })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // })
       })
     }
   }

@@ -340,22 +340,27 @@ export default {
     },
     onSubmit() {
       if (this.selected.length === 0) {
-        this.$message.error('请选择至少一个杂草')
+        this.$alert('请选择至少一个杂草', {
+          confirmButtonText: '确定'
+        })
         return
       }
       if (this.selected.length > 1) {
-        this.$message.error('请选择一个杂草')
+        this.$alert('请选择一个杂草', {
+          confirmButtonText: '确定'
+        })
         return
       }
       if (!this.form.id) {
-        this.$message.error('请选择一个专家')
+        this.$alert('请选择一个专家', {
+          confirmButtonText: '确定'
+        })
         return
       }
       create({ zhuanjiaId: this.form.id, zacaoId: this.selected[0].id }).then((data) => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '派发成功!'
+          this.$alert('派发成功', {
+            confirmButtonText: '确定'
           })
           this.selected = []
           this.form = {

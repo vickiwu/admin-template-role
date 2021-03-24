@@ -108,13 +108,14 @@ export default {
     async edit() {
       await edit({ json: JSON.stringify(this.formNews) }).then((data) => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          })
-          // 修改成功后返回新闻管理页
-          this.$router.push({
-            name: 'Management'
+          this.$alert('修改成功!', {
+            confirmButtonText: '确定',
+            callback: () => {
+              // 修改成功后返回新闻管理页
+              this.$router.push({
+                name: 'Management'
+              })
+            }
           })
         }
       })
@@ -122,14 +123,9 @@ export default {
     async create() {
       await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
         if (data.state === 1) {
-          this.$message({
-            type: 'success',
-            message: '新增成功!'
-
+          this.$alert('新增成功!', {
+            confirmButtonText: '确定'
           })
-          // this.$router.push({
-          //   name: 'Management'
-          // })
         }
       })
     },
