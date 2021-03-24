@@ -65,8 +65,8 @@
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 : "" }}</span>
             </div>
 
           </template>
@@ -258,7 +258,32 @@ export default {
     },
     handleDownLoad() {
       // 处理下载函数
-
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['资料名称', '涉及杂草种类', '摘要', '发现时间']
+        const filterVal = ['name', 'specy', 'desc', 'create']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: '资料信息',
+          autoWidth: true,
+          bookType: 'xlsx'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'create') {
+          return parseTime(v[j])
+        } else if (j === 'specy') {
+          return (v[j].lb1 + v[j].lb2)
+        } else {
+          return v[j]
+        }
+      }))
     },
     handleAdd() {
       // 跳转到修改页面
