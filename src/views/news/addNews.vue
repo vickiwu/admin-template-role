@@ -124,7 +124,12 @@ export default {
       await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
         if (data.state === 1) {
           this.$alert('新增成功!', {
-            confirmButtonText: '确定'
+            confirmButtonText: '确定',
+            callback: () => {
+              this.formNews.title = ''
+              this.formNews.content = ''
+              this.formNews.state = ''
+            }
           })
         }
       })
