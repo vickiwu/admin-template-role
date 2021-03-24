@@ -57,7 +57,7 @@
             </span>
           </el-col>
           <el-col :span="6">
-            <el-button style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
+            <el-button style="margin-left ：20px" size="small" type="primary" @click="showMap">地图查看</el-button>
           </el-col>
 
         </el-form-item>
@@ -76,17 +76,22 @@
       width="50%"
       :before-close="handleClose"
     >
-      <baidu-map
-        ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
-        class="bm-view"
-        :zoom="12"
-        :center="home"
-        :scroll-wheel-zoom="true"
-      >
-        <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
-          <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
-        </bm-marker>
-      </baidu-map>
+      <div v-if="form.lat && form.lng">
+        <baidu-map
+          ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
+          class="bm-view"
+          :zoom="7"
+          :center="home"
+          :scroll-wheel-zoom="true"
+        >
+          <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
+            <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+          </bm-marker>
+        </baidu-map>
+      </div>
+      <div v-else>
+        无位置信息
+      </div>
     </el-dialog>
   </div>
 </template>
