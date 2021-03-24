@@ -16,9 +16,6 @@
         <el-form-item label="真实姓名" prop="realname">
           <el-input v-model="form.realname" placeholder="请输入真实姓名" />
         </el-form-item>
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="form.nickname" suffix-icon="el-icon-refresh" placeholder="请输入昵称" />
-        </el-form-item>
         <el-form-item v-if="!this.$route.params.isEdit" label="登陆密码" prop="password">
           <el-input v-model="form.password" type="password" placeholder="请输入登陆密码" />
         </el-form-item>
@@ -148,7 +145,6 @@ export default {
       form: {
         username: '',
         realname: '',
-        nickname: '',
         password: '',
         password1: '',
         cityName: '',
@@ -164,9 +160,6 @@ export default {
         ],
         realname: [
           { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        nickname: [
-          { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入登陆密码', trigger: 'blur' }
@@ -198,9 +191,6 @@ export default {
         ],
         realname: [
           { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        nickname: [
-          { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
         cityName: [
           { required: true, message: '请输入地市', trigger: 'blur' }
@@ -303,7 +293,6 @@ export default {
                 this.form = {
                   username: '',
                   realname: '',
-                  nickname: '',
                   password: '',
                   password1: '',
                   cityName: '',
