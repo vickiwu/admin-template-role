@@ -62,7 +62,6 @@
 
         <el-form-item label="类型" prop="utype">
           <el-select v-model="form.utype" clearable placeholder="请选择类型">
-            <el-option label="系统管理员" :value="1" />
             <el-option label="专家调度用户" :value="2" />
             <el-option label="研判专家" :value="3" />
             <el-option label="图像采集操作员" :value="4" />
