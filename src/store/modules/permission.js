@@ -6,9 +6,9 @@ const state = {
 }
 
 const mutations = {
-  SET_PERMISSION_STATE: (state) => {
+  SET_PERMISSION_STATE: (state, isSet) => {
     // eslint-disable-next-line no-prototype-builtins
-    state.hasSetPermission = true
+    state.hasSetPermission = isSet
   }
 }
 
@@ -32,11 +32,38 @@ const actions = {
         const routes = setRoutes(constantRoutes, arr1)
         resolve(routes)
       } else {
-        resolve(constantRoutes)
+        const routes = resetRoutes(constantRoutes)
+        resolve(routes)
       }
-      commit('SET_PERMISSION_STATE')
+      commit('SET_PERMISSION_STATE', true)
     })
+  },
+  resetPermissionState({ commit }) {
+    commit('SET_PERMISSION_STATE', false)
   }
+}
+
+export function resetRoutes(constantRoutes) {
+  // constantRoutes = routes
+  constantRoutes.forEach(element => {
+    if (element.meta) {
+      if (element.meta.title === '统计分析' ||
+      element.meta.title === '新闻中心' ||
+      element.meta.title === '杂草库' ||
+      element.meta.title === '专家中心' ||
+      element.meta.title === '资料中心' ||
+      element.meta.title === '系统日志' ||
+      element.meta.title === '专家研判'
+      ) {
+        element.hidden = false
+      } else if (element.meta.title === '资源管理') {
+        element.hidden = false
+        element.children.forEach(item => {
+          item.hidden = false
+        })
+      }
+    }
+  })
 }
 
 export function setRoutes(constantRoutes, priv) {

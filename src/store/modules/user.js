@@ -83,7 +83,7 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout().then(() => {
         removeToken() // 首先移除token
@@ -94,6 +94,7 @@ const actions = {
 
         resetRouter()
         commit('RESET_STATE')
+        dispatch('permission/resetPermissionState', {}, { root: true })
         resolve()
       }).catch(error => {
         reject(error)
