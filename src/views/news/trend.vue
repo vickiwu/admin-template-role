@@ -2,11 +2,11 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row type="flex" justify="space-around" class="news-row">
-        <el-col :span="15" class="col-left">
-          <div class="left-title">热点精选</div>
-          <div v-for="(o,index) in xinwenlist" :key="o.id">
+        <el-col :span="17" class="col-left">
+          <div class="left-title">最新新闻</div>
+          <div v-for="(o, index) in xinwenlist" :key="o.id">
             <el-row>
-              <div v-html="o.content" />
+              <div class="show-xinwen" v-html="o.content" />
               <!-- <el-col :span="7">
                 <el-image
                   src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
@@ -20,13 +20,17 @@
                 <div class="img-title">{{ o.content }}</div>
               </el-col> -->
             </el-row>
-            <el-divider v-if="index < xinwenlist.length-1" />
+            <el-divider v-if="index < xinwenlist.length - 1" />
           </div>
         </el-col>
-        <el-col :span="7" class="col-right">
+        <el-col :span="5" class="col-right">
           <div class="right-title">热点排行榜：</div>
           <div v-for="o in topList" :key="o.id" class="right-list">
-            <span class="top-span" style="cursor: pointer;" @click="jumpNews(o)">{{ `${o.title}...` }}</span>
+            <span
+              class="top-span"
+              style="cursor: pointer;"
+              @click="jumpNews(o)"
+            >{{ `${o.title}...` }}</span>
           </div>
         </el-col>
       </el-row>
@@ -55,14 +59,14 @@ export default {
   },
   methods: {
     async getHotNews() {
-      await getHotNews().then((res) => {
+      await getHotNews().then(res => {
         const { data } = res
         this.topList = data.xinwenHotlist
       })
     },
     async getPage() {
       const params = { ...this.pagination }
-      await getPage(clean(params)).then((res) => {
+      await getPage(clean(params)).then(res => {
         const { data } = res
         this.xinwenlist = data.xinwenlist
       })
@@ -80,7 +84,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .news-card {
   min-height: calc(100% - 35px);
   ::v-deep.el-card__body {
@@ -116,16 +119,24 @@ export default {
         font-weight: bold;
         margin-bottom: 15px;
       }
-      .right-list{
+      .right-list {
         margin: 5px 15px 15px 15px;
       }
     }
   }
-  .top-span{
+  .top-span {
     cursor: pointer;
-    &:hover{
+    &:hover {
       text-decoration: underline;
     }
   }
+
 }
+</style>
+<style lang="scss">
+  .show-xinwen {
+    img {
+      max-width: 40%;
+    }
+  }
 </style>

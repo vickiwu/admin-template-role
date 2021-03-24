@@ -35,11 +35,17 @@
           :show-overflow-tooltip="true"
         />
         <el-table-column
-          type="index"
+          prop=""
           label="序号"
-          width="80"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <div>
+
+              {{ scope.$index + 1 + queryPageination.start }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="username"
           label="用户名"
