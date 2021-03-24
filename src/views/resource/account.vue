@@ -18,7 +18,7 @@
         </el-col>
         <el-col :span="19" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small" @click="del">删除</el-button>
+          <!-- <el-button type="danger" size="small" @click="del">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -95,6 +95,12 @@
               @click="handleEdit(scope.$index, scope.row)"
             >
               修改
+            </span>
+            <span
+              style="color: #F56C6C;cursor:pointer;"
+              @click="del(scope.row)"
+            >
+              删除
             </span>
           </template>
         </el-table-column>
@@ -189,23 +195,13 @@ export default {
     handleSelectionChange(val) {
       this.selected = val
     },
-    del() {
-      if (this.selected.length === 0) {
-        this.$message.error('请选择要删除的账户！')
-        return
-      }
-      if (this.selected.length > 1) {
-        this.$message.error('请单独选择一个账户进行删除！')
-        return
-      }
-      const ids = []
-      this.selected.forEach(item => ids.push(item.id))
+    del(row) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteUser({ id: ids[0] }).then(res => {
+        deleteUser({ id: row.id }).then(res => {
           if (res.state === 1) {
             this.$message.success('删除成功！')
           }

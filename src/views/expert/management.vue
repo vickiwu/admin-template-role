@@ -21,7 +21,7 @@
 
           <el-button type="primary" size="small" @click="query">检索</el-button>
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small" @click="deleteZhuanjia">删除</el-button>
+          <!-- <el-button type="danger" size="small" @click="deleteZhuanjia">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -29,14 +29,7 @@
         stripe
         style="width: 100%"
         class="report-table"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
-        />
         <el-table-column
           type="index"
           label="序号"
@@ -125,6 +118,12 @@
             >
               修改
             </span>
+            <span
+              style="color: #F56C6C;cursor:pointer;"
+              @click="deleteZhuanjia(scope.row)"
+            >
+              删除
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -164,8 +163,7 @@ export default {
         count: 10,
         index: 1
       },
-      totalCount: 0,
-      selected: []
+      totalCount: 0
     }
   },
   computed: {
@@ -218,26 +216,13 @@ export default {
       this.pagination.index = val
       this.query()
     },
-    handleSelectionChange(val) {
-      this.selected = val
-    },
-    deleteZhuanjia() {
-      if (this.selected.length === 0) {
-        this.$message.error('请选择要删除的专家！')
-        return
-      }
-      if (this.selected.length > 1) {
-        this.$message.error('请单独选择一个专家进行删除！')
-        return
-      }
-      const ids = []
-      this.selected.forEach(item => ids.push(item.id))
+    deleteZhuanjia(row) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        zhuanjiaDelete({ id: ids[0] }).then(res => {
+        zhuanjiaDelete({ id: row.id }).then(res => {
           if (res.state === 1) {
             this.$message.success('删除成功！')
           }

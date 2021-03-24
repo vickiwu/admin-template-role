@@ -11,12 +11,6 @@
         class="report-table"
       >
         <el-table-column
-          type="selection"
-          label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column
           type="index"
           label="序号"
           width="80"
@@ -92,7 +86,12 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="details(scope.row)">杂草详情</el-button>
+            <span
+              style="color: #409EFF;cursor:pointer;"
+              @click="details(scope.row)"
+            >
+              杂草详情
+            </span>
           </template>
         </el-table-column>
       </el-table>

@@ -69,7 +69,12 @@
           label="操作"
         >
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="set(scope.row)">研判处理</el-button>
+            <span
+              style="color: #409EFF;cursor:pointer;"
+              @click="set(scope.row)"
+            >
+              研判处理
+            </span>
           </template>
         </el-table-column>
       </el-table>
