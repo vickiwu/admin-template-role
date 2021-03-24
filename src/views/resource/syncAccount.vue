@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">账户同步</div>
-
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="20">
         <el-col :span="8" style="text-align:left">

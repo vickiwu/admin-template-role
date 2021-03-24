@@ -1,8 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">资料管理 <span class="news-sub">/</span> <span class="news-sub-title">
-      {{ !isEdit ? '资料录入' : '资料编辑' }}
-    </span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="formZilao"

@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">新闻中心 <span class="news-sub">/</span> <span class="news-sub-title">{{ !isEdit ? '新闻发布' : '新闻编辑' }}</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="formNews"

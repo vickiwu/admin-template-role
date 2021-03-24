@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">专家中心 <span class="news-sub">/</span> <span class="news-sub-title">调度设置</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"

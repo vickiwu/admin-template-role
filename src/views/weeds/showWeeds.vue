@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">杂草管理 <span class="news-sub">/</span> <span class="news-sub-title">杂草详情</span> </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"

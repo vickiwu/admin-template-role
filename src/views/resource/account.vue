@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">账户管理</div>
     <div class="bg-container">
       <div class="blue-bg" @click="jumpSync()">
         <svg-icon icon-class="zhanghutngbu" class="bg-icon" />

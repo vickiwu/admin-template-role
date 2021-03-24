@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">权限设置 </div>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"

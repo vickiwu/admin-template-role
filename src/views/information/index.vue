@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">资料管理</div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
 

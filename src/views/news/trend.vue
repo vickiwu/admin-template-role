@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">海关新闻</div>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" justify="space-around" class="news-row">
         <el-col :span="15" class="col-left">

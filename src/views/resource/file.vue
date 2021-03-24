@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="news-title">文件管理</div>
-
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="20">
         <el-col :span="10" style="text-align:left">
