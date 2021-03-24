@@ -144,16 +144,17 @@ export default {
               })
             } else {
               this.form = {
+                ...this.form,
                 realname: '',
                 cat: '',
                 desc: '',
                 jobNo: '',
                 phone: '',
                 schedule: '',
-                from: '',
-                avatar: null
+                from: ''
+                // avatar: null
               }
-              this.imageUrl = ''
+              // this.imageUrl = ''
             }
           })
         }
