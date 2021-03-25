@@ -54,13 +54,12 @@
         <el-table-column
           type="selection"
           label="选择"
-          :show-overflow-tooltip="true"
+          width="50"
         />
         <el-table-column
           prop=""
           label="序号"
           width="50"
-          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <div>

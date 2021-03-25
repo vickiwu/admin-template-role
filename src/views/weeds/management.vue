@@ -81,13 +81,12 @@
         <el-table-column
           type="selection"
           label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
+          width="50"
         />
         <el-table-column
           prop=""
           label="序号"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <div>
@@ -366,11 +365,10 @@ export default {
     handleDetail(index, rowData) {
       console.log('%c 🍗 index, rowData: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', index, rowData)
       const routeUrl = this.$router.resolve({
-        path: 'ShowWeeds',
-        query: {
-          rowData: JSON.stringify(rowData)
-        }
+        name: 'ShowWeeds'
       })
+      sessionStorage.setItem('weeds_data', JSON.stringify(rowData))
+
       window.open(routeUrl.href, '_blank')
       // this.$router.push({
       //   name: 'ShowWeeds',

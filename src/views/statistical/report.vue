@@ -83,6 +83,7 @@
             <el-table-column
               prop=""
               label="序号"
+              width="50"
               :show-overflow-tooltip="true"
             >
               <template slot-scope="scope">

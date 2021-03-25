@@ -49,6 +49,15 @@ export function getInfo(data) {
     data
   })
 }
+
+export function getH4aUserPage(data) {
+  return request({
+    url: WeedGlobalConfig.admin.getH4aUserPage,
+    method: 'POST',
+    data
+  })
+}
+
 // 用户登陆
 export function login(data) {
   return request({

@@ -123,12 +123,8 @@ export default {
     ])
   },
   mounted() {
-    // this.form = { ...this.$route.params.rowData }
-    if (this.$route.query && this.$route.query.rowData) {
-      this.form = JSON.parse(this.$route.query.rowData)
-    }
-    // const data = this.$route.query
-    // this.form = { ...this.$route.query }
+    const data = sessionStorage.getItem('weeds_data')
+    this.form = JSON.parse(data)
   },
   methods: {
     showMap() {

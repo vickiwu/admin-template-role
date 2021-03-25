@@ -150,11 +150,9 @@ export default {
       //   }
       // })
       const routeUrl = this.$router.resolve({
-        path: 'ShowWeeds',
-        query: {
-          rowData: zacao
-        }
+        name: 'ShowWeeds'
       })
+      sessionStorage.setItem('weeds_data', JSON.stringify(zacao))
       window.open(routeUrl.href, '_blank')
     },
     infoWindowClose(id) {

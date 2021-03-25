@@ -33,7 +33,7 @@
         <el-table-column
           prop=""
           label="序号"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <div>

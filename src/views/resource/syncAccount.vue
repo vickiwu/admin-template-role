@@ -22,13 +22,12 @@
         <el-table-column
           type="selection"
           label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
+          width="50"
         />
         <el-table-column
           prop=""
           label="序号"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <div>
@@ -102,7 +101,7 @@
 
 <script>
 import { clean } from '@/utils/index'
-import { getUserPage, synH4a } from '@/api/admin'
+import { getH4aUserPage, synH4a } from '@/api/admin'
 import { getSysConfig } from '@/utils/auth'
 import { pageCount } from '@/globalConfig'
 
@@ -148,7 +147,7 @@ export default {
   methods: {
     query() {
       const params = { ... this.queryPageination }
-      getUserPage(clean(params)).then((res) => {
+      getH4aUserPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.userlist
         this.totalCount = data.totalCount
