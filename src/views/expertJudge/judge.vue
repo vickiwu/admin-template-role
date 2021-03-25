@@ -111,7 +111,7 @@ export default {
   data() {
     return {
       cityJson: cityJson.cityies,
-      isEdit: false,
+      isEdit: true,
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
       formWeed: {
@@ -155,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
+    // this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
       if (this.isEdit && this.formWeed.specy) {

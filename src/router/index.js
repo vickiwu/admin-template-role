@@ -44,7 +44,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/weeds',
     component: Layout,

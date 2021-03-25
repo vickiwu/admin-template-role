@@ -104,7 +104,7 @@
           <el-input v-model="formChangePassword.newPass" type="password" placeholder="请输入新密码" />
         </el-form-item>
         <el-form-item label="确认新密码" prop="newPass2">
-          <el-input v-model="formChangePassword.newPass2" placeholder="请输入确认新密码" type="password" />
+          <el-input v-model="formChangePassword.newPass2" type="password" placeholder="请输入确认新密码" />
         </el-form-item>
 
         <div style="text-align:center">
@@ -118,16 +118,13 @@
       :visible.sync="dialogImg"
       :modal-append-to-body="false"
       width="35%"
+      @open="showAvatar"
     >
       <div style="text-align:center; ">
-        <el-image class="img-info">
-          <div slot="error" class="image-slot">
-            <i class="el-icon-picture-outline" />
-          </div>
-        </el-image>
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <div class="avatar-wrapper">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        </div>
         <div style="text-align:center;">
-
           <el-upload
             style="display: inline-block;"
             action="string"
@@ -136,10 +133,8 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-
             <el-button type="primary" style="margin-right:20px">
               上传图片
-
             </el-button>
           </el-upload>
           <el-button type="primary" @click="setAvatar">确认更改</el-button>
@@ -216,6 +211,9 @@ export default {
     ])
   },
   methods: {
+    showAvatar() {
+      this.imageUrl = this.avatar
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
     },
@@ -266,8 +264,11 @@ export default {
       this.fileData = data.result // 返回的是表单格式
     },
     async setAvatar() {
-      await setAvatar({ json: JSON.stringify(this.fileData) })
-      this.dialogImg = false
+      await setAvatar({ json: JSON.stringify(this.fileData) }).then(() => {
+        // 设置头像更新
+        this.$store.dispatch('user/setUserAvatar', this.fileData.httpUrl)
+        this.dialogImg = false
+      })
     }
   }
 }
