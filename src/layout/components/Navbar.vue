@@ -97,14 +97,14 @@
         label-position="left"
         class="news-form"
       >
-        <el-form-item label="当前密码2" prop="oldPass">
-          <el-input v-model="formChangePassword.oldPass" placeholder="请输入当前密码" />
+        <el-form-item label="当前密码" prop="oldPass">
+          <el-input v-model="formChangePassword.oldPass" type="password" placeholder="请输入当前密码" />
         </el-form-item>
         <el-form-item label="新密码" prop="newPass">
-          <el-input v-model="formChangePassword.newPass" placeholder="请输入新密码" />
+          <el-input v-model="formChangePassword.newPass" type="password" placeholder="请输入新密码" />
         </el-form-item>
         <el-form-item label="确认新密码" prop="newPass2">
-          <el-input v-model="formChangePassword.newPass2" placeholder="请输入确认新密码" />
+          <el-input v-model="formChangePassword.newPass2" type="password" placeholder="请输入确认新密码" />
         </el-form-item>
 
         <div style="text-align:center">
