@@ -41,6 +41,7 @@
 <script>
 import { getHotNews, getPage } from '@/api/xinwen'
 import { clean } from '@/utils/index'
+import { pageCount } from '@/globalConfig'
 
 export default {
   data() {
@@ -48,7 +49,7 @@ export default {
       topList: [],
       xinwenlist: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       }
     }

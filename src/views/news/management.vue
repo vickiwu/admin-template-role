@@ -173,6 +173,7 @@
 <script>
 import { getPage, xinwenDelete } from '@/api/xinwen'
 import { clean, parseTime } from '@/utils/index'
+import { pageCount } from '@/globalConfig'
 
 export default {
   data() {
@@ -185,7 +186,7 @@ export default {
       },
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

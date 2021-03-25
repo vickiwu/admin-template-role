@@ -98,6 +98,7 @@
 <script>
 import { getServerList } from '@/api/sys'
 import { clean, parseTime } from '@/utils/index'
+import { pageCount } from '@/globalConfig'
 
 export default {
 
@@ -105,7 +106,7 @@ export default {
     return {
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

@@ -241,6 +241,7 @@ import { clean, parseTime } from '@/utils/index'
 import { getPage as getZhuanjia } from '@/api/zhuanjia'
 import { create } from '@/api/yanpan'
 import ElSelectTree from 'el-select-tree'
+import { pageCount } from '@/globalConfig'
 
 const cityJson = require('@/assets/json/cities.json')
 
@@ -275,7 +276,7 @@ export default {
       options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
-        count: 5,
+        count: pageCount / 2,
         index: 1
       },
       totalCount: 0,

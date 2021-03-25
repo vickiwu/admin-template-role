@@ -196,6 +196,8 @@ import { getPage, getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 import ElSelectTree from 'el-select-tree'
+import { pageCount } from '@/globalConfig'
+
 export default {
   components: {
     ElSelectTree
@@ -221,7 +223,7 @@ export default {
       },
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

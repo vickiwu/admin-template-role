@@ -108,6 +108,7 @@
 
 import { getLbPage, addLb, editLb, delLb } from '@/api/zacao'
 import { clean } from '@/utils/index'
+import { pageCount } from '@/globalConfig'
 
 export default {
 
@@ -128,7 +129,7 @@ export default {
       },
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

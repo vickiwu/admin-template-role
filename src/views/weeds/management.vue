@@ -216,6 +216,7 @@ import { getPage, getLbPage, zacaoDelete } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
 const cityJson = require('@/assets/json/cities.json')
+import { pageCount } from '@/globalConfig'
 
 export default {
   components: {
@@ -241,7 +242,7 @@ export default {
       options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

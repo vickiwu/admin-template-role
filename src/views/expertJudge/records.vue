@@ -123,13 +123,14 @@
 import { clean, parseTime } from '@/utils/index'
 import { getTaskPage } from '@/api/yanpan'
 import { getZacao } from '@/api/zacao'
+import { pageCount } from '@/globalConfig'
 
 export default {
   data() {
     return {
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0

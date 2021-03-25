@@ -99,13 +99,14 @@
 <script>
 import { clean, parseTime } from '@/utils/index'
 import { getFilePage } from '@/api/sys'
+import { pageCount } from '@/globalConfig'
 export default {
 
   data() {
     return {
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

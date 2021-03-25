@@ -126,6 +126,7 @@ import { getPage, ziliaoDelete } from '@/api/ziliao'
 import { getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
+import { pageCount } from '@/globalConfig'
 
 export default {
   components: {
@@ -146,7 +147,7 @@ export default {
         label: 'lb2'
       },
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

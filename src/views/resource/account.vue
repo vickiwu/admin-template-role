@@ -133,6 +133,7 @@
 <script>
 import { clean } from '@/utils/index'
 import { getUserPage, deleteUser } from '@/api/admin'
+import { pageCount } from '@/globalConfig'
 
 export default {
 
@@ -140,7 +141,7 @@ export default {
     return {
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

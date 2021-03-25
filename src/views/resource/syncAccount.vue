@@ -104,6 +104,7 @@
 import { clean } from '@/utils/index'
 import { getUserPage, synH4a } from '@/api/admin'
 import { getSysConfig } from '@/utils/auth'
+import { pageCount } from '@/globalConfig'
 
 export default {
 
@@ -124,7 +125,7 @@ export default {
       checked: false,
       tableData: [],
       pagination: {
-        count: 10,
+        count: pageCount,
         index: 1
       },
       totalCount: 0,

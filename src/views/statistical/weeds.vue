@@ -50,6 +50,7 @@ import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel } from 'vue-baidu-map'
 import { totalCount, getDistPage, heatmap, heatmapTotal, getZacao } from '@/api/zacao'
 import { getSysConfig } from '@/utils/auth'
 import debounce from 'lodash.debounce'
+import { pageCount } from '@/globalConfig'
 
 // import { clean, parseTime } from '@/utils/index'
 
@@ -79,7 +80,7 @@ export default {
       data: [], // { lng: 118.818261, lat: 32.021984, count: 50 }
       zacao: {},
       start: 0,
-      count: 10
+      count: pageCount
     }
   },
   computed: {
