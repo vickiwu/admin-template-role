@@ -44,43 +44,7 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/news',
-    component: Layout,
-    redirect: '/news/trend',
-    name: 'News',
-    meta: { title: '新闻中心', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'addNews',
-        name: 'AddNews',
-        // hidden: true,
-        component: () => import('@/views/news/addNews'),
-        meta: { title: '新闻发布', icon: 'tree' }
-      },
-      {
-        path: 'newsDetail',
-        name: 'NewsDetail',
-        hidden: true,
-        component: () => import('@/views/news/news'),
-        meta: { title: '新闻内容', icon: 'tree' }
-      },
 
-      {
-        path: 'trend',
-        name: 'Trend',
-        component: () => import('@/views/news/trend'),
-        meta: { title: '新闻动态', icon: 'table' }
-      },
-      {
-        path: 'management',
-        name: 'Management',
-        component: () => import('@/views/news/management'),
-        meta: { title: '新闻管理', icon: 'tree' }
-      }
-
-    ]
-  },
   {
     path: '/weeds',
     component: Layout,
@@ -271,6 +235,43 @@ export const constantRoutes = [
         component: () => import('@/views/expertJudge/records'),
         meta: { title: '研判记录', icon: 'tree' }
       }
+    ]
+  },
+  {
+    path: '/news',
+    component: Layout,
+    redirect: '/news/trend',
+    name: 'News',
+    meta: { title: '新闻中心', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'addNews',
+        name: 'AddNews',
+        // hidden: true,
+        component: () => import('@/views/news/addNews'),
+        meta: { title: '新闻发布', icon: 'tree' }
+      },
+      {
+        path: 'newsDetail',
+        name: 'NewsDetail',
+        hidden: true,
+        component: () => import('@/views/news/news'),
+        meta: { title: '新闻内容', icon: 'tree' }
+      },
+
+      {
+        path: 'trend',
+        name: 'Trend',
+        component: () => import('@/views/news/trend'),
+        meta: { title: '新闻动态', icon: 'table' }
+      },
+      {
+        path: 'management',
+        name: 'Management',
+        component: () => import('@/views/news/management'),
+        meta: { title: '新闻管理', icon: 'tree' }
+      }
+
     ]
   },
   {
