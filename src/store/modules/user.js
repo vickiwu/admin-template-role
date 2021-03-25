@@ -27,6 +27,9 @@ const mutations = {
   SET_USER: (state, user) => {
     state.user = user
   },
+  SET_USER_AVATAR: (state, url) => {
+    state.user.avatar = url
+  },
   SET_SYSCONFIG: (state, sysconfig) => {
     state.sysconfig = sysconfig
   },
@@ -39,6 +42,9 @@ const mutations = {
 }
 
 const actions = {
+  setUserAvatar({ commit }, url) {
+    commit('SET_USER_AVATAR', url)
+  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
