@@ -7,10 +7,10 @@
             <el-date-picker
               v-model="formInline.startTime"
               size="medium"
-              type="datetime"
-              placeholder="开始日期"
-              format="yyyy年MM月dd日"
+              type="date"
               value-format="timestamp"
+              placeholder="开始日期"
+              format="yyyy-MM-dd"
               style="width: 100%"
             />
           </el-col>
@@ -19,11 +19,10 @@
             <el-date-picker
               v-model="formInline.endTime"
               size="medium"
-              type="datetime"
-              placeholder="结束日期"
-              format="yyyy年MM月dd日 "
+              type="date"
               value-format="timestamp"
-              default-time="23:59:59"
+              placeholder="结束日期"
+              format="yyyy-MM-dd"
               style="width: 100%"
             />
           </el-col>
@@ -60,6 +59,7 @@
         <el-table-column
           prop=""
           label="序号"
+          width="50"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
@@ -78,8 +78,7 @@
         <el-table-column
           prop="name"
           label="级别"
-          min-width="10%"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <span v-if="scope.row.level === 0">通知</span>
@@ -91,8 +90,7 @@
         <el-table-column
           prop="address"
           label="记录时间"
-          min-width="10%"
-          :show-overflow-tooltip="true"
+          width="180"
         >
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.create) }}</span>
@@ -173,7 +171,6 @@ export default {
       const params = {
         ...this.queryPageination,
         ...this.formInline
-
       }
       await getPage(clean(params)).then(res => {
         const { data } = res
