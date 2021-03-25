@@ -75,14 +75,19 @@
         stripe
         style="width: 100%"
         class="report-table"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          label="选择"
-          width="80"
-          :show-overflow-tooltip="true"
-        />
+
+        <el-table-column label="选择" align="center" width="65">
+          <template scope="scope">
+            <el-radio
+              v-model="radio"
+              :label="scope.$index"
+              @change.native="getCurrentRow(scope.row)"
+            >
+              <span />
+            </el-radio>
+          </template>
+        </el-table-column>
         <el-table-column
           prop=""
           label="序号"
@@ -199,6 +204,7 @@ export default {
     return {
       cityJson: cityJson.cityies,
       downloadLoading: false,
+      radio: '',
       formSearch: {
         reg: '',
         specy: '',
@@ -220,7 +226,7 @@ export default {
       },
       totalCount: 0,
       options: [], // 处理后的杂草数据
-      multipleSelection: []
+      multipleSelection: {}
     }
   },
   computed: {
@@ -278,37 +284,19 @@ export default {
         this.totalCount = data.totalCount
       })
     },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-    handleEdit(index, rowData) {
-      // 跳转到修改页面
-      // this.$router.push({
-      //   name: 'AddNews',
-      //   params: {
-      //     index, rowData
-      //   }
-      // })
+
+    getCurrentRow(row) {
+      this.multipleSelection = row
     },
     handleDownLoad() {
       // 处理下载函数
-      const piclist = []
-
-      this.multipleSelection.map((item) => {
-        if (item.piclist && item.piclist.length !== 0) {
-          piclist.push(...item.piclist)
-        }
-      })
-      if (this.multipleSelection.length === 0) {
+      if (JSON.stringify(this.multipleSelection) === '{}') {
         this.$alert('请选择下载对象', '提示', {
           confirmButtonText: '确定'
-
         })
       } else {
-        if (piclist.length !== 0) {
-          piclist.map((item) => {
-            this.downloadByBlob(item.httpUrl, item.create)
-          })
+        if (this.multipleSelection.piclist && this.multipleSelection.piclist.length !== 0) {
+          this.downloadByBlob(this.multipleSelection.piclist[0].httpUrl, this.multipleSelection.piclist[0].create)
         } else {
           this.$alert('当前无图片可下载', {
             confirmButtonText: '确定'
