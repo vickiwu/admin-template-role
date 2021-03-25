@@ -186,14 +186,6 @@ export const constantRoutes = [
         meta: { title: '权限设置', icon: 'tree' }
       },
       {
-        path: 'editAccount',
-        name: 'EditAccount',
-        hidden: true,
-        component: () => import('@/views/resource/editAccount'),
-        meta: { title: '账户编辑', icon: 'tree' }
-      },
-
-      {
         path: 'file',
         name: 'File',
         component: () => import('@/views/resource/file'),
