@@ -13,7 +13,7 @@
         <el-table-column
           prop=""
           label="序号"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <div>
@@ -168,11 +168,9 @@ export default {
       getZacao(clean({ id: row.zacaoId })).then((res) => {
         const { data } = res
         const routeUrl = this.$router.resolve({
-          path: '/weeds/ShowWeeds',
-          query: {
-            rowData: JSON.stringify(data.zacao)
-          }
+          name: 'ShowWeeds'
         })
+        sessionStorage.setItem('weeds_data', JSON.stringify(data.zacao))
         window.open(routeUrl.href, '_blank')
 
         // 路由跳转

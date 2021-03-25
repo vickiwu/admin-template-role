@@ -20,6 +20,7 @@ module.exports = {
     resetPassword: '/user/resetPassword', // 密码重置
     setAvatar: '/user/setAvatar', // 头像设置
     uploadAvatar: '/upload/avatar', // 头像上传
+    getH4aUserPage: 'admin/getH4aUserPage',
     synH4a: '/admin/synH4a', // h4a 账户同步
     setPrivGroup: '/admin/setPrivGroup'// 权限设置
   },

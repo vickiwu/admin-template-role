@@ -77,7 +77,7 @@
         class="report-table"
       >
 
-        <el-table-column label="选择" align="center" width="65">
+        <el-table-column label="选择" align="center" width="50">
           <template scope="scope">
             <el-radio
               v-model="radio"
@@ -91,7 +91,7 @@
         <el-table-column
           prop=""
           label="序号"
-          :show-overflow-tooltip="true"
+          width="50"
         >
           <template slot-scope="scope">
             <div>
