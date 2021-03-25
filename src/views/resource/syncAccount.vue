@@ -160,7 +160,7 @@ export default {
     sync() {
       synH4a().then((data) => {
         if (data.state === 1) {
-          this.$alert('新增成功', {
+          this.$alert('同步成功', {
             confirmButtonText: '确定'
           })
         }

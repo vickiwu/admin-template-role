@@ -231,13 +231,13 @@ export default {
               confirmButtonText: '确定',
               callback: () => {
                 // 新增完成 更新列表
+                this.dialogVisible = false
                 this.getLbPage()
               }
             })
           }
         })
       }
-      this.dialogVisible = false
     },
 
     handlePageChange(val) {

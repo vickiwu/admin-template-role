@@ -287,7 +287,12 @@ export default {
             createUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
                 this.$alert('新增成功', {
-                  confirmButtonText: '确定'
+                  confirmButtonText: '确定',
+                  callback: () => {
+                    // for (const key in this.form) {
+                    //   this.form[key] = ''
+                    // }
+                  }
                 })
               }
               if (this.$route.params.isEdit !== undefined) {

@@ -268,24 +268,26 @@ export default {
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
           this.$alert('新增成功', {
-            confirmButtonText: '确定'
+            confirmButtonText: '确定',
+            callback: () => {
+              // 清空表单
+              this.formWeed = {
+                nameCn: '',
+                nameLt: '',
+                source: '',
+                discReg: [],
+                specy: '',
+                jydw: '',
+                desc: '',
+                piclistJson: '',
+                piclist: [],
+                lng: '',
+                lat: ''
+              }
+              this.fileList = []
+              this.selectId = ''
+            }
           })
-          // 清空表单
-          this.formWeed = {
-            nameCn: '',
-            nameLt: '',
-            source: '',
-            discReg: [],
-            specy: '',
-            jydw: '',
-            desc: '',
-            piclistJson: '',
-            piclist: [],
-            lng: '',
-            lat: ''
-          }
-          this.fileList = []
-          this.selectId = ''
         }
       })
     },
