@@ -140,9 +140,6 @@ export default {
       this.pagination.index = val
       this.query()
     },
-    onSubmit() {
-      console.log('submit!')
-    },
     jumpManageMent() {
       this.$router.push({
         name: 'ExpertManagement'

@@ -80,7 +80,6 @@ export default {
     ])
   },
   mounted() {
-    console.log(this.$route.params, 'sss')
     this.queryUserList()
   },
   methods: {

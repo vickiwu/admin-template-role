@@ -92,12 +92,12 @@
         <el-table-column
           prop="name"
           label="编辑"
-          width="80"
+          width="120"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span
-              style="color: #409EFF;cursor:pointer;"
+              style="color: #409EFF;cursor:pointer;margin-right: 10px;"
               @click="handleEdit(scope.$index, scope.row)"
             >
               修改

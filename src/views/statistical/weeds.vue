@@ -143,12 +143,19 @@ export default {
       })
     },
     showDetail(zacao) {
-      this.$router.push({
-        name: 'ShowWeeds',
-        params: {
+      // this.$router.push({
+      //   name: 'ShowWeeds',
+      //   params: {
+      //     rowData: zacao
+      //   }
+      // })
+      const routeUrl = this.$router.resolve({
+        path: 'ShowWeeds',
+        query: {
           rowData: zacao
         }
       })
+      window.open(routeUrl.href, '_blank')
     },
     infoWindowClose(id) {
       this.currentI = -1

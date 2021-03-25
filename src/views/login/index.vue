@@ -12,7 +12,7 @@
         <h3 class="title">生物信息处理系统</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="username" class="login-form-item">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
@@ -27,7 +27,7 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password" class="last-form">
+      <el-form-item prop="password" class="last-form login-form-item">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
@@ -62,20 +62,18 @@
       >
         登录
       </el-button>
-
     </el-form>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Login',
   data() {
     // 用户名的验证规则
     const validateUsername = (rule, value, callback) => {
-      if (value.length < 4 || value.length > 32) {
-        callback(new Error('用户名的长度在4-32位！'))
+      if (value.length < 2 || value.length > 32) {
+        callback(new Error('用户名的长度在2-32位！'))
       } else {
         callback()
       }
@@ -90,13 +88,19 @@ export default {
     }
     return {
       markPassword: false, // 是否记住密码
-      loginForm: { // 登录表单
+      loginForm: {
+        // 登录表单
         username: '',
         password: ''
       },
-      loginRules: { // 登录验证规则
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      loginRules: {
+        // 登录验证规则
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       loading: false,
       passwordType: 'password'
@@ -119,14 +123,17 @@ export default {
         if (valid) {
           this.loading = true
           // 验证通过提交登录信息
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: '/' }) // 跳转至首页
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: '/' }) // 跳转至首页
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
-          console.log('用户名密码验证未通过!!')
+          // console.log('用户名密码验证未通过!!')
           return false
         }
       })
@@ -191,12 +198,12 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   // background-color: $bg;
-  background: url('../../assets/login.png') no-repeat;
+  background: url("../../assets/login.png") no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
   display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 
   .login-form {
     position: relative;
@@ -209,23 +216,29 @@ $light_gray: #eee;
     .el-button--primary:hover {
       background: #368ce6;
     }
-    .last-form{
+    .last-form {
       margin-bottom: 10px;
+    }
+    .el-form-item.login-form-item {
+      margin-bottom: 25px !important;
+    }
+    ::v-deep.el-form-item__error{
+      padding-top: 2px !important;
     }
   }
 
   .tips {
     font-size: 14px;
-    color: #7882A2;
+    color: #7882a2;
     margin-top: 15px;
     margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
-    ::v-deep.el-checkbox__input.is-checked+.el-checkbox__label{
-      color: #7882A2;
+    ::v-deep.el-checkbox__input.is-checked + .el-checkbox__label {
+      color: #7882a2;
     }
-    ::v-deep.el-checkbox{
-      color: #7882A2;
+    ::v-deep.el-checkbox {
+      color: #7882a2;
     }
 
     span {

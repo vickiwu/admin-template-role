@@ -362,6 +362,8 @@ export default {
   }
 }
 .news-form {
+  width: 50%;
+  margin: 0 auto;
   ::v-deep.el-select{
     width: 100%;
   }

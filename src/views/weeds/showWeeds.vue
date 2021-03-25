@@ -134,16 +134,7 @@ export default {
     showMap() {
       this.mapDialogVisible = true
     },
-    onSubmit() {
-      console.log('submit!')
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
+
     handleClose() {
       this.mapDialogVisible = false
     }
