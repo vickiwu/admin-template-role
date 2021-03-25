@@ -25,7 +25,10 @@ html {
 #app {
   height: 100%;
   .el-form-item {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .el-form-item__error {
+    padding-top: 0px;
   }
 }
 

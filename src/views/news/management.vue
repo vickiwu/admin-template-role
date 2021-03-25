@@ -9,6 +9,7 @@
               size="medium"
               type="date"
               placeholder="开始日期"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
@@ -19,6 +20,7 @@
               size="medium"
               type="date"
               placeholder="结束日期"
+              value-format="timestamp"
               style="width: 100%"
             />
           </el-col>
