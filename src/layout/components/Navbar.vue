@@ -48,22 +48,22 @@
         class="news-form"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="userInfoForm.username" disabled placeholder="请输入用户名" />
+          <el-input v-model="userInfoForm.username" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
-          <el-input v-model="userInfoForm.realname" disabled placeholder="请输入真实姓名" />
+          <el-input v-model="userInfoForm.realname" disabled placeholder="" />
         </el-form-item>
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="userInfoForm.nickname" disabled placeholder="请输入昵称" />
-        </el-form-item>
+        <!-- <el-form-item label="昵称" prop="nickname">
+          <el-input v-model="userInfoForm.nickname" disabled placeholder="" />
+        </el-form-item> -->
         <el-form-item label="地市" prop="cityName">
-          <el-input v-model="userInfoForm.cityName" disabled placeholder="请输入地市" />
+          <el-input v-model="userInfoForm.cityName" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="单位" prop="group">
-          <el-input v-model="userInfoForm.group" disabled placeholder="请输入单位" />
+          <el-input v-model="userInfoForm.group" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="工号" prop="jobNo">
-          <el-input v-model="userInfoForm.jobNo" disabled placeholder="请输入工号" />
+          <el-input v-model="userInfoForm.jobNo" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
           <el-input v-model.number="userInfoForm.phone" disabled placeholder="请输入手机号码" />
@@ -77,7 +77,7 @@
           </el-select>
 
         </el-form-item>
-        <div style="text-align:center">
+        <div style="text-align:center;margin-top: 25px;">
           <el-button type="primary" @click="dialogUserInfo = false">关 闭</el-button>
         </div>
       </el-form>
@@ -370,6 +370,7 @@ export default {
   }
   ::v-deep.el-input.is-disabled .el-input__inner{
         background-color: #ffffff;
+        color: #606266;
   }
 }
 .img-info{

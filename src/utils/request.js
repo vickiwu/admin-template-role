@@ -43,15 +43,22 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.state !== 1) {
-      MessageBox.alert(res.data.msg || '错误', {
-        confirmButtonText: '确定'
-      })
       if (res.data.msg === '您还没有登录') {
         // 移除token 重置到登录页
         removeToken() // 首先移除token
         removeUserId()
         removeUser()
         removeSysConfig()
+        MessageBox.alert(res.data.msg, {
+          confirmButtonText: '确定',
+          callback: () => { // 点击确定后返回登录页
+            location.reload()
+          }
+        })
+      } else {
+        MessageBox.alert(res.data.msg || '错误', {
+          confirmButtonText: '确定'
+        })
       }
       return Promise.reject(res.data.msg || '错误')
     } else {
