@@ -167,7 +167,7 @@ export default {
     edit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
-          console.log('error submit!!')
+          // console.log('error submit!!')
           return false
         } else {
           edit({ json: JSON.stringify(clean(this.form)) }).then((data) => {

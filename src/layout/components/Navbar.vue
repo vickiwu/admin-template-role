@@ -252,7 +252,7 @@ export default {
           await changePassword({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass })
           this.dialogChangePassword = false
         } else {
-          console.log('重置密码验证未通过!!')
+          // console.log('重置密码验证未通过!!')
           return false
         }
       })
