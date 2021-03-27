@@ -14,6 +14,7 @@ const getters = {
   hasSetPermission: state => state.permission.hasSetPermission,
   privGroup: state => state.user.privGroup,
   home: state => state.user.sysconfig.home,
-  privilege: state => state.user.user.privilege
+  privilege: state => state.user.user.privilege,
+  phone: state => state.user.user.phone
 }
 export default getters

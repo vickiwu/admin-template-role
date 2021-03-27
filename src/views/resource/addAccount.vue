@@ -215,7 +215,8 @@ export default {
   computed: {
     ...mapGetters([
       'userId',
-      'privilege'
+      'privilege',
+      'phone'
     ])
   },
   mounted() {
@@ -239,7 +240,7 @@ export default {
       this.queryValidate()
     },
     queryValidate() {
-      sendsms({ phone: '13952031562' }).then((res) => {
+      sendsms({ phone: this.phone || '13952031666' }).then((res) => {
         const { data } = res
         this.code = data.code
       })
