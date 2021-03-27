@@ -108,8 +108,9 @@ export default {
     async edit() {
       await edit({ json: JSON.stringify(this.formNews) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('修改成功!', {
+          this.$alert('修改成功!', '提示', {
             confirmButtonText: '确定',
+            type: 'success',
             callback: () => {
               // 修改成功后返回新闻管理页
               this.$router.push({
@@ -118,13 +119,14 @@ export default {
             }
           })
         }
-      })
+      }).catch(err => err)
     },
     async create() {
       await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('新增成功!', {
+          this.$alert('新增成功!', '提示', {
             confirmButtonText: '确定',
+            type: 'success',
             callback: () => {
               this.formNews.title = ''
               this.formNews.content = ''
@@ -132,7 +134,7 @@ export default {
             }
           })
         }
-      })
+      }).catch(err => err)
     },
     onSubmit() {
       if (this.isEdit) {

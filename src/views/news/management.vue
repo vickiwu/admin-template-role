@@ -224,7 +224,7 @@ export default {
         this.$confirm('请选择删除对象', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
-        })
+        }).catch(err => err)
       } else {
         this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
           confirmButtonText: '确定',
@@ -234,34 +234,31 @@ export default {
           if (ids.length === 1) {
             xinwenDelete({ id: ids[0] }).then((data) => {
               if (data.state) {
-                this.$alert('删除成功', {
+                this.$alert('删除成功', '提示', {
                   confirmButtonText: '确定',
+                  type: 'success',
                   callback: () => {
                     // 删除成功 执行查询更新
                     this.getPage()
                   }
                 })
               }
-            })
+            }).catch(err => err)
           } else {
             xinwenDelete({ ids: JSON.stringify(ids) }).then((data) => {
               if (data.state) {
-                this.$alert('删除成功', {
+                this.$alert('删除成功', '提示', {
                   confirmButtonText: '确定',
+                  type: 'success',
                   callback: () => {
                     // 删除成功 执行查询更新
                     this.getPage()
                   }
                 })
               }
-            })
+            }).catch(err => err)
           }
-        }).catch(() => {
-          // this.$message({
-          //   type: 'info',
-          //   message: '已取消删除'
-          // })
-        })
+        }).catch(err => err)
       }
     },
 
@@ -271,7 +268,7 @@ export default {
         const { data } = res
         this.tableData = data.xinwenlist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handleEdit(rowData) {
       // 跳转到编辑页面

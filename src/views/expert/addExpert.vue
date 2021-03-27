@@ -132,8 +132,9 @@ export default {
         } else {
           create({ json: JSON.stringify(clean(this.form)) }).then((data) => {
             if (data.state === 1) {
-              this.$alert('新增成功', {
+              this.$alert('新增成功', '提示', {
                 confirmButtonText: '确定',
+                type: 'success',
                 callback: () => {
                   // for (const key in this.form) {
                   //   this.form[key] = ''
@@ -160,7 +161,7 @@ export default {
               }
               // this.imageUrl = ''
             }
-          })
+          }).catch(err => err)
         }
       })
     },
@@ -172,8 +173,9 @@ export default {
         } else {
           edit({ json: JSON.stringify(clean(this.form)) }).then((data) => {
             if (data.state === 1) {
-              this.$alert('修改成功', {
+              this.$alert('修改成功', '提示', {
                 confirmButtonText: '确定',
+                type: 'success',
                 callback: () => {
                   // 路由跳转
                   this.$router.push({
@@ -182,7 +184,7 @@ export default {
                 }
               })
             }
-          })
+          }).catch(err => err)
         }
       })
     },
@@ -192,7 +194,7 @@ export default {
       uploadImg(params).then((res) => {
         const { data } = res
         this.form.avatar = data.result
-      })
+      }).catch(err => err)
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
@@ -202,13 +204,15 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$alert('上传图片只能是 JPG 或者PNG 格式!', {
-          confirmButtonText: '确定'
+        this.$alert('上传图片只能是 JPG 或者PNG 格式!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       if (!isLt2M) {
-        this.$alert('上传头像图片大小不能超过 2MB!', {
-          confirmButtonText: '确定'
+        this.$alert('上传头像图片大小不能超过 2MB!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       return isJPG && isLt2M

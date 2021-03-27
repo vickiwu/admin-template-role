@@ -109,13 +109,13 @@ export default {
     async totalCount() {
       await totalCount().then((res) => {
         // const { data } = res
-      })
+      }).catch(err => err)
     },
 
     async heatmapTotal() {
       await heatmapTotal().then((res) => {
         // const { data } = res
-      })
+      }).catch(err => err)
     },
     async getDistPage() {
       await getDistPage({ count: this.count, start: this.start }).then((res) => {
@@ -129,7 +129,7 @@ export default {
           centerItem.id = item.id
           return centerItem
         })
-      })
+      }).catch(err => err)
     },
     async heatmap() {
       await heatmap({ count: this.count, start: this.start }).then((res) => {
@@ -140,7 +140,7 @@ export default {
           item.count = item.count * 2
           return item
         })
-      })
+      }).catch(err => err)
     },
     showDetail(zacao) {
       // this.$router.push({
@@ -163,7 +163,7 @@ export default {
       getZacao({ id }).then((res) => {
         const { data } = res
         this.zacao = data.zacao
-      })
+      }).catch(err => err)
       this.currentI = id
     }
 

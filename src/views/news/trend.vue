@@ -63,14 +63,14 @@ export default {
       await getHotNews().then(res => {
         const { data } = res
         this.topList = data.xinwenHotlist
-      })
+      }).catch(err => err)
     },
     async getPage() {
       const params = { ...this.pagination }
       await getPage(clean(params)).then(res => {
         const { data } = res
         this.xinwenlist = data.xinwenlist
-      })
+      }).catch(err => err)
     },
     jumpNews(news) {
       this.$router.push({

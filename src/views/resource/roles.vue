@@ -87,7 +87,7 @@ export default {
       getUserPage().then((res) => {
         const { data } = res
         this.options = data.userlist
-      })
+      }).catch(err => err)
     },
     setRoles() {
       const user = this.options.find(item => item.id === this.form.userId)
@@ -119,11 +119,12 @@ export default {
       }
       setPrivGroup(params).then(data => {
         if (data.state === 1) {
-          this.$alert('设置成功', {
-            confirmButtonText: '确定'
+          this.$alert('设置成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
         }
-      })
+      }).catch(err => err)
     }
   }
 }

@@ -319,7 +319,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     parseTime(time) {
       return parseTime(time)
@@ -334,13 +334,13 @@ export default {
         const { data } = res
         this.tableData = data.zacaolist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     queryZhuanjia() {
       getZhuanjia().then((res) => {
         const { data } = res
         this.zhuanjialist = data.zhuanjialist
-      })
+      }).catch(err => err)
     },
     handlePageChange(val) {
       this.pagination.index = val
@@ -356,27 +356,31 @@ export default {
     },
     onSubmit() {
       if (this.selected.length === 0) {
-        this.$alert('请选择至少一个杂草', {
-          confirmButtonText: '确定'
+        this.$alert('请选择至少一个杂草', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
         return
       }
       if (this.selected.length > 1) {
-        this.$alert('请选择一个杂草', {
-          confirmButtonText: '确定'
+        this.$alert('请选择一个杂草', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
         return
       }
       if (!this.form.id) {
-        this.$alert('请选择一个专家', {
-          confirmButtonText: '确定'
+        this.$alert('请选择一个专家', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
         return
       }
       create({ zhuanjiaId: this.form.id, zacaoId: this.selected[0].id }).then((data) => {
         if (data.state === 1) {
-          this.$alert('派发成功', {
-            confirmButtonText: '确定'
+          this.$alert('派发成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
           this.selected = []
           this.form = {
@@ -386,7 +390,7 @@ export default {
             desc: ''
           }
         }
-      })
+      }).catch(err => err)
     },
     jumpManageMent() {
       this.$router.push({

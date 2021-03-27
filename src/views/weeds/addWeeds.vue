@@ -247,7 +247,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     async uploadImg(file) {
       const params = new FormData()
@@ -258,7 +258,7 @@ export default {
           this.formWeed.piclist = []
         }
         this.formWeed.piclist.push(data.result)
-      })
+      }).catch(err => err)
     },
     async create() {
       const params = JSON.parse(JSON.stringify(this.formWeed))
@@ -267,8 +267,9 @@ export default {
       params.lng = params.lng * Math.pow(10, 7)
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('新增成功', {
+          this.$alert('新增成功', '提示', {
             confirmButtonText: '确定',
+            type: 'success',
             callback: () => {
               // 清空表单
               this.formWeed = {
@@ -289,7 +290,7 @@ export default {
             }
           })
         }
-      })
+      }).catch(err => err)
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
@@ -297,8 +298,9 @@ export default {
       params.lng = params.lng * Math.pow(10, 7)
       await edit({ json: JSON.stringify(params) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('修改成功', {
+          this.$alert('修改成功', '提示', {
             confirmButtonText: '确定',
+            type: 'success',
             callback: () => {
               // 修改成功后跳转回管理页面
               this.$router.push({
@@ -307,7 +309,7 @@ export default {
             }
           })
         }
-      })
+      }).catch(err => err)
     },
     onSubmit() {
       if (this.isEdit) {

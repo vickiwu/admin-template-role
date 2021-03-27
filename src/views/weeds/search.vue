@@ -266,7 +266,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     changeSpecy(val) {
       const specy = this.specyList.find((obj) => obj.id === val)
@@ -284,7 +284,7 @@ export default {
         const { data } = res
         this.tableData = data.zacaolist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
 
     getCurrentRow(row) {
@@ -294,14 +294,16 @@ export default {
       // 处理下载函数
       if (JSON.stringify(this.multipleSelection) === '{}') {
         this.$alert('请选择下载对象', '提示', {
-          confirmButtonText: '确定'
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       } else {
         if (this.multipleSelection.piclist && this.multipleSelection.piclist.length !== 0) {
           this.downloadByBlob(this.multipleSelection.piclist[0].httpUrl, this.multipleSelection.piclist[0].create)
         } else {
-          this.$alert('当前无图片可下载', {
-            confirmButtonText: '确定'
+          this.$alert('当前无图片可下载', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
           })
         }
       }
@@ -346,7 +348,7 @@ export default {
           bookType: 'xlsx'
         })
         this.downloadLoading = false
-      })
+      }).catch(err => err)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {

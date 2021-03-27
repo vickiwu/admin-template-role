@@ -222,13 +222,15 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$alert('上传图片只能是 JPG 或者PNG 格式!', {
-          confirmButtonText: '确定'
+        this.$alert('上传图片只能是 JPG 或者PNG 格式!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       if (!isLt2M) {
-        this.$alert('上传头像图片大小不能超过 2MB!', {
-          confirmButtonText: '确定'
+        this.$alert('上传头像图片大小不能超过 2MB!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       return isJPG && isLt2M
@@ -268,7 +270,7 @@ export default {
         // 设置头像更新
         this.$store.dispatch('user/setUserAvatar', this.fileData.httpUrl)
         this.dialogImg = false
-      })
+      }).catch(err => err)
     }
   }
 }

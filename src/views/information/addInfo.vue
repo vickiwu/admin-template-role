@@ -166,7 +166,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     async create() {
       const params = JSON.parse(JSON.stringify(this.formZilao))
@@ -176,8 +176,9 @@ export default {
       // }
       await create({ json: JSON.stringify(clean(params)) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('新增成功！', {
+          this.$alert('新增成功！', '提示', {
             confirmButtonText: '确定',
+            type: 'success',
             callback: () => {
               for (const key in this.formZilao) {
                 this.formZilao[key] = ''
@@ -186,7 +187,7 @@ export default {
             }
           })
         }
-      })
+      }).catch(err => err)
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formZilao))
@@ -195,13 +196,14 @@ export default {
       // }
       await edit({ json: JSON.stringify(params) }).then((data) => {
         if (data.state === 1) {
-          this.$alert('修改成功！', {
-            confirmButtonText: '确定'
+          this.$alert('修改成功！', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
           // 修改成功后返回上一页面
           this.$router.go(-1)
         }
-      })
+      }).catch(err => err)
     },
     async uploadFile(file) { // 资料文件上传
       const params = new FormData()
@@ -210,7 +212,7 @@ export default {
         const { data } = res
         // 存入表单数据中
         this.formZilao.filelist.push(data.result)
-      })
+      }).catch(err => err)
     },
     async uploadAvatar(file) { // 封面图片上传
       const params = new FormData()
@@ -235,13 +237,15 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$alert('上传图片只能是 JPG 或者PNG 格式!', {
-          confirmButtonText: '确定'
+        this.$alert('上传图片只能是 JPG 或者PNG 格式!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       if (!isLt2M) {
-        this.$alert('上传图片大小不能超过 2MB!', {
-          confirmButtonText: '确定'
+        this.$alert('上传图片大小不能超过 2MB!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       return isJPG && isLt2M
@@ -258,8 +262,9 @@ export default {
       const isPDF = file.type === 'application/pdf'
 
       if (!isPDF) {
-        this.$alert('上传文件只能是 PDF 格式!', {
-          confirmButtonText: '确定'
+        this.$alert('上传文件只能是 PDF 格式!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
 

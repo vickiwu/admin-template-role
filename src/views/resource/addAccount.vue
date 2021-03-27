@@ -243,10 +243,7 @@ export default {
       sendsms({ phone: this.phone || '13952031666' }).then((res) => {
         const { data } = res
         this.code = data.code
-      })
-    },
-
-    alert(msg) {
+      }).catch(err => err)
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {
@@ -255,8 +252,9 @@ export default {
           return false
         } else {
           if (this.privilege > 128) {
-            this.$alert('权限不足！', {
-              confirmButtonText: '确定'
+            this.$alert('权限不足！', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
             })
             return
           }
@@ -268,8 +266,9 @@ export default {
             // 编辑
             editUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
-                this.$alert('修改成功', {
+                this.$alert('修改成功', '提示', {
                   confirmButtonText: '确定',
+                  type: 'success',
                   callback: () => {
                     this.$router.push({
                       name: 'Account'
@@ -277,7 +276,7 @@ export default {
                   }
                 })
               }
-            })
+            }).catch(err => err)
           } else {
             const params = { ...this.form }
             delete params.password1
@@ -288,7 +287,8 @@ export default {
             // 新增
             createUser({ json: JSON.stringify(clean(params)) }).then((data) => {
               if (data.state === 1) {
-                this.$alert('新增成功', {
+                this.$alert('新增成功', '提示', {
+                  type: 'success',
                   confirmButtonText: '确定',
                   callback: () => {
                     // for (const key in this.form) {
@@ -315,7 +315,7 @@ export default {
                   validate: ''
                 }
               }
-            })
+            }).catch(err => err)
           }
         }
       })

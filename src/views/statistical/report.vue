@@ -297,7 +297,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))
@@ -311,7 +311,7 @@ export default {
         const { data } = res
         this.tableData = data.zacaolist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     async tongji() {
       await tongji().then((res) => {
@@ -333,7 +333,7 @@ export default {
         this.loadChart1()
         this.loadChart2()
         this.loadChart3()
-      })
+      }).catch(err => err)
     },
 
     handleSearch() {
@@ -446,7 +446,7 @@ export default {
   padding:20px 10px;
 }
 .report-row {
-  height: 100%;
+  min-height: 100%;
   .left-card {
     height: 100%;
     .line{
