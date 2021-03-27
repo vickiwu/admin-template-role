@@ -224,7 +224,7 @@ export default {
         this.$confirm('请选择删除对象', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
-        })
+        }).catch(err => err)
       } else {
         this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
           confirmButtonText: '确定',
@@ -258,12 +258,7 @@ export default {
               }
             }).catch(err => err)
           }
-        }).catch(() => {
-          // this.$message({
-          //   type: 'info',
-          //   message: '已取消删除'
-          // })
-        })
+        }).catch(err => err)
       }
     },
 

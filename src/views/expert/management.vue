@@ -241,12 +241,7 @@ export default {
           }
           this.query()
         }).catch(err => err)
-      }).catch(() => {
-        // this.$message({
-        //   type: 'info',
-        //   message: '已取消删除'
-        // })
-      })
+      }).catch(err => err)
     }
 
   }
