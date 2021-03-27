@@ -31,6 +31,12 @@ html {
     padding-top: 0px;
   }
 }
+.el-message-box__btns {
+  text-align: center;
+  .el-button--small {
+    padding: 9px 25px;
+  }
+}
 
 *,
 *:before,

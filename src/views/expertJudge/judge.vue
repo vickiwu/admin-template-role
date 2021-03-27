@@ -206,7 +206,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     async uploadImg(file) {
       const params = new FormData()
@@ -217,7 +217,7 @@ export default {
           this.formWeed.piclist = []
         }
         this.formWeed.piclist.push(data.result)
-      })
+      }).catch(err => err)
     },
     reject() {
       // 驳回
@@ -229,14 +229,15 @@ export default {
       }
       commit(params).then(data => {
         if (data.state === 1) {
-          this.$alert('研判成功！', {
-            confirmButtonText: '确定'
+          this.$alert('研判成功！', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
         }
         this.$router.push({
           name: 'ExpertJudge'
         })
-      })
+      }).catch(err => err)
     },
     onSubmit() {
       // 提交
@@ -248,14 +249,15 @@ export default {
       }
       commit(params).then(data => {
         if (data.state === 1) {
-          this.$alert('研判成功！', {
-            confirmButtonText: '确定'
+          this.$alert('研判成功！', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
         }
         this.$router.push({
           name: 'ExpertJudge'
         })
-      })
+      }).catch(err => err)
     }
   }
 }

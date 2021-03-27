@@ -165,7 +165,7 @@ export default {
         const { data } = res
         this.tableData = data.userlist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handlePageChange(val) {
       this.pagination.index = val
@@ -209,14 +209,15 @@ export default {
       }).then(() => {
         deleteUser({ id: row.id }).then(res => {
           if (res.state === 1) {
-            this.$alert('删除成功', {
+            this.$alert('删除成功', '提示', {
               confirmButtonText: '确定',
+              type: 'success',
               callback: () => {
                 this.query()
               }
             })
           }
-        })
+        }).catch(err => err)
       }).catch(() => {
         // this.$message({
         //   type: 'info',

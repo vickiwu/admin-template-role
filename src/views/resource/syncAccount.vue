@@ -151,7 +151,7 @@ export default {
         const { data } = res
         this.tableData = data.userlist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handlePageChange(val) {
       this.pagination.index = val
@@ -160,11 +160,12 @@ export default {
     sync() {
       synH4a().then((data) => {
         if (data.state === 1) {
-          this.$alert('同步成功', {
-            confirmButtonText: '确定'
+          this.$alert('同步成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
           })
         }
-      })
+      }).catch(err => err)
     }
   }
 }

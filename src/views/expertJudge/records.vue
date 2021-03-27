@@ -157,7 +157,7 @@ export default {
         const { data } = res
         this.tableData = data.tasklist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handlePageChange(val) {
       this.pagination.index = val
@@ -180,7 +180,7 @@ export default {
         //     rowData: data.zacao
         //   }
         // })
-      })
+      }).catch(err => err)
     }
   }
 }

@@ -192,7 +192,7 @@ export default {
           obj.option = v
           this.options.push(obj)
         }
-      })
+      }).catch(err => err)
     },
     parseTime(time) {
       // 时间戳处理
@@ -206,7 +206,7 @@ export default {
         const { data } = res
         this.tableData = data.ziliaolist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -235,27 +235,29 @@ export default {
           if (ids.length === 1) {
             ziliaoDelete({ id: ids[0] }).then((data) => {
               if (data.state) {
-                this.$alert('删除成功!', {
+                this.$alert('删除成功!', '提示', {
                   confirmButtonText: '确定',
+                  type: 'success',
                   callback: () => {
                     // 删除成功 执行查询更新
                     this.getPage()
                   }
                 })
               }
-            })
+            }).catch(err => err)
           } else {
             ziliaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
               if (data.state) {
-                this.$alert('删除成功!', {
+                this.$alert('删除成功!', '提示', {
                   confirmButtonText: '确定',
+                  type: 'success',
                   callback: () => {
                     // 删除成功 执行查询更新
                     this.getPage()
                   }
                 })
               }
-            })
+            }).catch(err => err)
           }
         }).catch(() => {
           // this.$message({

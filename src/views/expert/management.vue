@@ -90,15 +90,18 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
+
             <el-image
+              v-if="scope.row.avatar && scope.row.avatar.httpUrl"
               style="width: 40px; "
-              :src="scope.row.avatar && scope.row.avatar.httpUrl"
+              :src="scope.row.avatar.httpUrl"
               :preview-src-list="[scope.row.avatar && scope.row.avatar.httpUrl]"
             >
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline" />
               </div>
             </el-image>
+            <i v-else class="el-icon-picture-outline" />
           </template>
         </el-table-column>
         <el-table-column
@@ -197,7 +200,7 @@ export default {
         const { data } = res
         this.tableData = data.zhuanjialist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handleEdit(index, rowData) {
       // 跳转页面
@@ -231,12 +234,13 @@ export default {
       }).then(() => {
         zhuanjiaDelete({ id: row.id }).then(res => {
           if (res.state === 1) {
-            this.$alert('删除成功！', {
-              confirmButtonText: '确定'
+            this.$alert('删除成功！', '提示', {
+              confirmButtonText: '确定',
+              type: 'success'
             })
           }
           this.query()
-        })
+        }).catch(err => err)
       }).catch(() => {
         // this.$message({
         //   type: 'info',

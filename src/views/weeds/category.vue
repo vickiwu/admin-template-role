@@ -154,7 +154,7 @@ export default {
         const { data } = res
         this.tableData = data.lblist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handleDel() {
       const ids = this.multipleSelection.map((item) => {
@@ -173,15 +173,16 @@ export default {
         }).then(() => {
           delLb({ id: ids[0] }).then((res) => {
             if (res.state === 1) {
-              this.$alert('删除成功', {
+              this.$alert('删除成功', '提示', {
                 confirmButtonText: '确定',
+                type: 'success',
                 callback: () => {
                   // 新增完成 更新列表
                   this.getLbPage()
                 }
               })
             }
-          })
+          }).catch(err => err)
         }).catch(() => {
           // this.$message({
           //   type: 'info',
@@ -214,21 +215,23 @@ export default {
         // 修改逻辑
         editLb({ json: JSON.stringify(params) }).then((res) => {
           if (res.state === 1) {
-            this.$alert('修改成功', {
+            this.$alert('修改成功', '提示', {
               confirmButtonText: '确定',
+              type: 'success',
               callback: () => {
                 // 新增完成 更新列表
                 this.getLbPage()
               }
             })
           }
-        })
+        }).catch(err => err)
       } else {
         // 新增
         addLb({ json: JSON.stringify(params) }).then((res) => {
           if (res.state === 1) {
-            this.$alert('新增成功', {
+            this.$alert('新增成功', '提示', {
               confirmButtonText: '确定',
+              type: 'success',
               callback: () => {
                 // 新增完成 更新列表
                 this.dialogVisible = false
@@ -236,7 +239,7 @@ export default {
               }
             })
           }
-        })
+        }).catch(err => err)
       }
     },
 

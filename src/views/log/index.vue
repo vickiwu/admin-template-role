@@ -176,7 +176,7 @@ export default {
         const { data } = res
         this.tableData = data.loglist
         this.totalCount = data.totalCount
-      })
+      }).catch(err => err)
     },
     handleEdit(index, rowData) {
       // 跳转页面
@@ -203,8 +203,9 @@ export default {
     },
     delelteFile() {
       if (this.selected.length === 0) {
-        this.$alert('请选择要删除的日志!', {
-          confirmButtonText: '确定'
+        this.$alert('请选择要删除的日志!', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
 
         })
         return
@@ -218,14 +219,15 @@ export default {
       }).then(() => {
         logDelete({ ids: JSON.stringify(ids) }).then(res => {
           if (res.state === 1) {
-            this.$alert('删除成功！', {
+            this.$alert('删除成功！', '提示', {
               confirmButtonText: '确定',
+              type: 'success',
               callback: () => {
                 this.query()
               }
             })
           }
-        })
+        }).catch(err => err)
       }).catch(() => {
         // this.$message({
         //   type: 'info',

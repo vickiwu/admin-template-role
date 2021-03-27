@@ -49,15 +49,17 @@ service.interceptors.response.use(
         removeUserId()
         removeUser()
         removeSysConfig()
-        MessageBox.alert(res.data.msg, {
+        MessageBox.alert(res.data.msg, '提示', {
           confirmButtonText: '确定',
+          type: 'warning',
           callback: () => { // 点击确定后返回登录页
             location.reload()
           }
         })
       } else {
-        MessageBox.alert(res.data.msg || '错误', {
-          confirmButtonText: '确定'
+        MessageBox.alert(res.data.msg || '错误', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
         })
       }
       return Promise.reject(res.data.msg || '错误')
