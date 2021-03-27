@@ -285,7 +285,7 @@ export default {
           bookType: 'xlsx'
         })
         this.downloadLoading = false
-      })
+      }).catch(err => err)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
