@@ -340,7 +340,7 @@ export default {
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
-      const params = { ...this.queryPageination, ...searchParams }
+      const params = { ...this.queryPageination, ...searchParams, state: 0 }
       getPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.zacaolist
