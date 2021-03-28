@@ -208,7 +208,7 @@
           <el-col :span="11">
             <el-form-item label="当前调度模式">
               <el-input
-                v-model="formInline2.region1"
+                v-model="profScheModeTxt"
                 disabled
                 style="width: 100%"
                 size="medium"
@@ -243,6 +243,7 @@
 <script>
 import { getPage, getLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
+import { getSysConfig } from '@/utils/auth'
 import { getPage as getZhuanjia } from '@/api/zhuanjia'
 import { create } from '@/api/yanpan'
 import ElSelectTree from 'el-select-tree'
@@ -257,6 +258,7 @@ export default {
   data() {
     return {
       cityJson: cityJson.cityies,
+      sysConfig: '',
       form: {
         id: '',
         name: '',
@@ -275,9 +277,7 @@ export default {
         children: 'option',
         label: 'lb2'
       },
-      formInline2: {
-        region1: '人工调度'
-      },
+
       options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
@@ -297,9 +297,18 @@ export default {
         count: this.pagination.count,
         start: (this.pagination.index - 1) * this.pagination.count
       }
+    },
+    profScheModeTxt() {
+      if (this.sysConfig.profScheMode === 1) {
+        return '人工调度'
+      } else {
+        return '系统自动调度'
+      }
     }
   },
   mounted() {
+    this.sysConfig = JSON.parse(getSysConfig())
+
     this.query()
     this.getLbPage()
     this.queryZhuanjia()

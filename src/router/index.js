@@ -114,13 +114,7 @@ export const constantRoutes = [
         component: () => import('@/views/expert/management'),
         meta: { title: '专家管理', icon: 'tree' }
       }
-      // {
-      //   path: 'set',
-      //   name: 'ExpertSet',
-      //   // hidden: true,
-      //   component: () => import('@/views/expert/setExpert'),
-      //   meta: { title: '调度管理', icon: 'tree' }
-      // }
+
     ]
   },
   {
@@ -164,6 +158,13 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/resource/addAccount'),
         meta: { title: '账户新增', icon: 'tree' }
+      },
+      {
+        path: 'set',
+        name: 'ExpertSet',
+        // hidden: true,
+        component: () => import('@/views/expert/setExpert'),
+        meta: { title: '调度管理', icon: 'tree' }
       },
       {
         path: 'account',
@@ -283,8 +284,8 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  mode: 'history',
-  base: '/zacao/',
+  // mode: 'history',
+  // base: '/zacao/',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

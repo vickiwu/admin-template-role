@@ -360,7 +360,6 @@ export default {
       })
     },
     handleDetail(index, rowData) {
-      // console.log('%c 🍗 index, rowData: ', 'font-size:20px;background-color: #93C0A4;color:#fff;', index, rowData)
       const routeUrl = this.$router.resolve({
         name: 'ShowWeeds'
       })

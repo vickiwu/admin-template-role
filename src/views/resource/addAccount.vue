@@ -248,7 +248,6 @@ export default {
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
-          // console.log('error submit!!')
           return false
         } else {
           if (this.privilege > 128) {

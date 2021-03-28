@@ -9,10 +9,10 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="调度模式：" prop="resource">
-          <el-radio-group v-model="form.name">
-            <el-radio label="人工调度" />
-            <el-radio label="自动调度" />
+        <el-form-item label="调度模式：" prop="profScheMode">
+          <el-radio-group v-model="form.profScheMode">
+            <el-radio :label="1">人工调度</el-radio>
+            <el-radio :label="2">自动调度</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -25,25 +25,51 @@
 </template>
 
 <script>
+import { getSysConfig } from '@/utils/auth'
+import { setScheduleMode } from '@/api/sys'
 
 export default {
   data() {
     return {
+      sysConfig: '',
       form: {
-        name: ''
+        profScheMode: ''
       },
       rules: {
-        name: [
-          { required: true, message: '请选择杂草所属科', trigger: 'blur' }
+        profScheMode: [
+          { required: true, message: '请选择调度模式', trigger: 'blur' }
         ]
       }
     }
   },
+  computed: {
+
+    profScheModeTxt() {
+      if (this.sysConfig.profScheMode === 1) {
+        return '人工调度' // 1
+      } else {
+        return '系统自动调度' // 2
+      }
+    }
+  },
   mounted() {
+    this.sysConfig = JSON.parse(getSysConfig())
+    this.form.profScheMode = this.sysConfig.profScheMode
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
+      setScheduleMode({ mode: this.form.profScheMode }).then((res) => {
+        if (res.state === 1) {
+          this.$alert('设置成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success',
+            callback: async() => {
+              await this.$store.dispatch('user/getInfo')
+            }
+
+          }).catch(err => err)
+        }
+      }).catch(err => err)
     }
   }
 }

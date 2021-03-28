@@ -14,7 +14,7 @@ const port = 9528
 
 module.exports = {
 
-  publicPath: '/zacao/',
+  publicPath: '/zacao',
   outputDir: 'dist',
   assetsDir: 'static',
   filenameHashing: false,

@@ -73,7 +73,7 @@ const actions = {
     })
   },
 
-  // 获取用户信息
+  // 获取用户信息 重新存 用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo({ id: state.userId }).then(response => {
@@ -81,6 +81,10 @@ const actions = {
         if (!data) {
           return reject('登录失效，请重新登录')
         }
+        commit('SET_USER', data.user)
+        commit('SET_SYSCONFIG', data.sysconfig)
+        setUser(data.user)
+        setSysConfig(data.sysconfig)
         resolve(data)
       }).catch(error => {
         reject(error)

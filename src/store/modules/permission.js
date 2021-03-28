@@ -24,6 +24,7 @@ const actions = {
       if (arr1.includes('账户管理')) {
         arr1.push('权限设置')
         arr1.push('账户新增')
+        arr1.push('调度管理')
       }
       if (arr1.includes('账户管理') || arr1.includes('账户同步') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
         arr1.push('资源管理')
