@@ -55,13 +55,19 @@
         stripe
         style="width: 100%"
         class="report-table"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          type="selection"
-          label="选择"
-          width="50"
-        />
+
+        <el-table-column label="选择" align="center" width="50">
+          <template scope="scope">
+            <el-radio
+              v-model="radio"
+              :label="scope.$index"
+              @change.native="getCurrentRow(scope.row)"
+            >
+              <span />
+            </el-radio>
+          </template>
+        </el-table-column>
         <el-table-column
           prop=""
           label="序号"
@@ -280,7 +286,9 @@ export default {
       },
       totalCount: 0,
       zhuanjialist: [],
-      selected: []
+      // selected: [],
+      multipleSelection: {},
+      radio: ''
     }
   },
   computed: {
@@ -297,6 +305,9 @@ export default {
     this.queryZhuanjia()
   },
   methods: {
+    getCurrentRow(row) {
+      this.multipleSelection = row
+    },
     changeSpecy(val) {
       const specy = this.specyList.find((obj) => obj.id === val)
       this.formInline.specy = JSON.stringify(specy)
@@ -346,51 +357,57 @@ export default {
       this.pagination.index = val
       this.query()
     },
-    handleSelectionChange(val) {
-      this.selected = val
-    },
+    // handleSelectionChange(val) {
+    //   this.selected = val
+    // },
     setZhuanjiaInfo(val) {
       const zhuanjia = this.zhuanjialist.find(item => item.id === val)
       this.form.desc = zhuanjia.desc
       this.form.img = zhuanjia.avatar && zhuanjia.avatar.httpUrl
     },
     onSubmit() {
-      if (this.selected.length === 0) {
+      if (JSON.stringify(this.multipleSelection) === '{}') {
         this.$alert('请选择至少一个杂草', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
-        })
+        }).catch(err => err)
         return
-      }
-      if (this.selected.length > 1) {
-        this.$alert('请选择一个杂草', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
-        })
-        return
-      }
-      if (!this.form.id) {
-        this.$alert('请选择一个专家', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
-        })
-        return
-      }
-      create({ zhuanjiaId: this.form.id, zacaoId: this.selected[0].id }).then((data) => {
-        if (data.state === 1) {
-          this.$alert('派发成功', '提示', {
+      } else {
+        if (!this.form.id) {
+          this.$alert('请选择一个专家', '提示', {
             confirmButtonText: '确定',
-            type: 'success'
-          })
-          this.selected = []
-          this.form = {
-            id: '',
-            name: '',
-            img: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
-            desc: ''
-          }
+            type: 'warning'
+          }).catch(err => err)
+          return
         }
-      }).catch(err => err)
+        create({ zhuanjiaId: this.form.id, zacaoId: this.multipleSelection.id }).then((data) => {
+          if (data.state === 1) {
+            this.$alert('派发成功', '提示', {
+              confirmButtonText: '确定',
+              type: 'success',
+              callback: () => {
+                this.multipleSelection = {}
+                this.radio = ''
+                // this.form = {
+                //   id: '',
+                //   name: '',
+                //   img: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
+                //   desc: ''
+                // }
+                // 重新查询表格
+                this.query()
+              }
+            })
+          }
+        }).catch(err => err)
+      }
+      // if (this.selected.length > 1) {
+      //   this.$alert('请选择一个杂草', '提示', {
+      //     confirmButtonText: '确定',
+      //     type: 'warning'
+      //   }).catch(err => err)
+      //   return
+      // }
     },
     jumpManageMent() {
       this.$router.push({
