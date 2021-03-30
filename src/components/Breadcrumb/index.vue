@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
+// import pathToRegexp from 'path-to-regexp'
 
 export default {
   data() {
@@ -33,22 +33,22 @@ export default {
       const matched = this.$route.matched.filter(item => item.meta && item.meta.title)
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
-    },
-
-    pathCompile(path) {
-      // path处理
-      const { params } = this.$route
-      var toPath = pathToRegexp.compile(path)
-      return toPath(params)
-    },
-    handleLink(item) {
-      const { redirect, path } = item
-      if (redirect) {
-        this.$router.push(redirect)
-        return
-      }
-      this.$router.push(this.pathCompile(path))
     }
+
+    // pathCompile(path) {
+    //   // path处理
+    //   const { params } = this.$route
+    //   var toPath = pathToRegexp.compile(path)
+    //   return toPath(params)
+    // },
+    // handleLink(item) {
+    //   const { redirect, path } = item
+    //   if (redirect) {
+    //     this.$router.push(redirect)
+    //     return
+    //   }
+    //   this.$router.push(this.pathCompile(path))
+    // }
   }
 }
 </script>

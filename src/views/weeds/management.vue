@@ -27,7 +27,7 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
 
           <el-select
             v-model="formSearch.reg"
@@ -43,7 +43,7 @@
             />
           </el-select>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
 
           <el-select-tree
             v-model="selectId"
@@ -56,13 +56,21 @@
             @change="changeSpecy"
           />
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
             <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
+        </el-col>
+        <el-col :span="3">
+          <el-input
+            v-model="formSearch.name"
+            size="medium"
+            placeholder="搜索关键字"
+            prefix-icon="el-icon-search"
+          />
         </el-col>
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
@@ -110,7 +118,12 @@
           label="名称"
           :show-overflow-tooltip="true"
         />
-
+        <!-- 字段inputMethod 值app采集 或手动输入 -->
+        <el-table-column
+          prop="inputMethod"
+          label="录入方式"
+          :show-overflow-tooltip="true"
+        />
         <el-table-column
           prop="specy"
           label="涉及杂草种类"
@@ -261,7 +274,8 @@ export default {
         specy: null,
         jydw: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        name: ''
       },
       selectId: '',
       specyList: [],

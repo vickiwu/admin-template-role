@@ -295,7 +295,7 @@ export default {
     handleEdit(index, rowData) {
       // 跳转到修改页面
       this.$router.push({
-        name: 'InformationAdd',
+        name: 'EditrmationAdd',
         params: {
           index, rowData,
           isEdit: true

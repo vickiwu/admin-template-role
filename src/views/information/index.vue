@@ -96,6 +96,12 @@
           <template slot-scope="scope">
             <span
               style="color: #409EFF;cursor:pointer;margin-right:15px;"
+              @click="handleShow(scope.$index, scope.row)"
+            >
+              查看
+            </span>
+            <span
+              style="color: #409EFF;cursor:pointer;margin-right:15px;"
               @click="handleEdit(scope.$index, scope.row)"
             >
               修改
@@ -292,11 +298,21 @@ export default {
     handleEdit(index, rowData) { // 编辑页面
       // 跳转到编辑页面
       this.$router.push({
-        name: 'InformationAdd',
+        name: 'EditrmationAdd',
         params: {
           index, rowData
         }
       })
+    },
+    handleShow(index, rowData) { // 编辑页面
+      if (rowData.filelist && rowData.filelist[0].httpUrl) {
+        window.open(rowData.filelist[0].httpUrl)
+      } else {
+        this.$alert('当前无资料可预览', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+      }
     },
 
     handleSearch() {

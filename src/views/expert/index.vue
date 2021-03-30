@@ -58,7 +58,7 @@
       >
 
         <el-table-column label="选择" align="center" width="50">
-          <template scope="scope">
+          <template slot-scope="scope">
             <el-radio
               v-model="radio"
               :label="scope.$index"

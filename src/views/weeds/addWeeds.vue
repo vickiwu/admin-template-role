@@ -4,7 +4,7 @@
       <el-form
         ref="form"
         :model="formWeed"
-        label-width="80px"
+        label-width="120px"
         label-position="left"
         class="news-form"
         :rules="rules"
@@ -12,13 +12,13 @@
         <el-form-item label="名称" prop="nameCn" placeholder="请输入杂草名称">
           <el-input v-model="formWeed.nameCn" />
         </el-form-item>
-        <el-form-item label="拉丁名称" placeholder="请输入杂草拉丁名称">
+        <el-form-item label="拉丁名称" prop="nameLt" placeholder="请输入杂草拉丁名称">
           <el-input v-model="formWeed.nameLt" />
         </el-form-item>
-        <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
+        <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源国家/区域">
           <el-input v-model="formWeed.source" />
         </el-form-item>
-        <el-form-item label="区域" prop="discReg">
+        <el-form-item label="发现区域" prop="discReg">
 
           <el-select
             v-model="formWeed.discReg"
@@ -47,12 +47,12 @@
           />
 
         </el-form-item>
-        <el-form-item label="危害程度" prop="jydw">
+        <el-form-item label="检疫地位" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
-            <el-option label="未发现有害生物" :value="0" />
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-form-item>
         <el-row :gutter="20">
@@ -166,6 +166,9 @@ export default {
       rules: {
         nameCn: [
           { required: true, message: '请输入杂草名称', trigger: 'blur' }
+        ],
+        nameLt: [
+          { required: true, message: '请输入杂草拉丁名称', trigger: 'blur' }
         ],
         lng: [{ validator: checkLong, length: 18, trigger: 'blur' }],
         lat: [{ validator: checkLat, length: 18, trigger: 'blur' }],
