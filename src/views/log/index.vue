@@ -95,16 +95,15 @@
             <span>{{ parseTime(scope.row.create) }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           label="操作"
           min-width="10%"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <el-button type="text" @click="delelteFile(scope.row)">删除文件</el-button>
-            <el-button type="text" @click="deleteZacao(scope.row)">删除杂草</el-button>
+            <el-button type="text" @click="details(scope.row)">查看</el-button>
           </template>
-        </el-table-column> -->
+        </el-table-column>
 
       </el-table>
       <!-- 分页 新 -->
@@ -122,6 +121,18 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="日志详情"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <span>{{ logData && logData.content }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -146,7 +157,9 @@ export default {
         index: 1
       },
       totalCount: 0,
-      selected: []
+      selected: [],
+      dialogVisible: false,
+      logData: null
     }
   },
   computed: {
@@ -229,6 +242,13 @@ export default {
           }
         }).catch(err => err)
       }).catch(err => err)
+    },
+    details(row) {
+      this.dialogVisible = true
+      this.logData = row
+    },
+    handleClose() {
+      this.dialogVisible = false
     }
   }
 }
