@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "0.18.1",
+    "bmaplib.distancetool": "^1.0.2",
     "core-js": "3.6.5",
     "echarts": "^5.0.2",
     "el-select-tree": "^1.1.3",

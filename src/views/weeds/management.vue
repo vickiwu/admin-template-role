@@ -230,6 +230,7 @@
       <editWeed
         v-if="editDialogVisible"
         :data="editZacaoData"
+        :is-create="false"
         @close="handleEditClose"
         @update="handleUpdateClose"
       />

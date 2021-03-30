@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { uploadImg, edit, getLbPage } from '@/api/zacao'
+import { uploadImg, edit, create, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 import ElSelectTree from 'el-select-tree'
@@ -112,6 +112,14 @@ export default {
     data: {
       type: Object,
       default: () => {}
+    },
+    position: {
+      type: Object,
+      default: () => {}
+    },
+    isCreate: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -190,8 +198,18 @@ export default {
     }
   },
   mounted() {
-    this.formWeed = this.data
-    this.init()
+    if (this.isCreate) {
+      this.formWeed = {
+        ...this.formWeed,
+        ...this.position
+      }
+      this.getLbPage()
+    } else {
+      if (this.data) {
+        this.formWeed = this.data
+        this.init()
+      }
+    }
   },
   methods: {
     init() {
@@ -261,6 +279,24 @@ export default {
         this.formWeed.piclist.push(data.result)
       }).catch(err => err)
     },
+    async create() {
+      const params = JSON.parse(JSON.stringify(this.formWeed))
+      params.specy = JSON.parse(params.specy)
+      params.lat = params.lat * Math.pow(10, 7)
+      params.lng = params.lng * Math.pow(10, 7)
+      await create({ json: JSON.stringify(clean(params)) }).then((data) => {
+        if (data.state === 1) {
+          this.$alert('新增成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success',
+            callback: () => {
+              // 清空表单
+              this.$emit('saved')
+            }
+          })
+        }
+      }).catch(err => err)
+    },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
       params.lat = params.lat * Math.pow(10, 7)
@@ -279,7 +315,11 @@ export default {
       }).catch(err => err)
     },
     onSubmit() {
-      this.edit()
+      if (this.isCreate) {
+        this.create()
+      } else {
+        this.edit()
+      }
     },
     cancel() {
       this.$emit('close')
