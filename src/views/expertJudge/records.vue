@@ -116,6 +116,14 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="杂草详情"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose"
+    >
+      <showWeeds :data="zacaoData" />
+    </el-dialog>
   </div>
 </template>
 
@@ -124,8 +132,12 @@ import { clean, parseTime } from '@/utils/index'
 import { getTaskPage } from '@/api/yanpan'
 import { getZacao } from '@/api/zacao'
 import { pageCount } from '@/globalConfig'
+import showWeeds from '@/views/weeds/showWeeds'
 
 export default {
+  components: {
+    showWeeds
+  },
   data() {
     return {
       tableData: [],
@@ -133,7 +145,9 @@ export default {
         count: pageCount,
         index: 1
       },
-      totalCount: 0
+      totalCount: 0,
+      dialogVisible: false,
+      zacaoData: null
     }
   },
   computed: {
@@ -167,20 +181,12 @@ export default {
       // 查询杂草记录
       getZacao(clean({ id: row.zacaoId })).then((res) => {
         const { data } = res
-        const routeUrl = this.$router.resolve({
-          name: 'ShowWeeds'
-        })
-        sessionStorage.setItem('weeds_data', JSON.stringify(data.zacao))
-        window.open(routeUrl.href, '_blank')
-
-        // 路由跳转
-        // this.$router.push({
-        //   name: 'ShowWeeds',
-        //   params: {
-        //     rowData: data.zacao
-        //   }
-        // })
+        this.zacaoData = data.zacao
+        this.dialogVisible = true
       }).catch(err => err)
+    },
+    handleClose() {
+      this.dialogVisible = false
     }
   }
 }

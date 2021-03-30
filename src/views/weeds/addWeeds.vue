@@ -110,6 +110,12 @@ export default {
   components: {
     ElSelectTree
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     // 验证经度输入范围在-180-180之间，且小数可7位
     const checkLong = (rule, value, callback) => {
@@ -213,7 +219,6 @@ export default {
     this.getLbPage()
   },
   methods: {
-
     changeSpecy(val) {
       const specy = this.specyList.find((obj) => obj.id === val)
       this.formWeed.specy = JSON.stringify(specy)

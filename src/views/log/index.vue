@@ -177,7 +177,9 @@ export default {
         index: 1
       },
       totalCount: 0,
-      selected: []
+      selected: [],
+      dialogVisible: false,
+      logData: null
     }
   },
   computed: {
