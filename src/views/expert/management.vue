@@ -205,7 +205,7 @@ export default {
     handleEdit(index, rowData) {
       // 跳转页面
       this.$router.push({
-        name: 'AddExpert',
+        name: 'EditExpert',
         params: {
           index,
           rowData,

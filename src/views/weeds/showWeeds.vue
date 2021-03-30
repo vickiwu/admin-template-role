@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container1">
+  <div class="app-container-dialog">
     <el-form
       ref="form"
       :model="form"
@@ -149,6 +149,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-container-dialog{
+  .el-form-item{
+    margin-bottom: 0 !important;
+  }
+}
 .bm-view {
   width: 100%;
   height: 500px;

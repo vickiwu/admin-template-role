@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container1">
+  <div class="app-container-dialog">
     <el-form
       ref="form"
       :model="formWeed"
@@ -11,7 +11,7 @@
       <el-form-item label="名称" prop="nameCn" placeholder="请输入杂草名称">
         <el-input v-model="formWeed.nameCn" />
       </el-form-item>
-      <el-form-item label="拉丁名称" placeholder="请输入杂草拉丁名称">
+      <el-form-item label="拉丁名称" prop="nameLt" placeholder="请输入杂草拉丁名称">
         <el-input v-model="formWeed.nameLt" />
       </el-form-item>
       <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
@@ -165,6 +165,9 @@ export default {
         nameCn: [
           { required: true, message: '请输入杂草名称', trigger: 'blur' }
         ],
+        nameLt: [
+          { required: true, message: '请输入杂草拉丁名称', trigger: 'blur' }
+        ],
         lng: [{ validator: checkLong, length: 18, trigger: 'blur' }],
         lat: [{ validator: checkLat, length: 18, trigger: 'blur' }],
         source: [
@@ -289,7 +292,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.app-container-dialog{
+  // .el-form-item{
+  //   // margin-bottom: 5px !important;
+  // }
+}
 .news-form{
   width: 80%;
   margin: 15px auto;

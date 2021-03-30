@@ -108,6 +108,13 @@ export const constantRoutes = [
         meta: { title: '专家录入', icon: 'tree' }
       },
       {
+        path: 'editExpert',
+        name: 'EditExpert',
+        hidden: true,
+        component: () => import('@/views/expert/editExpert'),
+        meta: { title: '专家修改', icon: 'tree' }
+      },
+      {
         path: 'management',
         name: 'ExpertManagement',
         // hidden: true,
@@ -129,6 +136,13 @@ export const constantRoutes = [
         name: 'InformationAdd',
         component: () => import('@/views/information/addInfo'),
         meta: { title: '资料录入', icon: 'tree' }
+      },
+      {
+        path: 'editInformation',
+        name: 'EditrmationAdd',
+        hidden: true,
+        component: () => import('@/views/information/editInfo'),
+        meta: { title: '资料修改', icon: 'tree' }
       },
       {
         path: 'index',
