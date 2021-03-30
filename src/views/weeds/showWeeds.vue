@@ -168,3 +168,12 @@ export default {
   }
 }
 </style>
+<style>
+.BMap_cpyCtrl {
+    display:none;
+}
+
+.anchorBL{
+    display:none;
+}
+</style>
