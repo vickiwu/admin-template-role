@@ -41,6 +41,14 @@
       </bm-marker>
       <bml-heatmap :data="data" :max="10" :radius="20" />
     </baidu-map>
+    <el-dialog
+      title="杂草详情"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose"
+    >
+      <showWeeds :data="zacaoData" />
+    </el-dialog>
   </div>
 </template>
 
@@ -51,6 +59,7 @@ import { totalCount, getDistPage, heatmap, heatmapTotal, getZacao } from '@/api/
 import { getSysConfig } from '@/utils/auth'
 import debounce from 'lodash.debounce'
 import { pageCount } from '@/globalConfig'
+import showWeeds from '@/views/weeds/showWeeds'
 
 // import { clean, parseTime } from '@/utils/index'
 
@@ -60,7 +69,8 @@ export default {
     BmMarker,
     BmInfoWindow,
     BmlHeatmap,
-    BmLabel
+    BmLabel,
+    showWeeds
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ['apprefs'],
@@ -80,7 +90,9 @@ export default {
       data: [], // { lng: 118.818261, lat: 32.021984, count: 50 }
       zacao: {},
       start: 0,
-      count: pageCount
+      count: pageCount,
+      zacaoData: null,
+      dialogVisible: false
     }
   },
   computed: {
@@ -143,17 +155,11 @@ export default {
       }).catch(err => err)
     },
     showDetail(zacao) {
-      // this.$router.push({
-      //   name: 'ShowWeeds',
-      //   params: {
-      //     rowData: zacao
-      //   }
-      // })
-      const routeUrl = this.$router.resolve({
-        name: 'ShowWeeds'
-      })
-      sessionStorage.setItem('weeds_data', JSON.stringify(zacao))
-      window.open(routeUrl.href, '_blank')
+      this.zacaoData = zacao
+      this.dialogVisible = true
+    },
+    handleClose() {
+      this.dialogVisible = false
     },
     infoWindowClose(id) {
       this.currentI = -1

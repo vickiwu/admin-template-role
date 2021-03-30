@@ -207,6 +207,27 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="杂草详情"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose"
+    >
+      <showWeeds :data="zacaoData" />
+    </el-dialog>
+    <el-dialog
+      title="编辑杂草"
+      :visible.sync="editDialogVisible"
+      width="60%"
+      :before-close="handleEditClose"
+    >
+      <editWeed
+        v-if="editDialogVisible"
+        :data="editZacaoData"
+        @close="handleEditClose"
+        @update="handleUpdateClose"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -216,10 +237,14 @@ import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
 const cityJson = require('@/assets/json/cities.json')
 import { pageCount } from '@/globalConfig'
+import showWeeds from './showWeeds'
+import editWeed from './editWeed'
 
 export default {
   components: {
-    ElSelectTree
+    ElSelectTree,
+    showWeeds,
+    editWeed
   },
   data() {
     return {
@@ -245,7 +270,11 @@ export default {
         index: 1
       },
       totalCount: 0,
-      multipleSelection: []
+      multipleSelection: [],
+      dialogVisible: false,
+      zacaoData: null,
+      editDialogVisible: false,
+      editZacaoData: null
     }
   },
   computed: {
@@ -349,29 +378,23 @@ export default {
         }).catch(err => err)
       }
     },
+    handleEditClose() {
+      this.editDialogVisible = false
+    },
+    handleUpdateClose() {
+      this.editDialogVisible = false
+      this.getPage()
+    },
     handleEdit(index, rowData) {
-      // 修改杂草
-      this.$router.push({
-        name: 'AddWeeds',
-        params: {
-          index, rowData,
-          isEdit: true
-        }
-      })
+      this.editDialogVisible = true
+      this.editZacaoData = rowData
+    },
+    handleClose() {
+      this.dialogVisible = false
     },
     handleDetail(index, rowData) {
-      const routeUrl = this.$router.resolve({
-        name: 'ShowWeeds'
-      })
-      sessionStorage.setItem('weeds_data', JSON.stringify(rowData))
-
-      window.open(routeUrl.href, '_blank')
-      // this.$router.push({
-      //   name: 'ShowWeeds',
-      //   params: {
-      //     index, rowData
-      //   }
-      // })
+      this.zacaoData = rowData
+      this.dialogVisible = true
     },
     handleAdd() {
       // 跳转页面
