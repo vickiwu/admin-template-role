@@ -4,7 +4,7 @@
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="23" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd">新增</el-button>
-          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
+          <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -15,11 +15,11 @@
         class="report-table"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           label="选择"
           width="50"
-        />
+        /> -->
         <el-table-column
           prop=""
           label="序号"
@@ -50,10 +50,16 @@
         >
           <template slot-scope="scope">
             <span
-              style="color: #409EFF;cursor:pointer;"
+              style="color: #409EFF;cursor:pointer;margin-right:15px;"
               @click="handleEdit( scope.row)"
             >
               修改
+            </span>
+            <span
+              style="color: #f78989;cursor:pointer;"
+              @click="handleDel( scope.row.id)"
+            >
+              删除
             </span>
           </template>
         </el-table-column>
@@ -156,35 +162,55 @@ export default {
         this.totalCount = data.totalCount
       }).catch(err => err)
     },
-    handleDel() {
-      const ids = this.multipleSelection.map((item) => {
-        return item.id
-      })
-      if (ids.length === 0) {
-        this.$confirm('请选择删除对象', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
+    // handleDel() {
+    //   const ids = this.multipleSelection.map((item) => {
+    //     return item.id
+    //   })
+    //   if (ids.length === 0) {
+    //     this.$confirm('请选择删除对象', '提示', {
+    //       confirmButtonText: '确定',
+    //       type: 'warning'
+    //     }).catch(err => err)
+    //   } else {
+    //     this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       type: 'warning'
+    //     }).then(() => {
+    //       delLb({ id: ids[0] }).then((res) => {
+    //         if (res.state === 1) {
+    //           this.$alert('删除成功', '提示', {
+    //             confirmButtonText: '确定',
+    //             type: 'success',
+    //             callback: () => {
+    //               // 新增完成 更新列表
+    //               this.getLbPage()
+    //             }
+    //           })
+    //         }
+    //       }).catch(err => err)
+    //     }).catch(err => err)
+    //   }
+    // },
+    handleDel(id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delLb({ id: id }).then((res) => {
+          if (res.state === 1) {
+            this.$alert('删除成功', '提示', {
+              confirmButtonText: '确定',
+              type: 'success',
+              callback: () => {
+                // 新增完成 更新列表
+                this.getLbPage()
+              }
+            })
+          }
         }).catch(err => err)
-      } else {
-        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          delLb({ id: ids[0] }).then((res) => {
-            if (res.state === 1) {
-              this.$alert('删除成功', '提示', {
-                confirmButtonText: '确定',
-                type: 'success',
-                callback: () => {
-                  // 新增完成 更新列表
-                  this.getLbPage()
-                }
-              })
-            }
-          }).catch(err => err)
-        }).catch(err => err)
-      }
+      }).catch(err => err)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val

@@ -66,8 +66,8 @@
         </el-col>
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
-          <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
-          <el-button type="danger" size="small" @click="handleDel">删除</el-button>
+          <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
+          <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -78,11 +78,11 @@
         class="report-table"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           label="选择"
           width="50"
-        />
+        /> -->
         <el-table-column
           prop=""
           label="序号"
@@ -184,10 +184,16 @@
               查看
             </span>
             <span
-              style="color: #409EFF;cursor:pointer;"
+              style="color: #409EFF;cursor:pointer; margin-right:10px;"
               @click="handleEdit(scope.$index, scope.row)"
             >
               修改
+            </span>
+            <span
+              style="color: #f78989;cursor:pointer;"
+              @click="handleDel( scope.row.id)"
+            >
+              删除
             </span>
           </template>
         </el-table-column>
@@ -304,50 +310,70 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    handleDel() {
-      const ids = this.multipleSelection.map((item) => {
-        return item.id
-      })
-      if (ids.length === 0) {
-        this.$confirm('请选择删除对象', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
-        }).catch(err => err)
-      } else {
-        this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          if (ids.length === 1) {
-            zacaoDelete({ id: ids[0] }).then((data) => {
-              if (data.state) {
-                this.$alert('删除成功', '提示', {
-                  confirmButtonText: '确定',
-                  type: 'success',
-                  callback: () => {
-                    // 删除成功 执行查询更新
-                    this.getPage()
-                  }
-                })
+    // handleDel() {
+    //   const ids = this.multipleSelection.map((item) => {
+    //     return item.id
+    //   })
+    //   if (ids.length === 0) {
+    //     this.$confirm('请选择删除对象', '提示', {
+    //       confirmButtonText: '确定',
+    //       type: 'warning'
+    //     }).catch(err => err)
+    //   } else {
+    //     this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       type: 'warning'
+    //     }).then(() => {
+    //       if (ids.length === 1) {
+    //         zacaoDelete({ id: ids[0] }).then((data) => {
+    //           if (data.state) {
+    //             this.$alert('删除成功', '提示', {
+    //               confirmButtonText: '确定',
+    //               type: 'success',
+    //               callback: () => {
+    //                 // 删除成功 执行查询更新
+    //                 this.getPage()
+    //               }
+    //             })
+    //           }
+    //         }).catch(err => err)
+    //       } else {
+    //         zacaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
+    //           if (data.state) {
+    //             this.$alert('删除成功', '提示', {
+    //               confirmButtonText: '确定',
+    //               type: 'success',
+    //               callback: () => {
+    //                 // 删除成功 执行查询更新
+    //                 this.getPage()
+    //               }
+    //             })
+    //           }
+    //         }).catch(err => err)
+    //       }
+    //     }).catch(err => err)
+    //   }
+    // },
+    handleDel(id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        zacaoDelete({ id: id }).then((data) => {
+          if (data.state) {
+            this.$alert('删除成功', '提示', {
+              confirmButtonText: '确定',
+              type: 'success',
+              callback: () => {
+                // 删除成功 执行查询更新
+                this.getPage()
               }
-            }).catch(err => err)
-          } else {
-            zacaoDelete({ ids: JSON.stringify(ids) }).then((data) => {
-              if (data.state) {
-                this.$alert('删除成功', '提示', {
-                  confirmButtonText: '确定',
-                  type: 'success',
-                  callback: () => {
-                    // 删除成功 执行查询更新
-                    this.getPage()
-                  }
-                })
-              }
-            }).catch(err => err)
+            })
           }
         }).catch(err => err)
-      }
+      }).catch(err => err)
     },
     handleEdit(index, rowData) {
       // 修改杂草

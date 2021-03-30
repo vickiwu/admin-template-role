@@ -26,13 +26,12 @@
         stripe
         style="width: 100%"
         class="report-table"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           label="选择"
           width="50"
-        />
+        /> -->
         <el-table-column
           prop=""
           label="序号"
@@ -198,9 +197,7 @@ export default {
         }
       })
     },
-    handleSelectionChange(val) {
-      this.selected = val
-    },
+
     del(row) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
         confirmButtonText: '确定',

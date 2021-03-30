@@ -74,12 +74,12 @@
             style="width: 100%"
             class="report-table"
           >
-            <el-table-column
+            <!-- <el-table-column
               type="selection"
               label="选择"
               width="50"
               :show-overflow-tooltip="true"
-            />
+            /> -->
             <el-table-column
               prop=""
               label="序号"

@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="8" class="right-btn">
           <el-button type="primary" size="small" @click="query">检索</el-button>
-          <el-button type="danger" size="small" @click="delelteFile()">删除</el-button>
+          <!-- <el-button type="danger" size="small" @click="delelteFile()">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -51,11 +51,11 @@
         class="report-table"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column
+        <!-- <el-table-column
           type="selection"
           label="选择"
           width="50"
-        />
+        /> -->
         <el-table-column
           prop=""
           label="序号"
@@ -95,16 +95,26 @@
             <span>{{ parseTime(scope.row.create) }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column
+        <el-table-column
           label="操作"
           min-width="10%"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <el-button type="text" @click="delelteFile(scope.row)">删除文件</el-button>
-            <el-button type="text" @click="deleteZacao(scope.row)">删除杂草</el-button>
+            <span
+              style="color: #409EFF;cursor:pointer;margin-right:15px;"
+              @click="showDetail(scope.$index, scope.row)"
+            >
+              查看
+            </span>
+            <span
+              style="color: #f78989;cursor:pointer;"
+              @click="delelteFile(scope.$index, scope.row)"
+            >
+              删除
+            </span>
           </template>
-        </el-table-column> -->
+        </el-table-column>
 
       </el-table>
       <!-- 分页 新 -->
@@ -122,6 +132,25 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="日志详情"
+      :visible.sync="dialoglog"
+      :modal-append-to-body="false"
+      width="50%"
+    >
+      <el-form
+        label-width="80px"
+        label-position="left"
+      >
+        <el-form-item label="内容：">
+          {{ currentLog.content }}
+        </el-form-item>
+
+        <div style="text-align:center;margin-top: 25px;">
+          <el-button type="primary" @click="dialoglog = false">关 闭</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -134,6 +163,8 @@ export default {
 
   data() {
     return {
+      dialoglog: false,
+      currentLog: {},
       formInline: {
         content: '',
         level: '',
@@ -201,23 +232,42 @@ export default {
     handleSelectionChange(val) {
       this.selected = val
     },
-    delelteFile() {
-      if (this.selected.length === 0) {
-        this.$alert('请选择要删除的日志!', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
+    // delelteFile() {
+    //   if (this.selected.length === 0) {
+    //     this.$alert('请选择要删除的日志!', '提示', {
+    //       confirmButtonText: '确定',
+    //       type: 'warning'
 
-        })
-        return
-      }
-      const ids = []
-      this.selected.forEach(item => ids.push(item.id))
+    //     })
+    //     return
+    //   }
+    //   const ids = []
+    //   this.selected.forEach(item => ids.push(item.id))
+    //   this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }).then(() => {
+    //     logDelete({ ids: JSON.stringify(ids) }).then(res => {
+    //       if (res.state === 1) {
+    //         this.$alert('删除成功！', '提示', {
+    //           confirmButtonText: '确定',
+    //           type: 'success',
+    //           callback: () => {
+    //             this.query()
+    //           }
+    //         })
+    //       }
+    //     }).catch(err => err)
+    //   }).catch(err => err)
+    // },
+    delelteFile(index, row) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        logDelete({ ids: JSON.stringify(ids) }).then(res => {
+        logDelete({ id: row.id }).then(res => {
           if (res.state === 1) {
             this.$alert('删除成功！', '提示', {
               confirmButtonText: '确定',
@@ -229,6 +279,12 @@ export default {
           }
         }).catch(err => err)
       }).catch(err => err)
+    },
+    showDetail(index, row) {
+      // 查看log是模态框还是页面 todo
+      console.log('%c 🍍 index,row: ', 'font-size:20px;background-color: #B03734;color:#fff;', index, row)
+      this.currentLog = row
+      this.dialoglog = true
     }
   }
 }
