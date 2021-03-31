@@ -428,7 +428,7 @@ export default {
     },
     handleEdit(index, rowData) {
       this.editDialogVisible = true
-      this.editZacaoData = rowData
+      this.editZacaoData = JSON.parse(JSON.stringify(rowData))
     },
     handleClose() {
       this.dialogVisible = false

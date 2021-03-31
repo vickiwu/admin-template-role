@@ -56,17 +56,21 @@
           </el-select>
         </el-form-item>
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="10">
             <!-- 112.2222 -->
             <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
               <el-input v-model="formWeed.lng" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10">
             <!-- 23.2222 -->
             <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
               <el-input v-model="formWeed.lat" />
             </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <!-- 23.2222 -->
+            <el-button type="primary" @click="chooseByMap">地图选择</el-button>
           </el-col>
         </el-row>
 
@@ -92,11 +96,30 @@
 
         </el-form-item>
         <el-form-item class="btn-center">
-          <el-button>取消</el-button>
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+
+    <el-dialog
+      title="地图"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <baidu-map
+        ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
+        class="bm-view"
+        :zoom="10"
+        :center="home"
+        :map-click="false"
+        :scroll-wheel-zoom="true"
+        @click="handleMapClick"
+      >
+        <bm-marker :position="{lng: formWeed.lng, lat: formWeed.lat}" />
+      </baidu-map>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -105,10 +128,15 @@ import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 import ElSelectTree from 'el-select-tree'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { mapGetters } from 'vuex'
+import { BmMarker } from 'vue-baidu-map'
 
 export default {
   components: {
-    ElSelectTree
+    ElSelectTree,
+    BaiduMap,
+    BmMarker
   },
   props: {
     data: {
@@ -116,6 +144,7 @@ export default {
       default: () => {}
     }
   },
+
   data() {
     // 验证经度输入范围在-180-180之间，且小数可7位
     const checkLong = (rule, value, callback) => {
@@ -191,8 +220,14 @@ export default {
         value: 'id',
         children: 'option',
         label: 'lb2'
-      }
+      },
+      dialogVisible: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'home'
+    ])
   },
   mounted() {
     this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
@@ -325,13 +360,29 @@ export default {
       } else {
         this.create()
       }
+    },
+    chooseByMap() {
+      this.dialogVisible = true
+    },
+    handleClose() {
+      this.dialogVisible = false
+    },
+    handleMapClick({ point }) {
+      this.formWeed = {
+        ...this.formWeed,
+        ...point
+      }
+      this.dialogVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.bm-view {
+  width: 100%;
+  height: 500px;
+}
 .news-card {
 .news-form{
   width: 80%;
@@ -359,3 +410,13 @@ export default {
 }
 
 </style>
+<style>
+.BMap_cpyCtrl {
+    display:none;
+}
+
+.anchorBL{
+    display:none;
+}
+</style>
+

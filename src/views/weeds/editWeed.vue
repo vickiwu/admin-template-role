@@ -55,18 +55,38 @@
         </el-select>
       </el-form-item>
       <el-row :gutter="20">
-        <el-col :span="12">
-          <!-- 112.2222 -->
-          <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
-            <el-input v-model="formWeed.lng" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <!-- 23.2222 -->
-          <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
-            <el-input v-model="formWeed.lat" />
-          </el-form-item>
-        </el-col>
+        <span v-if="isCreate">
+          <el-col :span="12">
+            <!-- 112.2222 -->
+            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
+              <el-input v-model="formWeed.lng" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <!-- 23.2222 -->
+            <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
+              <el-input v-model="formWeed.lat" />
+            </el-form-item>
+          </el-col>
+        </span>
+        <span v-else>
+          <el-col :span="10">
+            <!-- 112.2222 -->
+            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
+              <el-input v-model="formWeed.lng" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <!-- 23.2222 -->
+            <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
+              <el-input v-model="formWeed.lat" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <!-- 23.2222 -->
+            <el-button type="primary" @click="chooseByMap">地图选择</el-button>
+          </el-col>
+        </span>
       </el-row>
 
       <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
@@ -95,6 +115,26 @@
         <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
     </el-form>
+
+    <el-dialog
+      title="地图"
+      :visible.sync="dialogVisible"
+      append-to-body
+      width="50%"
+      :before-close="handleClose"
+    >
+      <baidu-map
+        ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
+        class="bm-view"
+        :zoom="10"
+        :center="home"
+        :map-click="false"
+        :scroll-wheel-zoom="true"
+        @click="handleMapClick"
+      >
+        <bm-marker :position="{lng: formWeed.lng, lat: formWeed.lat}" />
+      </baidu-map>
+    </el-dialog>
   </div>
 </template>
 
@@ -103,10 +143,15 @@ import { uploadImg, edit, create, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 import ElSelectTree from 'el-select-tree'
+import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+import { mapGetters } from 'vuex'
+import { BmMarker } from 'vue-baidu-map'
 
 export default {
   components: {
-    ElSelectTree
+    ElSelectTree,
+    BaiduMap,
+    BmMarker
   },
   props: {
     data: {
@@ -197,8 +242,14 @@ export default {
         value: 'id',
         children: 'option',
         label: 'lb2'
-      }
+      },
+      dialogVisible: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'home'
+    ])
   },
   mounted() {
     if (this.isCreate) {
@@ -216,7 +267,6 @@ export default {
   },
   methods: {
     init() {
-      console.log('init')
       if (this.formWeed.specy) {
         this.selectId = this.formWeed.specy.id
       }
@@ -326,12 +376,29 @@ export default {
     },
     cancel() {
       this.$emit('close')
+    },
+    chooseByMap() {
+      this.dialogVisible = true
+    },
+    handleClose() {
+      this.dialogVisible = false
+    },
+    handleMapClick({ point }) {
+      this.formWeed = {
+        ...this.formWeed,
+        ...point
+      }
+      this.dialogVisible = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.bm-view {
+  width: 100%;
+  height: 500px;
+}
 .app-container-dialog{
   // .el-form-item{
   //   // margin-bottom: 5px !important;
@@ -361,4 +428,13 @@ export default {
 }
 }
 
+</style>
+<style>
+.BMap_cpyCtrl {
+    display:none;
+}
+
+.anchorBL{
+    display:none;
+}
 </style>

@@ -79,7 +79,7 @@
         <baidu-map
           ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
           class="bm-view"
-          :zoom="7"
+          :zoom="10"
           :center="home"
           :scroll-wheel-zoom="true"
         >
