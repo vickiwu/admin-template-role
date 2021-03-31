@@ -22,10 +22,10 @@ const actions = {
         arr1.push(element.pageName)
       })
       if (arr1.includes('账户管理')) {
-        arr1.push('权限设置')
+        // arr1.push('权限设置')
         arr1.push('账户新增')
         arr1.push('调度管理')
-        arr1.push('账号同步')
+        // arr1.push('账号同步')
       }
       if (arr1.includes('账户管理') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
         arr1.push('资源管理')
@@ -61,7 +61,11 @@ export function resetRoutes(constantRoutes) {
       } else if (element.meta.title === '资源管理') {
         element.hidden = false
         element.children.forEach(item => {
-          item.hidden = false
+          if (item.meta.title === '账户同步' || item.meta.title === '权限设置') {
+            item.hidden = true
+          } else {
+            item.hidden = false
+          }
         })
       }
     }
