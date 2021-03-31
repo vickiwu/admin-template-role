@@ -45,6 +45,23 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/trend',
+    component: Layout,
+    redirect: '/index',
+    name: 'NewsTrend',
+    meta: { title: '新闻动态', icon: 'el-icon-s-help' },
+    children: [
+
+      {
+        path: 'index',
+        name: 'Trend',
+        component: () => import('@/views/news/trend'),
+        meta: { title: '新闻动态', icon: 'table' }
+      }
+
+    ]
+  },
+  {
     path: '/weeds',
     component: Layout,
     redirect: '/weeds/management',
@@ -189,14 +206,14 @@ export const constantRoutes = [
       {
         path: 'syncAccount',
         name: 'SyncAccount',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/resource/syncAccount'),
         meta: { title: '账户同步', icon: 'tree' }
       },
       {
         path: 'roles',
         name: 'AccountRoles',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/resource/roles'),
         meta: { title: '权限设置', icon: 'tree' }
       },
@@ -248,7 +265,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/news/trend',
     name: 'News',
-    meta: { title: '新闻中心', icon: 'el-icon-s-help' },
+    meta: { title: '新闻管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'addNews',
@@ -265,12 +282,12 @@ export const constantRoutes = [
         meta: { title: '新闻内容', icon: 'tree' }
       },
 
-      {
-        path: 'trend',
-        name: 'Trend',
-        component: () => import('@/views/news/trend'),
-        meta: { title: '新闻动态', icon: 'table' }
-      },
+      // {
+      //   path: 'trend',
+      //   name: 'Trend',
+      //   component: () => import('@/views/news/trend'),
+      //   meta: { title: '新闻动态', icon: 'table' }
+      // },
       {
         path: 'management',
         name: 'Management',

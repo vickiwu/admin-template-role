@@ -25,8 +25,9 @@ const actions = {
         arr1.push('权限设置')
         arr1.push('账户新增')
         arr1.push('调度管理')
+        arr1.push('账号同步')
       }
-      if (arr1.includes('账户管理') || arr1.includes('账户同步') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
+      if (arr1.includes('账户管理') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
         arr1.push('资源管理')
       }
       if (!(priv.length === 1 && priv[0].pageName === '*')) {
@@ -49,7 +50,7 @@ export function resetRoutes(constantRoutes) {
   constantRoutes.forEach(element => {
     if (element.meta) {
       if (element.meta.title === '统计分析' ||
-      element.meta.title === '新闻中心' ||
+      element.meta.title === '新闻管理' ||
       element.meta.title === '杂草库' ||
       element.meta.title === '专家中心' ||
       element.meta.title === '资料中心' ||
