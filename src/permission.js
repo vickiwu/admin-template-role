@@ -28,7 +28,10 @@ router.beforeEach(async(to, from, next) => {
         if (hasSetPermission) {
           next()
         } else {
-          await store.dispatch('permission/generateRoutes', store.getters.privGroup)
+          await store.dispatch('permission/generateRoutes', {
+            priv: store.getters.privGroup,
+            privilege: store.getters.privilege
+          })
           next({ ...to, replace: true })
         }
       } else {

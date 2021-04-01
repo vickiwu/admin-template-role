@@ -13,7 +13,9 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, priv) {
+  generateRoutes({ commit }, auth) {
+    let { priv } = auth
+    const { privilege } = auth
     priv = (typeof priv === 'string' ? JSON.parse(priv) : priv)
     return new Promise(resolve => {
       const arr1 = []
@@ -30,6 +32,7 @@ const actions = {
       if (arr1.includes('账户管理') || arr1.includes('文件管理') || arr1.includes('空间管理')) {
         arr1.push('资源管理')
       }
+      // 权限判断
       if (!(priv.length === 1 && priv[0].pageName === '*')) {
         const routes = setRoutes(constantRoutes, arr1)
         resolve(routes)
@@ -37,12 +40,30 @@ const actions = {
         const routes = resetRoutes(constantRoutes)
         resolve(routes)
       }
+      // 新闻中心和日志管理仅管理员可见 privilege<=4
+      const routes = setRoutesByManage(constantRoutes, privilege)
+      resolve(routes)
       commit('SET_PERMISSION_STATE', true)
     })
   },
   resetPermissionState({ commit }) {
     commit('SET_PERMISSION_STATE', false)
   }
+}
+
+export function setRoutesByManage(constantRoutes, privilege) {
+  constantRoutes.forEach(element => {
+    if (element.meta) {
+      if (element.meta.title === '新闻管理' ||
+        element.meta.title === '系统日志') {
+        if (privilege <= 4) {
+          element.hidden = false
+        } else {
+          element.hidden = true
+        }
+      }
+    }
+  })
 }
 
 export function resetRoutes(constantRoutes) {
