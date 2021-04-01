@@ -102,8 +102,8 @@
         >
           <template slot-scope="scope">
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy.lb1 }}</span>科
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy.lb2 }}</span>属
+              <span style="margin-right:10px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
+              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
             </div>
           </template>
         </el-table-column>
@@ -138,8 +138,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="realname"
+          label="采集人"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
           prop="name"
-          label="发现时间"
+          label="上传时间"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
