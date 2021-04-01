@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-around">
-        <el-col :span="6">
+        <el-col :span="8">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.createTimeStart"
@@ -34,7 +34,7 @@
           <el-input v-model="formSearch.title" size="medium" placeholder="标题" prefix-icon="el-icon-search" />
 
         </el-col>
-        <el-col :span="7" class="right-btn">
+        <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="searchHandle">检索</el-button>
           <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
           <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->

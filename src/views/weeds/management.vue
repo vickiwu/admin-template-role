@@ -2,14 +2,14 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="6">
+        <el-col :span="8">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.startTime"
               size="medium"
               type="date"
               placeholder="开始日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy-MM-dd"
               value-format="timestamp"
               style="width: 100%"
             />
@@ -21,7 +21,7 @@
               size="medium"
               type="date"
               placeholder="结束日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy-MM-dd"
               value-format="timestamp"
               style="width: 100%"
             />
@@ -72,7 +72,7 @@
             prefix-icon="el-icon-search"
           />
         </el-col>
-        <el-col :span="5" class="right-btn">
+        <el-col :span="3" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
           <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
           <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->

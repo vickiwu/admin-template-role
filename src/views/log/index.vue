@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="7">
+        <el-col :span="8">
           <el-col :span="11">
             <el-date-picker
               v-model="formInline.startTime"
@@ -39,7 +39,7 @@
             <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
-        <el-col :span="8" class="right-btn">
+        <el-col :span="7" class="right-btn">
           <el-button type="primary" size="small" @click="query">检索</el-button>
           <!-- <el-button type="danger" size="small" @click="delelteFile()">删除</el-button> -->
         </el-col>

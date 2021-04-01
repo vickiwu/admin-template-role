@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
-    <el-row type="flex" class="report-row" justify="space-around" :gutter="10">
-      <el-col :span="17">
+    <el-row type="flex" class="report-row" justify="space-around" :gutter="5">
+      <el-col :span="18">
         <el-card class="left-card" shadow="always">
           <el-row type="flex" justify="space-between">
-            <el-col :span="8">
+            <el-col :span="9">
               <el-col :span="11">
                 <el-date-picker
                   v-model="formSearch.startTime"
                   size="medium"
                   type="date"
                   placeholder="开始日期"
-                  format="yyyy 年 MM 月 dd 日"
+                  format="yyyy-MM-dd"
                   value-format="timestamp"
                   style="width: 100%"
                 />
@@ -23,13 +23,13 @@
                   size="medium"
                   type="date"
                   placeholder="结束日期"
-                  format="yyyy 年 MM 月 dd 日"
+                  format="yyyy-MM-dd"
                   value-format="timestamp"
                   style="width: 100%"
                 />
               </el-col>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="3">
               <el-select
                 v-model="formSearch.reg"
                 clearable
@@ -184,7 +184,7 @@
 
         </el-card>
       </el-col>
-      <el-col :span="7" class="right-col">
+      <el-col :span="6" class="right-col">
         <el-card class="right-card" shadow="always">
           <div class="body-card">
             <div class="title-card">杂草数量</div>

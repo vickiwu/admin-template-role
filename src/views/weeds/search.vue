@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <el-card shadow="always" class="news-card">
-      <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="6">
+      <el-row class="report-row" :gutter="5">
+        <el-col :span="7">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.startTime"
               size="medium"
               type="date"
               placeholder="开始日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy-MM-dd"
               value-format="timestamp"
               style="width: 100%"
             />
@@ -21,7 +21,7 @@
               size="medium"
               type="date"
               placeholder="结束日期"
-              format="yyyy 年 MM 月 dd 日"
+              format="yyyy-MM-dd"
               value-format="timestamp"
               style="width: 100%"
             />
