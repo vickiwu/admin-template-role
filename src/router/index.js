@@ -41,24 +41,13 @@ export const constantRoutes = [
         name: 'Report',
         component: () => import('@/views/statistical/report'),
         meta: { title: '报表统计', icon: 'tree' }
-      }
-    ]
-  },
-  {
-    path: '/trend',
-    component: Layout,
-    redirect: '/index',
-    name: 'NewsTrend',
-    meta: { title: '新闻动态', icon: 'el-icon-s-help' },
-    children: [
-
+      },
       {
         path: 'index',
         name: 'Trend',
         component: () => import('@/views/news/trend'),
         meta: { title: '新闻动态', icon: 'table' }
       }
-
     ]
   },
   {
