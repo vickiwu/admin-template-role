@@ -76,10 +76,10 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span v-if="scope.row.jydw === 0">未发现有害生物</span>
-            <span v-else-if="scope.row.jydw === 1">非检疫性有害生物</span>
+            <!-- <span v-if="scope.row.jydw === 0">未发现有害生物</span> -->
+            <span v-if="scope.row.jydw === 1">非检疫性有害生物</span>
             <span v-else-if="scope.row.jydw === 2">检疫性有害生物</span>
-            <span v-else-if="scope.row.jydw === 3">非鉴定性有害生物</span>
+            <!-- <span v-else-if="scope.row.jydw === 3">非鉴定性有害生物</span> -->
             <span v-else />
           </template>
         </el-table-column>

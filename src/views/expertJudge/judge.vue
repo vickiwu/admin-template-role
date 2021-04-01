@@ -79,10 +79,10 @@
         </el-row>
         <el-form-item label="检疫地位" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择检疫地位">
-            <el-option label="未发现有害生物" :value="0" />
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-form-item>
         <el-form-item label="研判意见" placeholder="请输入专家研判意见">
