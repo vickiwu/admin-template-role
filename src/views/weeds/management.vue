@@ -454,7 +454,17 @@ export default {
   }
 }
 </script>
-
+<style >
+.report-table .el-image-viewer__mask {
+  opacity: .9
+}
+.report-table .el-image-viewer__close {
+  color: #fff
+}
+/* .report-table .el-image-viewer__img {
+  max-width: 90%;
+} */
+</style>
 <style lang="scss" scoped>
 
 .news-card {
