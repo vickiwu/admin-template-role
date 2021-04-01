@@ -94,7 +94,7 @@
             <el-image
               v-if="scope.row.avatar && scope.row.avatar.httpUrl"
               style="width: 40px; "
-              :src="scope.row.avatar.httpUrl"
+              :src="scope.row.avatar && scope.row.avatar.httpUrl"
               :preview-src-list="[scope.row.avatar && scope.row.avatar.httpUrl]"
             >
               <div slot="error" class="image-slot">
