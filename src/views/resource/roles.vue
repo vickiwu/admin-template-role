@@ -29,9 +29,6 @@
             <div>
               <el-checkbox label="新闻管理" />
             </div>
-            <div>
-              <el-checkbox label="新闻动态" />
-            </div>
 
             <div>
               <el-checkbox label="系统日志" />
@@ -74,7 +71,7 @@ export default {
       },
       options: [],
       checkList: [],
-      defaultAll: ['杂草库', '资料中心', '专家中心', '专家研判', '新闻管理', '新闻动态', '系统日志', '账户管理', '文件管理', '空间管理']
+      defaultAll: ['杂草库', '资料中心', '专家中心', '专家研判', '新闻管理', '系统日志', '账户管理', '文件管理', '空间管理']
     }
   },
   computed: {

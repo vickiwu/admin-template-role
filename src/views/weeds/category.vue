@@ -4,6 +4,7 @@
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="23" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd">新增</el-button>
+          <el-button type="primary" size="small" @click="handleSearch">刷新</el-button>
           <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
@@ -220,6 +221,9 @@ export default {
       this.dialogVisible = true
       this.isEdit = true
       this.formAdd = { ...rowData }
+    },
+    handleSearch() {
+      this.getLbPage()
     },
     handleAdd() {
       // 新增类别

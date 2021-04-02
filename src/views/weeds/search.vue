@@ -56,7 +56,7 @@
 
         </el-col>
         <el-col :span="3">
-          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
+          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="检疫地位">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
@@ -73,7 +73,8 @@
         </el-col>
         <el-col :span="5" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
-          <el-button type="primary" size="small" @click="handleDownLoad()">下载图片</el-button>
+
+          <el-button type="primary" size="small" @click="handleSearch()">刷新</el-button>
           <el-button type="primary" size="small" :loading="downloadLoading" @click="handleExport()">导出</el-button>
         </el-col>
       </el-row>
@@ -85,17 +86,6 @@
         class="report-table"
       >
 
-        <el-table-column label="选择" align="center" width="50">
-          <template slot-scope="scope">
-            <el-radio
-              v-model="radio"
-              :label="scope.$index"
-              @change.native="getCurrentRow(scope.row)"
-            >
-              <span />
-            </el-radio>
-          </template>
-        </el-table-column>
         <el-table-column
           prop=""
           label="序号"
@@ -136,8 +126,8 @@
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+              <span style="margin-right:5px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
+              <span style="">{{ scope.row.specy ? scope.row.specy.lb2: "" }}</span>
             </div>
 
           </template>
@@ -191,6 +181,22 @@
             <span>{{ parseTime(scope.row.create) }}</span>
           </template>
         </el-table-column>
+        <el-table-column
+          prop=""
+          label="操作"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <span
+              style="color: #409EFF;cursor:pointer;margin-right:10px"
+              @click="handleDownLoad(scope.$index, scope.row)"
+            >
+              下载图片
+            </span>
+
+          </template>
+        </el-table-column>
+
       </el-table>
       <!-- 分页 新 -->
       <el-pagination
@@ -307,25 +313,14 @@ export default {
       }).catch(err => err)
     },
 
-    getCurrentRow(row) {
-      this.multipleSelection = row
-    },
-    handleDownLoad() {
-      // 处理下载函数
-      if (JSON.stringify(this.multipleSelection) === '{}') {
-        this.$alert('请选择下载对象', '提示', {
+    handleDownLoad(index, row) {
+      if (row.piclist && row.piclist.length !== 0) {
+        this.downloadByBlob(row.piclist[0].httpUrl, row.piclist[0].create)
+      } else {
+        this.$alert('当前无图片可下载', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
         })
-      } else {
-        if (this.multipleSelection.piclist && this.multipleSelection.piclist.length !== 0) {
-          this.downloadByBlob(this.multipleSelection.piclist[0].httpUrl, this.multipleSelection.piclist[0].create)
-        } else {
-          this.$alert('当前无图片可下载', '提示', {
-            confirmButtonText: '确定',
-            type: 'warning'
-          })
-        }
       }
     },
     downloadByBlob(url, name) {

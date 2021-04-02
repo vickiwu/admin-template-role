@@ -21,6 +21,7 @@
         </el-col>
         <el-col :span="15" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
+          <el-button type="primary" size="small" @click="handleSearch()">刷新</el-button>
           <!-- <el-button type="primary" size="small" @click="handleAdd">新增</el-button> -->
           <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
         </el-col>

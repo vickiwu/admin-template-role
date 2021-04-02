@@ -8,7 +8,7 @@
           </span>
         </el-col>
         <el-col :span="13" class="right-btn">
-          <!-- <el-button type="danger" size="small">删除</el-button> -->
+          <el-button type="primary" size="small" @click="query()">刷新</el-button>
         </el-col>
       </el-row>
       <el-table

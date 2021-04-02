@@ -57,7 +57,7 @@
           />
         </el-col>
         <el-col :span="3">
-          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
+          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="检疫地位">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
@@ -74,6 +74,7 @@
         </el-col>
         <el-col :span="3" class="right-btn">
           <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
+          <el-button type="primary" size="small" @click="handleSearch()">刷新</el-button>
           <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
           <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
         </el-col>

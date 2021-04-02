@@ -18,6 +18,7 @@
         </el-col>
         <el-col :span="19" class="right-btn">
           <el-button type="primary" size="small" @click="handleAdd()">新增</el-button>
+          <el-button type="primary" size="small" @click="query()">刷新</el-button>
           <!-- <el-button type="danger" size="small" @click="del">删除</el-button> -->
         </el-col>
       </el-row>

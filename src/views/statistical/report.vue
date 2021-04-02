@@ -57,7 +57,7 @@
               />
             </el-col>
             <el-col :span="4">
-              <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="所有程度">
+              <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="检疫地位">
                 <el-option label="未发现有害生物" :value="0" />
                 <el-option label="非检疫性有害生物" :value="1" />
                 <el-option label="检疫性有害生物" :value="2" />
@@ -116,8 +116,8 @@
               <template slot-scope="scope">
 
                 <div>
-                  <span style="margin-right:10px"> {{ scope.row.specy ? scope.row.specy.lb1 +'科' : '' }}</span>
-                  <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy ? scope.row.specy.lb2 + '属' : "" }}</span>
+                  <span style="margin-right:5px"> {{ scope.row.specy ? scope.row.specy.lb1: '' }}</span>
+                  <span style="">{{ scope.row.specy ? scope.row.specy.lb2: "" }}</span>
                 </div>
 
               </template>
