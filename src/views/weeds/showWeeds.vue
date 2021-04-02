@@ -32,7 +32,7 @@
         </div>
 
       </el-form-item>
-      <el-form-item label="危害程度 ：" prop="jydw">
+      <el-form-item label="检疫地位 ：" prop="jydw">
         {{ form.jydw ==0?'未发现有害生物' :form.jydw ==1?'非检疫性有害生物':form.jydw ==2? '检疫性有害生物' :'非鉴定性有害生物' }}
       </el-form-item>
       <el-form-item label="特征描述 ：" placeholder="请输入杂草危害特征描述">
@@ -49,17 +49,22 @@
         />
 
       </el-form-item>
-      <el-form-item label="区域 ：">
-        <el-col :span="17">
-          <span v-for="(item,index) in form.discReg" :key="index" style="margin-right:15px">
-            <el-tag>{{ item }}</el-tag>
-          </span>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="经度 ：">
+            {{ form.lng / 10000000 }}
+          </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
+          <el-form-item label="纬度 ：">
+            {{ form.lat/ 10000000 }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-button style="margin-left ：20px" size="small" type="primary" @click="showMap">地图查看</el-button>
         </el-col>
+      </el-row>
 
-      </el-form-item>
       <el-form-item label="状态 ：">
         {{ form.state ==0?'未研判' :form.state ==1?'待进一步确认':'研判完成,入库' }}
       </el-form-item>
