@@ -4,7 +4,7 @@
       <el-col :span="18">
         <el-card class="left-card" shadow="always">
           <el-row type="flex" justify="space-between">
-            <el-col :span="9">
+            <el-col :span="8" style="margin-left:2px">
               <el-col :span="11">
                 <el-date-picker
                   v-model="formSearch.startTime"
@@ -29,7 +29,7 @@
                 />
               </el-col>
             </el-col>
-            <el-col :span="3">
+            <!-- <el-col :span="3">
               <el-select
                 v-model="formSearch.reg"
                 clearable
@@ -43,8 +43,40 @@
                   :value="item"
                 />
               </el-select>
+            </el-col> -->
+            <el-col :span="3" style="margin-left:2px">
+              <el-select
+                v-model="value1"
+                placeholder="请选择省"
+                clearable
+                @change="selectOne"
+              >
+                <el-option
+                  v-for="item in provinceList"
+                  :key="item.value"
+
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="3" style="margin-left:2px">
+              <el-select
+                v-model="value2"
+                clearable
+                placeholder="请选择市"
+                @change="selectSecond"
+              >
+                <el-option
+                  v-for="item in tempList"
+                  :key="item"
+                  clearable
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="4" style="margin-left:2px">
               <el-select-tree
                 v-model="selectId"
                 width="120px"
@@ -56,7 +88,7 @@
                 @change="changeSpecy"
               />
             </el-col>
-            <el-col :span="4">
+            <el-col :span="4" style="margin-left:2px">
               <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
                 <el-option label="未发现有害生物" :value="0" />
                 <el-option label="非检疫性有害生物" :value="1" />
@@ -64,7 +96,7 @@
                 <el-option label="非鉴定性有害生物" :value="3" />
               </el-select>
             </el-col>
-            <el-col :span="2">
+            <el-col :span="2" style="margin-left:2px;text-align: right;">
               <el-button type="primary" @click="handleSearch()">检索</el-button>
             </el-col>
           </el-row>
@@ -218,7 +250,12 @@
 import * as echarts from 'echarts'
 import { getPage, getLbPage, tongji } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
-const cityJson = require('@/assets/json/cities.json')
+// const cityJson = require('@/assets/json/cities.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item })
+}
 import ElSelectTree from 'el-select-tree'
 import { pageCount } from '@/globalConfig'
 
@@ -228,7 +265,11 @@ export default {
   },
   data() {
     return {
-      cityJson: cityJson.cityies,
+      // cityJson: cityJson.cityies,
+      provinceList: provinceList,
+      value1: '', // 广西省
+      value2: '',
+      tempList: [], // provinceJson['广西省']
       formSearch: {
         reg: '',
         specy: '',
@@ -271,6 +312,15 @@ export default {
     this.tongji()
   },
   methods: {
+    selectOne(params) {
+      this.formSearch.reg = ''
+      this.formSearch.reg = params
+      this.tempList = provinceJson[params]
+      this.value2 = ''
+    },
+    selectSecond(params) {
+      this.formSearch.reg = params
+    },
     parseTime(time) {
       // 时间戳处理
       return parseTime(time)

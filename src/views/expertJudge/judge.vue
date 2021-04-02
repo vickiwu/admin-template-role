@@ -20,7 +20,7 @@
           <el-input v-model="formWeed.source" />
         </el-form-item>
         <el-form-item label="区域" prop="discReg">
-          <el-select
+          <!-- <el-select
             v-model="formWeed.discReg"
             clearable
             collapse-tags
@@ -33,7 +33,43 @@
               :label="item"
               :value="item"
             />
-          </el-select>
+          </el-select> -->
+          <el-row type="flex" justify="space-between">
+            <!--  v-model="formWeed.discReg" -->
+            <el-col :span="11">
+              <el-select
+                v-model="value1"
+                placeholder="请选择省"
+                clearable
+                @change="selectOne"
+              >
+                <el-option
+                  v-for="item in provinceList"
+                  :key="item.value"
+
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="11">
+              <el-select
+                v-model="value2"
+                clearable
+                placeholder="请选择市"
+                @change="selectSecond"
+              >
+                <el-option
+                  v-for="item in tempList"
+                  :key="item"
+                  clearable
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+
+          </el-row>
         </el-form-item>
         <el-form-item label="种类" prop="specy">
 
@@ -101,15 +137,30 @@ import ElSelectTree from 'el-select-tree'
 import { uploadImg, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 import { commit } from '@/api/yanpan'
-const cityJson = require('@/assets/json/cities.json')
+// const cityJson = require('@/assets/json/cities.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item })
+}
 
 export default {
   components: {
     ElSelectTree
   },
   data() {
+    const validateReg = (rule, value, callback) => {
+      if (this.value1 === '' || this.value2 === '') {
+        callback(new Error('请选择发现区域'))
+      }
+      callback()
+    }
     return {
-      cityJson: cityJson.cityies,
+      // cityJson: cityJson.cityies,
+      provinceList: provinceList,
+      value1: '广西省',
+      value2: '',
+      tempList: provinceJson['广西省'],
       isEdit: true,
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
@@ -142,7 +193,7 @@ export default {
           { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
         discReg: [
-          { required: true, message: '请选择杂草区域', trigger: 'change' }
+          { required: true, validator: validateReg, trigger: 'change' }
         ],
         specy: [
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
@@ -172,6 +223,15 @@ export default {
     this.getLbPage()
   },
   methods: {
+    selectOne(params) {
+      this.formWeed.discReg = []
+      this.formWeed.discReg.push(params)
+      this.value2 = ''
+      this.tempList = provinceJson[params]
+    },
+    selectSecond(params) {
+      this.formWeed.discReg.push(params)
+    },
     changeSpecy(val) {
       const specy = this.specyList.find((obj) => obj.id === val)
       this.formWeed.specy = JSON.stringify(specy)

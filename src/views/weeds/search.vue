@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-card shadow="always" class="news-card">
-      <el-row class="report-row" :gutter="5">
-        <el-col :span="6">
+      <el-row type="flex" class="report-row" justify="space-between">
+        <el-col :span="7">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.startTime"
@@ -27,37 +27,39 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="3" style="margin-left:2px">
           <el-select
-            v-model="formSearch.reg"
+            v-model="value1"
+            placeholder="请选择省"
             clearable
-
-            placeholder="省"
+            @change="selectOne"
           >
             <el-option
-              v-for="item in cityJson"
+              v-for="item in provinceList"
+              :key="item.value"
+
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="3" style="margin-left:2px">
+          <el-select
+            v-model="value2"
+            clearable
+            placeholder="请选择市"
+            @change="selectSecond"
+          >
+            <el-option
+              v-for="item in tempList"
               :key="item"
+              clearable
               :label="item"
               :value="item"
             />
           </el-select>
         </el-col>
-        <el-col :span="2">
-          <el-select
-            v-model="formSearch.reg"
-            clearable
-
-            placeholder="市"
-          >
-            <el-option
-              v-for="item in cityJson"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
-        </el-col>
-        <el-col :span="3">
+        <el-col :span="3" style="margin-left:2px">
           <el-select-tree
             v-model="selectId"
             style="width:100%"
@@ -70,7 +72,7 @@
           />
 
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" style="margin-left:2px">
           <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
@@ -78,7 +80,7 @@
             <el-option label="非鉴定性有害生物" :value="3" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="3" style="margin-left:2px">
           <el-input
             v-model="formSearch.name"
 
@@ -86,7 +88,7 @@
             prefix-icon="el-icon-search"
           />
         </el-col>
-        <el-col :span="5" class="right-btn">
+        <el-col :span="5" class="right-btn" style="margin-left:2px;text-align:right">
           <el-button type="primary" @click="handleSearch()">检索</el-button>
 
           <el-button type="primary" @click="handleSearch()">刷新</el-button>
@@ -234,7 +236,12 @@
 <script>
 import { getPage, getLbPage, zacaoExport } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
-const cityJson = require('@/assets/json/cities.json')
+// const cityJson = require('@/assets/json/cities.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item })
+}
 import ElSelectTree from 'el-select-tree'
 import { pageCount } from '@/globalConfig'
 
@@ -244,7 +251,11 @@ export default {
   },
   data() {
     return {
-      cityJson: cityJson.cityies,
+      // cityJson: cityJson.cityies,
+      provinceList: provinceList,
+      value1: '', // 广西省
+      value2: '',
+      tempList: [], // provinceJson['广西省']
       downloadLoading: false,
       radio: '',
       formSearch: {
@@ -285,6 +296,15 @@ export default {
     this.getPage()
   },
   methods: {
+    selectOne(params) {
+      this.formSearch.reg = ''
+      this.tempList = provinceJson[params]
+      this.value2 = ''
+      this.formSearch.reg = params
+    },
+    selectSecond(params) {
+      this.formSearch.reg = params
+    },
     parseTime(time) {
       // 时间戳处理
       return parseTime(time)

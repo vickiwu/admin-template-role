@@ -225,7 +225,6 @@ export default {
       value1: '广西省',
       value2: '',
       tempList: provinceJson['广西省'],
-      selectedOptions: [],
       isEdit: false,
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
@@ -314,7 +313,6 @@ export default {
       this.formWeed.discReg.push(params)
       this.value2 = ''
       this.tempList = provinceJson[params]
-      console.log('%c 🍦 provinceJson[params]: ', 'font-size:20px;background-color: #465975;color:#fff;', provinceJson, provinceJson[params])
     },
     selectSecond(params) {
       this.formWeed.discReg.push(params)

@@ -9,16 +9,47 @@
         <el-col :span="4" style="text-align:left">
           <span class="row-title">待研判杂草列表：</span>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-select
             v-model="formInline.reg"
             clearable
-
             placeholder="所有区域"
           >
             <el-option
               v-for="item in cityJson"
               :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-col> -->
+        <el-col :span="3">
+          <el-select
+            v-model="value1"
+            placeholder="请选择省"
+            clearable
+            @change="selectOne"
+          >
+            <el-option
+              v-for="item in provinceList"
+              :key="item.value"
+
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="3">
+          <el-select
+            v-model="value2"
+            clearable
+            placeholder="请选择市"
+            @change="selectSecond"
+          >
+            <el-option
+              v-for="item in tempList"
+              :key="item"
+              clearable
               :label="item"
               :value="item"
             />
@@ -252,9 +283,14 @@ import { getSysConfig } from '@/utils/auth'
 import { getPage as getZhuanjia } from '@/api/zhuanjia'
 import { create } from '@/api/yanpan'
 import ElSelectTree from 'el-select-tree'
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item })
+}
 // import { pageCount } from '@/globalConfig'
 
-const cityJson = require('@/assets/json/cities.json')
+// const cityJson = require('@/assets/json/cities.json')
 
 export default {
   components: {
@@ -262,7 +298,11 @@ export default {
   },
   data() {
     return {
-      cityJson: cityJson.cityies,
+      // cityJson: cityJson.cityies,
+      provinceList: provinceList,
+      value1: '', // 广西省
+      value2: '',
+      tempList: [], // provinceJson['广西省']
       sysConfig: '',
       form: {
         id: '',
@@ -297,6 +337,7 @@ export default {
     }
   },
   computed: {
+
     queryPageination() {
       return {
         count: this.pagination.count,
@@ -319,6 +360,15 @@ export default {
     this.queryZhuanjia()
   },
   methods: {
+    selectOne(params) {
+      this.formInline.reg = ''
+      this.formInline.reg = params
+      this.tempList = provinceJson[params]
+      // this.value2 = provinceJson[params][0]
+    },
+    selectSecond(params) {
+      this.formInline.reg = params
+    },
     getCurrentRow(row) {
       this.multipleSelection = row
     },
