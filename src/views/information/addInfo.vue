@@ -21,7 +21,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="medium"
+            size="mini"
             @change="changeSpecy"
           />
         </el-form-item>

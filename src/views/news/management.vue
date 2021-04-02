@@ -6,7 +6,7 @@
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.createTimeStart"
-              size="medium"
+              size="mini"
               type="date"
               placeholder="开始日期"
               value-format="timestamp"
@@ -17,7 +17,7 @@
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.createTimeEnd"
-              size="medium"
+              size="mini"
               type="date"
               placeholder="结束日期"
               value-format="timestamp"
@@ -26,19 +26,19 @@
           </el-col>
         </el-col>
         <el-col :span="5">
-          <el-select v-model="formSearch.ntype" size="medium" clearable placeholder="类别">
+          <el-select v-model="formSearch.ntype" size="mini" clearable placeholder="类别">
             <el-option label="通用新闻" :value="1" />
           </el-select>
         </el-col>
         <el-col :span="5">
-          <el-input v-model="formSearch.title" size="medium" placeholder="标题" prefix-icon="el-icon-search" />
+          <el-input v-model="formSearch.title" size="mini" placeholder="标题" prefix-icon="el-icon-search" />
 
         </el-col>
         <el-col :span="5" class="right-btn">
-          <el-button type="primary" size="small" @click="searchHandle">检索</el-button>
-          <el-button type="primary" size="small" @click="searchHandle">刷新</el-button>
-          <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
-          <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
+          <el-button type="primary" size="mini" @click="searchHandle">检索</el-button>
+          <el-button type="primary" size="mini" @click="searchHandle">刷新</el-button>
+          <!-- <el-button type="primary" size="mini" @click="handleAdd()">新增</el-button> -->
+          <!-- <el-button type="danger" size="mini" @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -331,7 +331,7 @@ export default {
     }
     .line {
       text-align: center;
-      line-height: 36px;
+      line-height: 28px;
     }
     .right-btn{
       text-align: right;

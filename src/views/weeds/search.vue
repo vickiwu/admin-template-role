@@ -2,11 +2,11 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="5">
-        <el-col :span="7">
+        <el-col :span="6">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.startTime"
-              size="medium"
+              size="mini"
               type="date"
               placeholder="开始日期"
               format="yyyy-MM-dd"
@@ -18,7 +18,7 @@
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.endTime"
-              size="medium"
+              size="mini"
               type="date"
               placeholder="结束日期"
               format="yyyy-MM-dd"
@@ -27,12 +27,27 @@
             />
           </el-col>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="2">
           <el-select
             v-model="formSearch.reg"
             clearable
-            size="medium"
-            placeholder="所有区域"
+            size="mini"
+            placeholder="省"
+          >
+            <el-option
+              v-for="item in cityJson"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="2">
+          <el-select
+            v-model="formSearch.reg"
+            clearable
+            size="mini"
+            placeholder="市"
           >
             <el-option
               v-for="item in cityJson"
@@ -46,17 +61,17 @@
           <el-select-tree
             v-model="selectId"
             style="width:100%"
-            placeholder="请选择杂草所属种类"
+            placeholder="种类"
             clearable
             :data="options"
             :props="treeProps"
-            size="medium"
+            size="mini"
             @change="changeSpecy"
           />
 
         </el-col>
         <el-col :span="3">
-          <el-select v-model="formSearch.jydw" size="medium" clearable placeholder="检疫地位">
+          <el-select v-model="formSearch.jydw" size="mini" clearable placeholder="检疫地位">
             <el-option label="未发现有害生物" :value="0" />
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
@@ -66,16 +81,16 @@
         <el-col :span="3">
           <el-input
             v-model="formSearch.name"
-            size="medium"
+            size="mini"
             placeholder="搜索关键字"
             prefix-icon="el-icon-search"
           />
         </el-col>
         <el-col :span="5" class="right-btn">
-          <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
+          <el-button type="primary" size="mini" @click="handleSearch()">检索</el-button>
 
-          <el-button type="primary" size="small" @click="handleSearch()">刷新</el-button>
-          <el-button type="primary" size="small" :loading="downloadLoading" @click="handleExport()">导出</el-button>
+          <el-button type="primary" size="mini" @click="handleSearch()">刷新</el-button>
+          <el-button type="primary" size="mini" :loading="downloadLoading" @click="handleExport()">导出</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -418,7 +433,7 @@ export default {
     }
     .line {
       text-align: center;
-      line-height: 36px;
+      line-height: 28px;
     }
     .right-btn{
       text-align: right;

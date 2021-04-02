@@ -11,19 +11,19 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="medium"
+            size="mini"
             @change="changeSpecy"
           />
         </el-col>
         <el-col :span="4">
-          <el-input v-model="formInline.name" size="medium" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.name" size="mini" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
 
         </el-col>
         <el-col :span="15" class="right-btn">
-          <el-button type="primary" size="small" @click="handleSearch()">检索</el-button>
-          <el-button type="primary" size="small" @click="handleSearch()">刷新</el-button>
-          <!-- <el-button type="primary" size="small" @click="handleAdd">新增</el-button> -->
-          <!-- <el-button type="danger" size="small" @click="handleDel">删除</el-button> -->
+          <el-button type="primary" size="mini" @click="handleSearch()">检索</el-button>
+          <el-button type="primary" size="mini" @click="handleSearch()">刷新</el-button>
+          <!-- <el-button type="primary" size="mini" @click="handleAdd">新增</el-button> -->
+          <!-- <el-button type="danger" size="mini" @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -349,7 +349,7 @@ export default {
     }
     .line {
       text-align: center;
-      line-height: 36px;
+      line-height: 28px;
     }
     .right-btn{
       text-align: right;

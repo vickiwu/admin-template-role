@@ -25,7 +25,7 @@
           <el-select
             v-model="form.cityName"
             clearable
-            size="medium"
+            size="mini"
             placeholder="请选择地市"
             @change="getBumenList"
           >
@@ -41,7 +41,7 @@
           <el-select
             v-model="form.bumen"
             clearable
-            size="medium"
+            size="mini"
             placeholder="请选择单位"
           >
             <el-option

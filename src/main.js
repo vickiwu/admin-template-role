@@ -27,7 +27,7 @@ import '@/permission' // 权限控制
 //   mockXHR()
 // }
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'small' })
 Vue.use(QuillEditor)
 
 // 百度地图

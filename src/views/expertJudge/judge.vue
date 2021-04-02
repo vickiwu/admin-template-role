@@ -24,7 +24,7 @@
             v-model="formWeed.discReg"
             clearable
             collapse-tags
-            size="medium"
+            size="mini"
             placeholder="请选择发现地域"
           >
             <el-option
@@ -44,7 +44,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="medium"
+            size="mini"
           />
         </el-form-item>
         <el-form-item label="危害程度" prop="jydw">

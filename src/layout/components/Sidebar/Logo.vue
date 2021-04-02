@@ -55,10 +55,10 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 25px;
+      height: 25px;
       vertical-align: middle;
-      margin-right: 12px;
+      // margin-right: 12px;
     }
 
     & .sidebar-title {
@@ -67,7 +67,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 18px;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

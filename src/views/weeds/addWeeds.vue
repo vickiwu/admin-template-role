@@ -20,7 +20,7 @@
           <el-select
             v-model="formWeed.source"
             clearable
-            size="medium"
+            size="mini"
             placeholder="请输入杂草来源国家/区域"
           >
             <el-option
@@ -47,7 +47,7 @@
                   :key="item.value"
 
                   :label="item.label"
-                  :value="{value:item.value,label:item.label,version:item.version}"
+                  :value="item.value"
                 />
               </el-select>
             </el-col>
@@ -78,7 +78,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="medium"
+            size="mini"
             @change="changeSpecy"
           />
 
@@ -165,7 +165,7 @@ import { clean } from '@/utils/index'
 const provinceJson = require('@/assets/json/province2city.json')
 const provinceList = []
 for (const item in provinceJson) {
-  provinceList.push({ value: item, label: item, version: provinceJson[item] })
+  provinceList.push({ value: item, label: item })
 }
 const countryJson = require('@/assets/json/country.json')
 import ElSelectTree from 'el-select-tree'
@@ -216,9 +216,9 @@ export default {
     return {
       countryJson: countryJson,
       provinceList: provinceList,
-      value1: '',
+      value1: '广西省',
       value2: '',
-      tempList: [],
+      tempList: provinceJson['广西省'],
       selectedOptions: [],
       isEdit: false,
       dialogImageUrl: '', // 预览图片地址
@@ -305,9 +305,10 @@ export default {
   methods: {
     selectOne(params) {
       this.formWeed.discReg = []
-      this.formWeed.discReg.push(params.value)
+      this.formWeed.discReg.push(params)
       this.value2 = ''
-      this.tempList = params.version
+      this.tempList = provinceJson[params]
+      console.log('%c 🍦 provinceJson[params]: ', 'font-size:20px;background-color: #465975;color:#fff;', provinceJson, provinceJson[params])
     },
     selectSecond(params) {
       this.formWeed.discReg.push(params)

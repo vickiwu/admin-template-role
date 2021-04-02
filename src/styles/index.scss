@@ -74,11 +74,24 @@ div:focus {
 
 // main-container 全局 css
 .app-container {
-  padding: 20px;
+  padding: 8px;
   height: calc(100vh - 50px);
   width: 100%;
   background: #f7f7f7;
   overflow: auto;
+  .el-input__prefix {
+    left: -2px;
+  }
+  .el-input--suffix .el-input__inner {
+    padding-left: 20px;
+  }
+  .el-input--suffix .el-input__inner {
+    padding-right: 20px;
+  }
+  .el-input__inner {
+    // padding-left: 10px;
+    // padding-right: 10px;
+  }
 
   // 标题
   .news-title {

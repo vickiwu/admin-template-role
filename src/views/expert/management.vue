@@ -3,26 +3,26 @@
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="4">
-          <el-input v-model="formInline.name" size="medium" placeholder="姓名" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.name" size="mini" placeholder="姓名" prefix-icon="el-icon-search" />
         </el-col>
 
         <el-col :span="4">
-          <el-input v-model="formInline.jobNo" size="medium" placeholder="工号" prefix-icon="el-icon-search">
+          <el-input v-model="formInline.jobNo" size="mini" placeholder="工号" prefix-icon="el-icon-search">
             <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.cat" size="medium" clearable placeholder="专业领域">
+          <el-select v-model="formInline.cat" size="mini" clearable placeholder="专业领域">
             <el-option label="杂草研判" :value="1" />
             <el-option label="杂草危害分析" :value="2" />
           </el-select>
         </el-col>
         <el-col :span="11" class="right-btn">
 
-          <el-button type="primary" size="small" @click="query">检索</el-button>
-          <el-button type="primary" size="small" @click="query">刷新</el-button>
-          <!-- <el-button type="primary" size="small" @click="handleAdd()">新增</el-button> -->
-          <!-- <el-button type="danger" size="small" @click="deleteZhuanjia">删除</el-button> -->
+          <el-button type="primary" size="mini" @click="query">检索</el-button>
+          <el-button type="primary" size="mini" @click="query">刷新</el-button>
+          <!-- <el-button type="primary" size="mini" @click="handleAdd()">新增</el-button> -->
+          <!-- <el-button type="danger" size="mini" @click="deleteZhuanjia">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -265,7 +265,7 @@ export default {
     }
     .line {
       text-align: center;
-      line-height: 36px;
+      line-height: 28px;
     }
     .right-btn{
       text-align: right;

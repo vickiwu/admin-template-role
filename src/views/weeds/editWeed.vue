@@ -22,7 +22,7 @@
         <el-select
           v-model="formWeed.discReg"
           clearable
-          size="medium"
+          size="mini"
           placeholder="请选择发现地域"
         >
           <el-option
@@ -41,7 +41,7 @@
           clearable
           :data="options"
           :props="treeProps"
-          size="medium"
+          size="mini"
           @change="changeSpecy"
         />
 
