@@ -13,7 +13,7 @@
           <el-select
             v-model="formInline.reg"
             clearable
-            size="mini"
+
             placeholder="所有区域"
           >
             <el-option
@@ -32,7 +32,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="mini"
+
             @change="changeSpecy"
           />
 
@@ -40,15 +40,15 @@
         <el-col :span="5">
           <el-input
             v-model="formInline.name"
-            size="mini"
+
             placeholder="搜索关键字"
             prefix-icon="el-icon-search"
           />
         </el-col>
         <el-col :span="5" class="right-btn">
-          <el-button type="primary" size="mini" @click="query">检索</el-button>
-          <el-button type="primary" size="mini" @click="query">刷新</el-button>
-          <!-- <el-button type="danger" size="mini">忽略</el-button> -->
+          <el-button type="primary" @click="query">检索</el-button>
+          <el-button type="primary" @click="query">刷新</el-button>
+          <!-- <el-button type="danger"  >忽略</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -197,7 +197,7 @@
               <el-select
                 v-model="form.id"
                 clearable
-                size="mini"
+
                 placeholder="请选择一位专家"
                 style="width: 100%"
                 @change="setZhuanjiaInfo"
@@ -217,7 +217,6 @@
                 v-model="profScheModeTxt"
                 disabled
                 style="width: 100%"
-                size="mini"
               />
             </el-form-item>
           </el-col>
@@ -448,7 +447,7 @@ export default {
   }
   .row-title {
     display: inline-block;
-    line-height: 36px;
+    line-height: 28px;
     color: #0040a2;
   }
 .report-table {

@@ -64,7 +64,7 @@ export default {
           codeList.push({
             code: element,
             color: `rgb(${rgb})`,
-            fontSize: `${16 + (+[Math.floor(Math.random() * 10)] + 6)}px`,
+            fontSize: `${16 + (+[Math.floor(Math.random() * 10)] + 5)}px`,
             padding: `${[Math.floor(Math.random() * 10)]}px`,
             transform: `rotate(${Math.floor(Math.random() * 90) - Math.floor(Math.random() * 90)}deg)`
           })

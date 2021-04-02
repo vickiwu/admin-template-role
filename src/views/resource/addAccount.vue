@@ -25,7 +25,7 @@
           <el-select
             v-model="form.cityName"
             clearable
-            size="mini"
+
             placeholder="请选择地市"
             @change="getBumenList"
           >
@@ -41,7 +41,7 @@
           <el-select
             v-model="form.bumen"
             clearable
-            size="mini"
+
             placeholder="请选择单位"
           >
             <el-option
@@ -139,7 +139,7 @@ export default {
       bumenList: [],
       ValidCode: '33',
       width: '150px',
-      height: '50px',
+      height: '45px',
       form: {
         username: '',
         realname: '',
@@ -346,8 +346,8 @@ export default {
       border: 1px solid #D0D0D0;
       border-radius: 3px;
       text-align: center;
-      height: 50px;
-      line-height: 50px;
+      height: 45px;
+      line-height: 45px;
       margin-right: 20px;
       background-color: #fff3e4;
     }

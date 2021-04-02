@@ -196,14 +196,14 @@ export default {
       display: block;
       float: left;
       width: 110px;
-      height: 36px;
+      height: 28px;
       background: #1482f0;
       border-radius: 100px;
       text-align: center;
       color: #ffffff;
       opacity: 0;
       font-size: 14px;
-      line-height: 36px;
+      line-height: 28px;
       cursor: pointer;
       animation-name: slideUp;
       animation-duration: 0.5s;

@@ -10,7 +10,7 @@
         </el-col>
         <el-col :span="15" class="right-btn">
           <!-- <el-checkbox v-model="checked">显示密码</el-checkbox> -->
-          <el-button type="primary" size="mini" @click="sync">开始同步</el-button>
+          <el-button type="primary" @click="sync">开始同步</el-button>
         </el-col>
       </el-row>
       <el-table
@@ -198,7 +198,7 @@ export default {
   }
   .row-title {
     display: inline-block;
-    line-height: 36px;
+    line-height: 28px;
     color: #181C28;
     .sub-title{
       font-size: 13px;

@@ -56,7 +56,7 @@
           </span>
         </el-col>
         <el-col :span="6">
-          <el-button style="margin-left ：20px" size="mini" type="primary" @click="showMap">地图查看</el-button>
+          <el-button style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
         </el-col>
 
       </el-form-item>

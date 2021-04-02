@@ -3,9 +3,9 @@
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="23" class="right-btn">
-          <el-button type="primary" size="mini" @click="handleAdd">新增</el-button>
-          <el-button type="primary" size="mini" @click="handleSearch">刷新</el-button>
-          <!-- <el-button type="danger" size="mini" @click="handleDel">删除</el-button> -->
+          <el-button type="primary" @click="handleAdd">新增</el-button>
+          <el-button type="primary" @click="handleSearch">刷新</el-button>
+          <!-- <el-button type="danger"   @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table

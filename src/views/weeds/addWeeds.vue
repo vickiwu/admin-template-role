@@ -20,7 +20,7 @@
           <el-select
             v-model="formWeed.source"
             clearable
-            size="mini"
+
             placeholder="请输入杂草来源国家/区域"
           >
             <el-option
@@ -78,7 +78,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="mini"
+
             @change="changeSpecy"
           />
 

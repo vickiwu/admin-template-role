@@ -8,8 +8,8 @@
           </span>
         </el-col>
         <el-col :span="13" class="right-btn">
-          <el-button type="primary" size="mini" @click="query()">刷新</el-button>
-          <!-- <el-button type="danger" size="mini">删除</el-button> -->
+          <el-button type="primary" @click="query()">刷新</el-button>
+          <!-- <el-button type="danger"  >删除</el-button> -->
         </el-col>
       </el-row>
       <el-table
@@ -176,7 +176,7 @@ export default {
   }
   .row-title {
     display: inline-block;
-    line-height: 36px;
+    line-height: 28px;
     font-size: 13px;
     color: #181C28;
     .sub-title{

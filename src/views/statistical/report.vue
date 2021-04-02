@@ -8,7 +8,7 @@
               <el-col :span="11">
                 <el-date-picker
                   v-model="formSearch.startTime"
-                  size="mini"
+
                   type="date"
                   placeholder="开始日期"
                   format="yyyy-MM-dd"
@@ -20,7 +20,7 @@
               <el-col :span="11">
                 <el-date-picker
                   v-model="formSearch.endTime"
-                  size="mini"
+
                   type="date"
                   placeholder="结束日期"
                   format="yyyy-MM-dd"
@@ -33,7 +33,7 @@
               <el-select
                 v-model="formSearch.reg"
                 clearable
-                size="mini"
+
                 placeholder="所有区域"
               >
                 <el-option
@@ -52,12 +52,12 @@
                 clearable
                 :data="options"
                 :props="treeProps"
-                size="mini"
+
                 @change="changeSpecy"
               />
             </el-col>
             <el-col :span="4">
-              <el-select v-model="formSearch.jydw" size="mini" clearable placeholder="检疫地位">
+              <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
                 <el-option label="未发现有害生物" :value="0" />
                 <el-option label="非检疫性有害生物" :value="1" />
                 <el-option label="检疫性有害生物" :value="2" />
@@ -65,7 +65,7 @@
               </el-select>
             </el-col>
             <el-col :span="2">
-              <el-button size="mini" type="primary" @click="handleSearch()">检索</el-button>
+              <el-button type="primary" @click="handleSearch()">检索</el-button>
             </el-col>
           </el-row>
           <el-table

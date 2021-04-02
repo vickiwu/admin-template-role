@@ -48,28 +48,28 @@
         class="news-form"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="userInfoForm.username" size="mini" disabled placeholder="" />
+          <el-input v-model="userInfoForm.username" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
-          <el-input v-model="userInfoForm.realname" size="mini" disabled placeholder="" />
+          <el-input v-model="userInfoForm.realname" disabled placeholder="" />
         </el-form-item>
         <!-- <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="userInfoForm.nickname" size="mini"  disabled placeholder="" />
+          <el-input v-model="userInfoForm.nickname"    disabled placeholder="" />
         </el-form-item> -->
         <el-form-item label="地市" prop="cityName">
-          <el-input v-model="userInfoForm.cityName" size="mini" disabled placeholder="" />
+          <el-input v-model="userInfoForm.cityName" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="单位" prop="group">
-          <el-input v-model="userInfoForm.group" size="mini" disabled placeholder="" />
+          <el-input v-model="userInfoForm.group" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="工号" prop="jobNo">
-          <el-input v-model="userInfoForm.jobNo" size="mini" disabled placeholder="" />
+          <el-input v-model="userInfoForm.jobNo" disabled placeholder="" />
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
-          <el-input v-model.number="userInfoForm.phone" size="mini" disabled placeholder="请输入手机号码" />
+          <el-input v-model.number="userInfoForm.phone" disabled placeholder="请输入手机号码" />
         </el-form-item>
         <el-form-item label="类型" prop="utype">
-          <el-select v-model="userInfoForm.utype" size="mini" disabled clearable placeholder="请选择类型">
+          <el-select v-model="userInfoForm.utype" disabled clearable placeholder="请选择类型">
             <el-option label="系统管理员" :value="1" />
             <el-option label="专家调度用户" :value="2" />
             <el-option label="研判专家" :value="3" />
@@ -78,7 +78,7 @@
 
         </el-form-item>
         <div style="text-align:center;margin-top: 25px;">
-          <el-button type="primary" size="mini" @click="dialogUserInfo = false">关 闭</el-button>
+          <el-button type="primary" @click="dialogUserInfo = false">关 闭</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -98,17 +98,17 @@
         class="news-form"
       >
         <el-form-item label="当前密码" prop="oldPass">
-          <el-input v-model="formChangePassword.oldPass" size="mini" type="password" placeholder="请输入当前密码" />
+          <el-input v-model="formChangePassword.oldPass" type="password" placeholder="请输入当前密码" />
         </el-form-item>
         <el-form-item label="新密码" prop="newPass">
-          <el-input v-model="formChangePassword.newPass" size="mini" type="password" placeholder="请输入新密码" />
+          <el-input v-model="formChangePassword.newPass" type="password" placeholder="请输入新密码" />
         </el-form-item>
         <el-form-item label="确认新密码" prop="newPass2">
-          <el-input v-model="formChangePassword.newPass2" size="mini" type="password" placeholder="请输入确认新密码" />
+          <el-input v-model="formChangePassword.newPass2" type="password" placeholder="请输入确认新密码" />
         </el-form-item>
 
         <div style="text-align:center">
-          <el-button type="primary" size="mini" @click="changePassword()">确认修改</el-button>
+          <el-button type="primary" @click="changePassword()">确认修改</el-button>
         </div>
       </el-form>
     </el-dialog>
@@ -128,17 +128,17 @@
           <el-upload
             style="display: inline-block;"
             action="string"
-            size="mini"
+
             :http-request="uploadAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <el-button type="primary" size="mini" style="margin-right:20px">
+            <el-button type="primary" style="margin-right:20px">
               上传图片
             </el-button>
           </el-upload>
-          <el-button type="primary" size="mini" @click="setAvatar">确认更改</el-button>
+          <el-button type="primary" @click="setAvatar">确认更改</el-button>
         </div>
       </div>
     </el-dialog>
@@ -343,8 +343,8 @@ export default {
         }
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 35px;
+          height: 32px;
           border-radius: 50%;
           vertical-align: middle;
         }

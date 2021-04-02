@@ -11,20 +11,20 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="mini"
+
             @change="changeSpecy"
           />
         </el-col>
 
         <el-col :span="5">
-          <el-input v-model="formInline.name" size="mini" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
+          <el-input v-model="formInline.name" clearable placeholder="资料名称" prefix-icon="el-icon-search" />
 
         </el-col>
         <el-col :span="14" class="right-btn">
-          <el-button type="primary" size="mini" @click="handleSearch()">检索</el-button>
-          <el-button type="primary" size="mini" @click="handleSearch()">刷新</el-button>
-          <!-- <el-button type="primary" size="mini" @click="handleDownLoad()">下载</el-button>
-          <el-button type="danger" size="mini" @click="handleDel">删除</el-button> -->
+          <el-button type="primary" @click="handleSearch()">检索</el-button>
+          <el-button type="primary" @click="handleSearch()">刷新</el-button>
+          <!-- <el-button type="primary"   @click="handleDownLoad()">下载</el-button>
+          <el-button type="danger"   @click="handleDel">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table

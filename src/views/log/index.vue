@@ -6,7 +6,7 @@
           <el-col :span="11">
             <el-date-picker
               v-model="formInline.startTime"
-              size="mini"
+
               type="date"
               value-format="timestamp"
               placeholder="开始日期"
@@ -18,7 +18,7 @@
           <el-col :span="11">
             <el-date-picker
               v-model="formInline.endTime"
-              size="mini"
+
               type="date"
               value-format="timestamp"
               placeholder="结束日期"
@@ -28,21 +28,21 @@
           </el-col>
         </el-col>
         <el-col :span="4">
-          <el-select v-model="formInline.level" size="mini" clearable placeholder="所有级别">
+          <el-select v-model="formInline.level" clearable placeholder="所有级别">
             <el-option label="通知" :value="0" />
             <el-option label="消息" :value="1" />
             <el-option label="错误" :value="2" />
           </el-select>
         </el-col>
         <el-col :span="4">
-          <el-input v-model="formInline.content" size="mini" placeholder="请输入关键词" prefix-icon="el-icon-search">
+          <el-input v-model="formInline.content" placeholder="请输入关键词" prefix-icon="el-icon-search">
             <!-- <template slot="append">检索</template> -->
           </el-input>
         </el-col>
         <el-col :span="7" class="right-btn">
-          <el-button type="primary" size="mini" @click="query">检索</el-button>
-          <el-button type="primary" size="mini" @click="query">刷新</el-button>
-          <!-- <el-button type="danger" size="mini" @click="delelteFile()">删除</el-button> -->
+          <el-button type="primary" @click="query">检索</el-button>
+          <el-button type="primary" @click="query">刷新</el-button>
+          <!-- <el-button type="danger"   @click="delelteFile()">删除</el-button> -->
         </el-col>
       </el-row>
       <el-table

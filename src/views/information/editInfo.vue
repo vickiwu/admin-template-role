@@ -22,7 +22,7 @@
             clearable
             :data="options"
             :props="treeProps"
-            size="mini"
+
             @change="changeSpecy"
           />
         </el-form-item>
@@ -290,7 +290,7 @@ export default {
   color: #999
 }
 .upload-demo .el-upload-list__item-name {
-  font-size: 16px;
+  font-size: 15px;
 }
 </style>
 <style lang="scss" scoped>
