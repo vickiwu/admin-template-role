@@ -9,30 +9,66 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="名称" prop="nameCn" placeholder="请输入杂草名称">
-          <el-input v-model="formWeed.nameCn" />
+        <el-form-item label="名称" prop="nameCn">
+          <el-input v-model="formWeed.nameCn" placeholder="请输入杂草名称" />
         </el-form-item>
-        <el-form-item label="拉丁名称" prop="nameLt" placeholder="请输入杂草拉丁名称">
-          <el-input v-model="formWeed.nameLt" />
+        <el-form-item label="拉丁名称" prop="nameLt">
+          <el-input v-model="formWeed.nameLt" placeholder="请输入杂草拉丁名称" />
         </el-form-item>
         <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源国家/区域">
-          <el-input v-model="formWeed.source" />
+          <!-- <el-input v-model="formWeed.source" /> -->
+          <el-select
+            v-model="formWeed.source"
+            clearable
+            size="medium"
+            placeholder="请输入杂草来源国家/区域"
+          >
+            <el-option
+              v-for="item in countryJson"
+              :key="item[1]"
+              :label="item[1]"
+              :value="item[1]"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="发现区域" prop="discReg">
 
-          <el-select
-            v-model="formWeed.discReg"
-            clearable
-            size="medium"
-            placeholder="请选择发现地域"
-          >
-            <el-option
-              v-for="item in cityJson"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
+          <el-row type="flex" justify="space-between">
+            <!--  v-model="formWeed.discReg" -->
+            <el-col :span="11">
+              <el-select
+                v-model="value1"
+                placeholder="请选择省"
+                clearable
+                @change="selectOne"
+              >
+                <el-option
+                  v-for="item in provinceList"
+                  :key="item.value"
+
+                  :label="item.label"
+                  :value="{value:item.value,label:item.label,version:item.version}"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="11">
+              <el-select
+                v-model="value2"
+                clearable
+                placeholder="请选择市"
+                @change="selectSecond"
+              >
+                <el-option
+                  v-for="item in tempList"
+                  :key="item"
+                  clearable
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+
+          </el-row>
         </el-form-item>
         <el-form-item label="种类" prop="specy">
           <el-select-tree
@@ -126,7 +162,12 @@
 <script>
 import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
-const cityJson = require('@/assets/json/cities.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item, version: provinceJson[item] })
+}
+const countryJson = require('@/assets/json/country.json')
 import ElSelectTree from 'el-select-tree'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
@@ -173,7 +214,12 @@ export default {
       }
     }
     return {
-      cityJson: cityJson.cityies,
+      countryJson: countryJson,
+      provinceList: provinceList,
+      value1: '',
+      value2: '',
+      tempList: [],
+      selectedOptions: [],
       isEdit: false,
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
@@ -257,6 +303,15 @@ export default {
     this.getLbPage()
   },
   methods: {
+    selectOne(params) {
+      this.formWeed.discReg = []
+      this.formWeed.discReg.push(params.value)
+      this.value2 = ''
+      this.tempList = params.version
+    },
+    selectSecond(params) {
+      this.formWeed.discReg.push(params)
+    },
     changeSpecy(val) {
       const specy = this.specyList.find((obj) => obj.id === val)
       this.formWeed.specy = JSON.stringify(specy)
