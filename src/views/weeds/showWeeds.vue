@@ -75,7 +75,7 @@
       :before-close="handleClose"
       append-to-body
     >
-      <div v-if="form.lat && form.lng">
+      <div>
         <baidu-map
           ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
           class="bm-view"
@@ -87,9 +87,6 @@
             <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
           </bm-marker>
         </baidu-map>
-      </div>
-      <div v-else>
-        无位置信息
       </div>
     </el-dialog>
   </div>
@@ -138,7 +135,14 @@ export default {
   },
   methods: {
     showMap() {
-      this.mapDialogVisible = true
+      if (this.form.lat && this.form.lng) {
+        this.mapDialogVisible = true
+      } else {
+        this.$alert('当前杂草无位置信息', '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        }).catch(err => err)
+      }
     },
 
     handleClose() {

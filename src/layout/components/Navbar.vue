@@ -231,7 +231,7 @@ export default {
         this.$alert('上传头像图片大小不能超过 2MB!', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
-        })
+        }).catch(err => err)
       }
       return isJPG && isLt2M
     },
