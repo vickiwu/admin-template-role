@@ -211,7 +211,7 @@
 </template>
 
 <script>
-import { getPage, getLbPage } from '@/api/zacao'
+import { getPage, getLbPage, zacaoExport } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 const cityJson = require('@/assets/json/cities.json')
 import ElSelectTree from 'el-select-tree'
@@ -354,21 +354,30 @@ export default {
       eleLink.remove()
     },
     handleExport() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['区域', '来源', '名称', '种类', '危害程度', '图片', '发现时间']
-        const filterVal = ['discReg', 'source', 'nameCn', 'specy', 'jydw', 'piclist', 'create']
-        const list = this.tableData
-        const data = this.formatJson(filterVal, list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: '杂草信息',
-          autoWidth: true,
-          bookType: 'xlsx'
-        })
-        this.downloadLoading = false
+      const searchParams = JSON.parse(JSON.stringify(this.formSearch))
+
+      if (searchParams.reg.length !== 0) {
+        searchParams.reg = JSON.stringify(searchParams.reg)
+      }
+      const params = { ...this.queryPageination, ...searchParams }
+      zacaoExport(clean(params)).then((res) => {
+        console.log('执行导出')
       }).catch(err => err)
+      // this.downloadLoading = true
+      // import('@/vendor/Export2Excel').then(excel => {
+      //   const tHeader = ['区域', '来源', '名称', '种类', '危害程度', '图片', '发现时间']
+      //   const filterVal = ['discReg', 'source', 'nameCn', 'specy', 'jydw', 'piclist', 'create']
+      //   const list = this.tableData
+      //   const data = this.formatJson(filterVal, list)
+      //   excel.export_json_to_excel({
+      //     header: tHeader,
+      //     data,
+      //     filename: '杂草信息',
+      //     autoWidth: true,
+      //     bookType: 'xlsx'
+      //   })
+      //   this.downloadLoading = false
+      // }).catch(err => err)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {

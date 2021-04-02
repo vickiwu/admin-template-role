@@ -142,3 +142,12 @@ export function tongji(data) {
     data
   })
 }
+
+export function zacaoExport(data) {
+  // 杂草导出
+  return request({
+    url: WeedGlobalConfig.zaocao.export,
+    method: 'POST',
+    data
+  })
+}
