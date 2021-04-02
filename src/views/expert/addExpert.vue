@@ -9,14 +9,23 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="专家姓名" prop="realname" placeholder="请输入专家姓名">
-          <el-input v-model="form.realname" />
+        <el-form-item label="专家姓名" prop="realname">
+          <el-input v-model="form.realname" placeholder="请输入专家姓名" />
         </el-form-item>
-        <el-form-item label="专家工号" prop="jobNo" placeholder="请输入专家工号">
-          <el-input v-model="form.jobNo" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username" placeholder="请输入专家姓名" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="phone" placeholder="请输入手机号码">
-          <el-input v-model="form.phone" />
+        <el-form-item label="登录密码" prop="password">
+          <el-input v-model="form.password" type="password" placeholder="请输入登录密码" />
+        </el-form-item>
+        <el-form-item label="确认密码" prop="password1">
+          <el-input v-model="form.password1" type="password" placeholder="请输入确认密码" />
+        </el-form-item>
+        <el-form-item label="专家工号" prop="jobNo">
+          <el-input v-model="form.jobNo" placeholder="请输入专家工号" />
+        </el-form-item>
+        <el-form-item label="手机号码" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入手机号码" />
         </el-form-item>
         <el-form-item label="专业领域" prop="cat">
           <el-select v-model="form.cat" placeholder="请选择专业领域" clearable>
@@ -24,8 +33,8 @@
             <el-option label="杂草危害分析" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="资料介绍" prop="desc" placeholder="请输入资料内容摘要">
-          <el-input v-model="form.desc" type="textarea" :rows="3" />
+        <el-form-item label="资料介绍" prop="desc">
+          <el-input v-model="form.desc" type="textarea" :rows="3" placeholder="请输入资料内容摘要" />
         </el-form-item>
         <el-form-item label="专家头像" prop="avatar">
           <el-upload
@@ -59,6 +68,7 @@
 import { uploadImg } from '@/api/zacao'
 import { create, edit } from '@/api/zhuanjia'
 import { clean } from '@/utils/index'
+import sha256 from 'sha256'
 
 export default {
 
@@ -75,10 +85,22 @@ export default {
         }
       }
     }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       isEdit: false,
       form: {
         realname: '',
+        username: '',
+        password: '',
+        password1: '',
         cat: '',
         desc: '',
         jobNo: '',
@@ -91,6 +113,15 @@ export default {
       rules: {
         realname: [
           { required: true, message: '请输入专家姓名', trigger: 'blur' }
+        ],
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' }
+        ],
+        password1: [
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ],
         jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
@@ -130,7 +161,10 @@ export default {
         if (!valid) {
           return false
         } else {
-          create({ json: JSON.stringify(clean(this.form)) }).then((data) => {
+          const params = { ...this.form }
+          delete this.params.password1
+          params.password = sha256(this.form.password)
+          create({ json: JSON.stringify(clean(params)) }).then((data) => {
             if (data.state === 1) {
               this.$alert('新增成功', '提示', {
                 confirmButtonText: '确定',

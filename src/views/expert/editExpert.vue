@@ -10,14 +10,17 @@
         class="news-form"
         :rules="rules"
       >
-        <el-form-item label="专家姓名" prop="realname" placeholder="请输入专家姓名">
-          <el-input v-model="form.realname" />
+        <el-form-item label="专家姓名" prop="realname">
+          <el-input v-model="form.realname" placeholder="请输入专家姓名" />
         </el-form-item>
-        <el-form-item label="专家工号" prop="jobNo" placeholder="请输入专家工号">
-          <el-input v-model="form.jobNo" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username" placeholder="请输入专家姓名" />
         </el-form-item>
-        <el-form-item label="手机号码" prop="phone" placeholder="请输入手机号码">
-          <el-input v-model="form.phone" />
+        <el-form-item label="专家工号" prop="jobNo">
+          <el-input v-model="form.jobNo" placeholder="请输入专家工号" />
+        </el-form-item>
+        <el-form-item label="手机号码" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入手机号码" />
         </el-form-item>
         <el-form-item label="专业领域" prop="cat">
           <el-select v-model="form.cat" placeholder="请选择专业领域" clearable>
@@ -25,8 +28,8 @@
             <el-option label="杂草危害分析" :value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="资料介绍" prop="desc" placeholder="请输入资料内容摘要">
-          <el-input v-model="form.desc" type="textarea" :rows="3" />
+        <el-form-item label="资料介绍" prop="desc">
+          <el-input v-model="form.desc" type="textarea" :rows="3" placeholder="请输入资料内容摘要" />
         </el-form-item>
         <el-form-item label="专家头像" prop="avatar">
           <el-upload
@@ -80,6 +83,7 @@ export default {
       isEdit: false,
       form: {
         realname: '',
+        username: '',
         cat: '',
         desc: '',
         jobNo: '',
@@ -92,6 +96,9 @@ export default {
       rules: {
         realname: [
           { required: true, message: '请输入专家姓名', trigger: 'blur' }
+        ],
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
         jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
@@ -115,7 +122,7 @@ export default {
       this.form = {
         ... this.$route.params.rowData
       }
-      this.imageUrl = this.form.avatar.httpUrl
+      this.imageUrl = this.form.avatar && this.form.avatar.httpUrl
     }
   },
   methods: {
