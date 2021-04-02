@@ -213,6 +213,12 @@ export default {
         callback()
       }
     }
+    const validateReg = (rule, value, callback) => {
+      if (this.value1 === '' || this.value2 === '') {
+        callback(new Error('请选择发现区域'))
+      }
+      callback()
+    }
     return {
       countryJson: countryJson,
       provinceList: provinceList,
@@ -251,7 +257,7 @@ export default {
           { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
         discReg: [
-          { required: true, message: '请选择杂草区域', trigger: 'change' }
+          { required: true, validator: validateReg, trigger: 'change' }
         ],
         specy: [
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
@@ -411,11 +417,18 @@ export default {
       }).catch(err => err)
     },
     onSubmit() {
-      if (this.isEdit) {
-        this.edit()
-      } else {
-        this.create()
-      }
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          if (this.isEdit) {
+            this.edit()
+          } else {
+            this.create()
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     chooseByMap() {
       this.dialogVisible = true

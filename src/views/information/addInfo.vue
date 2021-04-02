@@ -251,11 +251,18 @@ export default {
       return isJPG && isLt2M
     },
     onSubmit() {
-      if (this.isEdit) {
-        this.edit()
-      } else {
-        this.create()
-      }
+      this.$refs.formZilao.validate((valid) => {
+        if (valid) {
+          if (this.isEdit) {
+            this.edit()
+          } else {
+            this.create()
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     // 上传之前验证上传文件 只许上传pdf格式
     beforeUpload(file) {

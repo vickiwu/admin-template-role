@@ -3,7 +3,7 @@
     <el-form
       ref="form"
       :model="formWeed"
-      label-width="80px"
+      label-width="120px"
       label-position="left"
       class="news-form"
       :rules="rules"
@@ -14,12 +14,25 @@
       <el-form-item label="拉丁名称" prop="nameLt" placeholder="请输入杂草拉丁名称">
         <el-input v-model="formWeed.nameLt" />
       </el-form-item>
-      <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
-        <el-input v-model="formWeed.source" />
-      </el-form-item>
-      <el-form-item label="区域" prop="discReg">
-
+      <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源">
+        <!-- <el-input v-model="formWeed.source" /> -->
         <el-select
+          v-model="formWeed.source"
+          clearable
+          size="medium"
+          placeholder="请输入杂草来源国家/区域"
+        >
+          <el-option
+            v-for="item in countryJson"
+            :key="item[1]"
+            :label="item[1]"
+            :value="item[1]"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="发现区域" prop="discReg">
+
+        <!-- <el-select
           v-model="formWeed.discReg"
           clearable
 
@@ -31,7 +44,43 @@
             :label="item"
             :value="item"
           />
-        </el-select>
+        </el-select> -->
+        <el-row type="flex" justify="space-between">
+          <!--  v-model="formWeed.discReg" -->
+          <el-col :span="11">
+            <el-select
+              v-model="value1"
+              placeholder="请选择省"
+              clearable
+              @change="selectOne"
+            >
+              <el-option
+                v-for="item in provinceList"
+                :key="item.value"
+
+                :label="item.label"
+                :value="{value:item.value,label:item.label,version:item.version}"
+              />
+            </el-select>
+          </el-col>
+          <el-col :span="11">
+            <el-select
+              v-model="value2"
+              clearable
+              placeholder="请选择市"
+              @change="selectSecond"
+            >
+              <el-option
+                v-for="item in tempList"
+                :key="item"
+                clearable
+                :label="item"
+                :value="item"
+              />
+            </el-select>
+          </el-col>
+
+        </el-row>
       </el-form-item>
       <el-form-item label="种类" prop="specy">
         <el-select-tree
@@ -46,12 +95,12 @@
         />
 
       </el-form-item>
-      <el-form-item label="危害程度" prop="jydw">
+      <el-form-item label="检疫地位" prop="jydw">
         <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
-          <el-option label="未发现有害生物" :value="0" />
+          <!-- <el-option label="未发现有害生物" :value="0" /> -->
           <el-option label="非检疫性有害生物" :value="1" />
           <el-option label="检疫性有害生物" :value="2" />
-          <el-option label="非鉴定性有害生物" :value="3" />
+          <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
         </el-select>
       </el-form-item>
       <el-row :gutter="20">
@@ -141,7 +190,12 @@
 <script>
 import { uploadImg, edit, create, getLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
-const cityJson = require('@/assets/json/cities.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item, version: provinceJson[item] })
+}
+const countryJson = require('@/assets/json/country.json')
 import ElSelectTree from 'el-select-tree'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
@@ -194,8 +248,18 @@ export default {
         callback()
       }
     }
+    const validateReg = (rule, value, callback) => {
+      if (this.value1 === '' || this.value2 === '') {
+        callback(new Error('请选择发现区域'))
+      }
+      callback()
+    }
     return {
-      cityJson: cityJson.cityies,
+      countryJson: countryJson,
+      provinceList: provinceList,
+      value1: '',
+      value2: '',
+      // cityJson: cityJson.cityies,
       isEdit: true,
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
@@ -227,7 +291,7 @@ export default {
           { required: true, message: '请输入杂草来源', trigger: 'blur' }
         ],
         discReg: [
-          { required: true, message: '请选择杂草区域', trigger: 'change' }
+          { required: true, validator: validateReg, trigger: 'blur' }
         ],
         specy: [
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
@@ -266,6 +330,15 @@ export default {
     }
   },
   methods: {
+    selectOne(params) {
+      this.formWeed.discReg = []
+      this.formWeed.discReg.push(params.value)
+      this.value2 = ''
+      this.tempList = params.version
+    },
+    selectSecond(params) {
+      this.formWeed.discReg.push(params)
+    },
     init() {
       if (this.formWeed.specy) {
         this.selectId = this.formWeed.specy.id
@@ -368,11 +441,18 @@ export default {
       }).catch(err => err)
     },
     onSubmit() {
-      if (this.isCreate) {
-        this.create()
-      } else {
-        this.edit()
-      }
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          if (this.isCreate) {
+            this.create()
+          } else {
+            this.edit()
+          }
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     cancel() {
       this.$emit('close')
