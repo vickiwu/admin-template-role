@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-row class="report-row" :gutter="20">
         <el-col :span="8" style="text-align:left">
@@ -145,6 +146,9 @@ export default {
     this.sysConfig = getSysConfig()
   },
   methods: {
+    goBack() {
+      this.$router.go('-1')
+    },
     query() {
       const params = { ... this.queryPageination }
       getH4aUserPage(clean(params)).then((res) => {
@@ -172,6 +176,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.go-back-btn{
+  margin-left: 20px ;
+  margin-bottom: 15px;
+}
 .bg-container{
   display: flex;
   .blue-bg{

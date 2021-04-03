@@ -17,7 +17,7 @@
           <span class="row-title">下属账户总数量：{{ totalCount }}个</span>
         </el-col>
         <el-col :span="19" class="right-btn">
-          <el-button type="primary" @click="handleAdd()">新增</el-button>
+          <!-- <el-button type="primary" @click="handleAdd()">新增</el-button> -->
           <el-button type="primary" @click="query()">刷新</el-button>
           <!-- <el-button type="danger"   @click="del">删除</el-button> -->
         </el-col>
@@ -191,7 +191,7 @@ export default {
     },
     handleEdit(index, rowData) {
       this.$router.push({
-        name: 'AddAccount',
+        name: 'EditAccount',
         params: {
           rowData,
           isEdit: true

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-form
         ref="form"
@@ -48,7 +49,7 @@
         </el-form-item>
 
         <el-form-item class="btn-center">
-          <el-button>取消</el-button>
+          <el-button @click="goBack">取消</el-button>
           <el-button type="primary" @click="onSubmit">确定</el-button>
         </el-form-item>
       </el-form>
@@ -83,6 +84,9 @@ export default {
     this.queryUserList()
   },
   methods: {
+    goBack() {
+      this.$router.go('-1')
+    },
     queryUserList() {
       getUserPage().then((res) => {
         const { data } = res
@@ -131,7 +135,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.go-back-btn{
+  margin-left: 20px ;
+  margin-bottom: 15px;
+}
 .news-card {
 .news-form{
   width: 80%;

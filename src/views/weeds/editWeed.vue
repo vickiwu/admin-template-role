@@ -259,6 +259,7 @@ export default {
       provinceList: provinceList,
       value1: '',
       value2: '',
+      tempList: [], // provinceJson['广西省']
       // cityJson: cityJson.cityies,
       isEdit: true,
       dialogImageUrl: '', // 预览图片地址
@@ -325,6 +326,8 @@ export default {
     } else {
       if (this.data) {
         this.formWeed = this.data
+        this.value1 = this.data.discReg[0]
+        this.value2 = this.data.discReg[1]
         this.init()
       }
     }

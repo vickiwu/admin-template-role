@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-row style="text-align:center"><h2>杂草研判</h2></el-row>
       <el-form
@@ -223,6 +224,9 @@ export default {
     this.getLbPage()
   },
   methods: {
+    goBack() {
+      this.$router.go('-1')
+    },
     selectOne(params) {
       this.formWeed.discReg = []
       this.formWeed.discReg.push(params)
@@ -323,7 +327,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.go-back-btn{
+  margin-left: 20px ;
+  margin-bottom: 15px;
+}
 .news-card {
 .news-form{
   width: 80%;

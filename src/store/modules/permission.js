@@ -82,7 +82,7 @@ export function resetRoutes(constantRoutes) {
       } else if (element.meta.title === '资源管理') {
         element.hidden = false
         element.children.forEach(item => {
-          if (item.meta.title === '账户同步' || item.meta.title === '权限设置') {
+          if (item.meta.title === '账户同步' || item.meta.title === '权限设置' || item.meta.title === '账户编辑') {
             item.hidden = true
           } else {
             item.hidden = false

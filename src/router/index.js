@@ -180,6 +180,13 @@ export const constantRoutes = [
         meta: { title: '账户新增', icon: 'tree' }
       },
       {
+        path: 'editAccount',
+        name: 'EditAccount',
+        hidden: true,
+        component: () => import('@/views/resource/editAccount'),
+        meta: { title: '账户编辑', icon: 'tree' }
+      },
+      {
         path: 'set',
         name: 'ExpertSet',
         // hidden: true,
@@ -262,6 +269,13 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/news/addNews'),
         meta: { title: '新闻发布', icon: 'tree' }
+      },
+      {
+        path: 'editNews',
+        name: 'EditNews',
+        hidden: true,
+        component: () => import('@/views/news/editNews'),
+        meta: { title: '新闻编辑', icon: 'tree' }
       },
       {
         path: 'newsDetail',

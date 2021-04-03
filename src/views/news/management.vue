@@ -294,7 +294,7 @@ export default {
     handleEdit(rowData) {
       // 跳转到编辑页面
       this.$router.push({
-        name: 'AddNews',
+        name: 'EditNews',
         params: {
           isEdit: true,
           rowData
