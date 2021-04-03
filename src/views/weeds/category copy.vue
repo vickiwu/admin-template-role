@@ -65,53 +65,6 @@
           </template>
         </el-table-column>
       </el-table>
-
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        row-key="id"
-        border
-        lazy
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-      >
-        <el-table-column
-          prop=""
-          label="序号"
-          width="50"
-        >
-          <template slot-scope="scope">
-            <div>
-
-              {{ scope.$index + 1 + queryPageination.start }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="类别"
-        />
-        <el-table-column
-          prop=""
-          label="编辑"
-          width="120"
-          :show-overflow-tooltip="true"
-        >
-          <template slot-scope="scope">
-            <span
-              style="color: #409EFF;cursor:pointer;margin-right:15px;"
-              @click="handleEdit( scope.row)"
-            >
-              修改
-            </span>
-            <span
-              style="color: #f78989;cursor:pointer;"
-              @click="handleDel( scope.row.id)"
-            >
-              删除
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
       <!-- 分页 新 -->
       <el-pagination
         background

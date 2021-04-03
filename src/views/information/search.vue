@@ -23,6 +23,7 @@
         <el-col :span="14" class="right-btn">
           <el-button type="primary" @click="handleSearch()">检索</el-button>
           <el-button type="primary" @click="handleSearch()">刷新</el-button>
+          <el-button type="primary" :loading="exportLoading" @click="handleExport()">导出</el-button>
           <!-- <el-button type="primary"   @click="handleDownLoad()">下载</el-button>
           <el-button type="danger"   @click="handleDel">删除</el-button> -->
         </el-col>
@@ -135,11 +136,12 @@
 </template>
 
 <script>
-import { getPage, ziliaoDelete } from '@/api/ziliao'
-import { getLbPage } from '@/api/zacao'
+import { getPage, ziliaoDelete, ziliaoExport } from '@/api/ziliao'
+import { getLbPage, getSpecLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
 import { pageCount } from '@/globalConfig'
+import { saveFileToLink } from 'web-downloadfile'
 
 export default {
   components: {
@@ -165,7 +167,8 @@ export default {
       },
       totalCount: 0,
       options: [],
-      multipleSelection: []
+      multipleSelection: [],
+      exportLoading: false
     }
   },
   computed: {
@@ -180,12 +183,35 @@ export default {
     // 挂载后 获取数据
     this.getPage()
     this.getLbPage()
+    this.getSpecLbPage()
   },
   methods: {
     async getLbPage() {
       // 获取杂草类别
       const params = { cunt: 1000, start: 0 }
       await getLbPage(clean(params)).then((res) => {
+        var all = new Map()
+        const { data } = res
+        this.specyList = data.lblist
+        data.lblist.map((item) => {
+          const result = data.lblist.filter((item2) => {
+            return item2.lb1 === item.lb1
+          })
+          all.set(item.lb1, result)
+        })
+        for (const [k, v] of all) {
+          const obj = {}
+          obj.lb2 = k
+          obj.option = v
+          this.options.push(obj)
+        }
+      }).catch(err => err)
+    },
+    async getSpecLbPage() {
+      // 获取杂草类别
+      const params = { cunt: 10, start: 0 }
+      await getSpecLbPage(clean(params)).then((res) => {
+        console.log('%c 🍧 res: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', res)
         var all = new Map()
         const { data } = res
         this.specyList = data.lblist
@@ -304,24 +330,44 @@ export default {
       })
     },
     handleDownLoad(index, row) {
-      console.log('%c 🌭 index,row: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', index, row)
       // 下载pdf 需要修正 todo
       // 处理下载函数
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['资料名称', '涉及杂草种类', '摘要', '发现时间']
-        const filterVal = ['name', 'specy', 'desc', 'create']
-        const list = this.tableData
-        const data = this.formatJson(filterVal, list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: '资料信息',
-          autoWidth: true,
-          bookType: 'xlsx'
+      if (row.filelist && row.filelist[0].httpUrl) {
+        this.downloadLoading = true
+
+        // const link = document.createElement('a')
+        // link.style.display = 'none'
+        // const blob = new Blob([row.filelist[0].httpUrl], { type: 'pdf' })
+        // const url = URL.createObjectURL(blob)
+        // link.href = url
+        // link.setAttribute('download', '下载')
+        // document.body.appendChild(link)
+        // link.click()
+        saveFileToLink(row.filelist[0].httpUrl, 'test', 'pdf', function(params) {
         })
+
+        // const xhr = new XMLHttpRequest()
+        // const type = 'pdf'
+        // const fileName = '下载'
+        // xhr.open('get', row.filelist[0].httpUrl, true)
+        // xhr.setRequestHeader('Content-Type', `application/${type}`)
+        // xhr.responseType = 'blob'
+        // xhr.onload = function() {
+        //   if (this.status === 200) {
+        //     // 接受二进制文件流
+        //     var blob = this.response
+        //     downloadExportFile(blob, fileName, type)
+        //   }
+        // }
+        // xhr.send()
+
         this.downloadLoading = false
-      }).catch(err => err)
+      } else {
+        this.$alert('当前无资料可下载!', '提示', {
+          confirmButtonText: '确定',
+          type: 'success'
+        }).catch(err => err)
+      }
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
@@ -335,7 +381,26 @@ export default {
       }))
     },
 
-    handleExport() {},
+    async handleExport() {
+      this.exportLoading = true
+      const searchParams = JSON.parse(JSON.stringify(this.formInline))
+      const params = { ...searchParams }
+      await ziliaoExport(clean(params)).then((res) => {
+        if (!res.data.url) {
+          return
+        }
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = res.data.url
+        link.setAttribute('download', '导出')
+        document.body.appendChild(link)
+        link.click()
+        this.exportLoading = false
+      }).catch(err => {
+        this.exportLoading = false
+        return err
+      })
+    },
     handlePageChange(val) { // 点击分页查询
       this.pagination.index = val
       this.getPage()

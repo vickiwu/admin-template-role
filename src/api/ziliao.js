@@ -53,4 +53,12 @@ export function getPage(data) {
     data
   })
 }
+export function ziliaoExport(data) {
+  // 资料导出
+  return request({
+    url: WeedGlobalConfig.ziliao.export,
+    method: 'POST',
+    data
+  })
+}
 

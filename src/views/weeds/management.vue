@@ -90,10 +90,10 @@
         </el-col>
         <el-col :span="3" style="margin-left:2px">
           <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
-            <el-option label="未发现有害生物" :value="0" />
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-col>
         <el-col :span="3" style="margin-left:2px;">
@@ -153,10 +153,18 @@
         />
         <!-- 字段inputMethod 值app采集 或手动输入 -->
         <el-table-column
-          prop="inputMethod"
-          label="录入方式"
+          prop="capType"
+          label="采集方式"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span> {{ scope.row.capType===1 ? 'APP采集' : '手动录入' }}</span>
+            </div>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="specy"
           label="涉及杂草种类"

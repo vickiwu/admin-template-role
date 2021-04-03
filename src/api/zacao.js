@@ -151,3 +151,12 @@ export function zacaoExport(data) {
     data
   })
 }
+export function getSpecLbPage(data) {
+  // 杂草类别
+  return request({
+    url: WeedGlobalConfig.zaocao.getSpecLbPage,
+    method: 'POST',
+    data
+  })
+}
+

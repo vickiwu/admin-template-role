@@ -90,10 +90,10 @@
             </el-col>
             <el-col :span="4" style="margin-left:2px">
               <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
-                <el-option label="未发现有害生物" :value="0" />
+                <!-- <el-option label="未发现有害生物" :value="0" /> -->
                 <el-option label="非检疫性有害生物" :value="1" />
                 <el-option label="检疫性有害生物" :value="2" />
-                <el-option label="非鉴定性有害生物" :value="3" />
+                <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
               </el-select>
             </el-col>
             <el-col :span="2" style="margin-left:2px;text-align: right;">

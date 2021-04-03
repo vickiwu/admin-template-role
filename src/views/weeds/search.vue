@@ -74,10 +74,10 @@
         </el-col>
         <el-col :span="3" style="margin-left:2px">
           <el-select v-model="formSearch.jydw" clearable placeholder="检疫地位">
-            <el-option label="未发现有害生物" :value="0" />
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-col>
         <el-col :span="3" style="margin-left:2px">
@@ -129,12 +129,19 @@
           label="名称"
           :show-overflow-tooltip="true"
         />
-        <!-- 字段inputMethod 值app采集 或手动输入 -->
         <el-table-column
-          prop="inputMethod"
-          label="录入方式"
+          prop="capType"
+          label="采集方式"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+
+            <div>
+              <span> {{ scope.row.capType===1 ? 'APP采集' : '手动录入' }}</span>
+            </div>
+
+          </template>
+        </el-table-column>
         <el-table-column
           prop="specy"
           label="种类"
@@ -389,25 +396,18 @@ export default {
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
-      const params = { ...this.queryPageination, ...searchParams }
+      const params = { ...searchParams }
       zacaoExport(clean(params)).then((res) => {
-        console.log('执行导出')
+        if (!res.data.url) {
+          return
+        }
+        const link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = res.data.url
+        link.setAttribute('download', '导出')
+        document.body.appendChild(link)
+        link.click()
       }).catch(err => err)
-      // this.downloadLoading = true
-      // import('@/vendor/Export2Excel').then(excel => {
-      //   const tHeader = ['区域', '来源', '名称', '种类', '危害程度', '图片', '发现时间']
-      //   const filterVal = ['discReg', 'source', 'nameCn', 'specy', 'jydw', 'piclist', 'create']
-      //   const list = this.tableData
-      //   const data = this.formatJson(filterVal, list)
-      //   excel.export_json_to_excel({
-      //     header: tHeader,
-      //     data,
-      //     filename: '杂草信息',
-      //     autoWidth: true,
-      //     bookType: 'xlsx'
-      //   })
-      //   this.downloadLoading = false
-      // }).catch(err => err)
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
