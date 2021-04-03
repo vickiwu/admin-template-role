@@ -8,10 +8,11 @@
             v-model="selectId"
             width="120px"
             placeholder="请选择杂草所属种类"
+            :load="loadNode"
+            lazy
             clearable
-            :data="options"
             :props="treeProps"
-
+            :check-strictly="true"
             @change="changeSpecy"
           />
         </el-col>
@@ -137,7 +138,7 @@
 
 <script>
 import { getPage, ziliaoDelete, ziliaoExport } from '@/api/ziliao'
-import { getLbPage, getSpecLbPage } from '@/api/zacao'
+import { getSpecLbPage } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
 import { pageCount } from '@/globalConfig'
@@ -155,18 +156,16 @@ export default {
       },
       tableData: [],
       selectId: '',
-      specyList: [],
       treeProps: {
         value: 'id',
         children: 'option',
-        label: 'lb2'
+        label: 'lb'
       },
       pagination: {
         count: pageCount,
         index: 1
       },
       totalCount: 0,
-      options: [],
       multipleSelection: [],
       exportLoading: false
     }
@@ -182,56 +181,60 @@ export default {
   mounted() {
     // 挂载后 获取数据
     this.getPage()
-    this.getLbPage()
-    this.getSpecLbPage()
   },
   methods: {
-    async getLbPage() {
-      // 获取杂草类别
-      const params = { cunt: 1000, start: 0 }
-      await getLbPage(clean(params)).then((res) => {
-        var all = new Map()
-        const { data } = res
-        this.specyList = data.lblist
-        data.lblist.map((item) => {
-          const result = data.lblist.filter((item2) => {
-            return item2.lb1 === item.lb1
+    async loadNode(node, resolve) {
+      const params = { count: 1000, start: 0 }
+      if (node.level === 0) { // 目
+        const arr = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb1, data: item }
           })
-          all.set(item.lb1, result)
-        })
-        for (const [k, v] of all) {
-          const obj = {}
-          obj.lb2 = k
-          obj.option = v
-          this.options.push(obj)
-        }
-      }).catch(err => err)
+        }).catch(err => err)
+        return resolve(arr)
+      }
+      if (node.level === 1) { // 科 lb1
+        params.lb1 = node.data.lb
+        const arr2 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb2, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr2)
+      }
+      if (node.level === 2) { // 属 lb1 lb2
+        params.lb1 = node.data.data.lb1
+        params.lb2 = node.data.data.lb2
+        const arr3 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb3, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr3)
+      }
+      if (node.level > 2) {
+        return resolve([])
+      }
     },
+
     async getSpecLbPage() {
       // 获取杂草类别
-      const params = { cunt: 10, start: 0 }
-      await getSpecLbPage(clean(params)).then((res) => {
-        console.log('%c 🍧 res: ', 'font-size:20px;background-color: #ED9EC7;color:#fff;', res)
-        var all = new Map()
-        const { data } = res
-        this.specyList = data.lblist
-        data.lblist.map((item) => {
-          const result = data.lblist.filter((item2) => {
-            return item2.lb1 === item.lb1
-          })
-          all.set(item.lb1, result)
+      const params = { count: 10, start: 0 }
+      const arr = await getSpecLbPage(clean(params)).then((res) => {
+        const arrList = res.data.lblist.map(item => {
+          return { id: item.id, lb: item.lb1 }
         })
-        for (const [k, v] of all) {
-          const obj = {}
-          obj.lb2 = k
-          obj.option = v
-          this.options.push(obj)
-        }
+        return arrList
       }).catch(err => err)
+      return arr
     },
-    changeSpecy(val) {
-      const specy = this.specyList.find((obj) => obj.id === val)
-      this.formInline.specy = JSON.stringify(specy)
+    changeSpecy(val, data) {
+      if (data) {
+        const specy = data.data
+        this.formInline.specy = JSON.stringify(specy)
+      } else {
+        this.formInline.specy = ''
+      }
     },
     parseTime(time) {
       // 时间戳处理

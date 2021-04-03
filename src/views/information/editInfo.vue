@@ -20,9 +20,10 @@
             style="width:100%"
             placeholder="请选择杂草所属种类"
             clearable
-            :data="options"
             :props="treeProps"
-
+            :load="loadNode"
+            lazy
+            :check-strictly="true"
             @change="changeSpecy"
           />
         </el-form-item>
@@ -80,7 +81,7 @@
 
 <script>
 import { create, edit, uploadFile } from '@/api/ziliao'
-import { getLbPage } from '@/api/zacao'
+import { getSpecLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 import { uploadAvatar } from '@/api/admin'
 import ElSelectTree from 'el-select-tree'
@@ -113,13 +114,11 @@ export default {
 
       },
       selectId: '',
-      specyList: [],
       treeProps: {
         value: 'id',
         children: 'option',
-        label: 'lb2'
-      },
-      options: [] // 格式化后的杂草类别
+        label: 'lb'
+      }
     }
   },
   mounted() {
@@ -141,37 +140,54 @@ export default {
       })
       this.fileList = arr
     }
-    this.getLbPage()
   },
   methods: {
     goBack() {
       this.$router.go('-1')
     },
-    changeSpecy(val) {
-      const specy = this.specyList.find((obj) => obj.id === val)
-      this.formZilao.specy = JSON.stringify(specy)
+
+    changeSpecy(val, data) {
+      if (data) {
+        const specy = data.data
+        this.formZilao.specy = JSON.stringify(specy)
+      } else {
+        this.formZilao.specy = ''
+      }
     },
-    async getLbPage() {
-      // 获取杂草类别
-      const params = { cunt: 1000, start: 0 }
-      await getLbPage(clean(params)).then((res) => {
-        var all = new Map()
-        const { data } = res
-        this.specyList = data.lblist
-        data.lblist.map((item) => {
-          const result = data.lblist.filter((item2) => {
-            return item2.lb1 === item.lb1
+    async loadNode(node, resolve) {
+      const params = { count: 1000, start: 0 }
+      if (node.level === 0) { // 目
+        const arr = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb1, data: item }
           })
-          all.set(item.lb1, result)
-        })
-        for (const [k, v] of all) {
-          const obj = {}
-          obj.lb2 = k
-          obj.option = v
-          this.options.push(obj)
-        }
-      }).catch(err => err)
+        }).catch(err => err)
+        return resolve(arr)
+      }
+      if (node.level === 1) { // 科 lb1
+        params.lb1 = node.data.lb
+        const arr2 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb2, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr2)
+      }
+      if (node.level === 2) { // 属 lb1 lb2
+        params.lb1 = node.data.data.lb1
+        params.lb2 = node.data.data.lb2
+        const arr3 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb3, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr3)
+      }
+      if (node.level > 2) {
+        return resolve([])
+      }
     },
+
     async create() {
       const params = JSON.parse(JSON.stringify(this.formZilao))
       params.specy = JSON.parse(params.specy)

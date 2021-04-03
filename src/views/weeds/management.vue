@@ -82,9 +82,12 @@
             style="width:100%"
             placeholder="请选择杂草种类"
             clearable
-            :data="options"
             :props="treeProps"
 
+            width="120px"
+            :load="loadNode"
+            lazy
+            :check-strictly="true"
             @change="changeSpecy"
           />
         </el-col>
@@ -298,7 +301,7 @@
 </template>
 
 <script>
-import { getPage, getLbPage, zacaoDelete } from '@/api/zacao'
+import { getPage, getSpecLbPage, zacaoDelete } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 import ElSelectTree from 'el-select-tree'
 // const cityJson = require('@/assets/json/cities.json')
@@ -333,13 +336,11 @@ export default {
         name: ''
       },
       selectId: '',
-      specyList: [],
       treeProps: {
         value: 'id',
         children: 'option',
-        label: 'lb2'
+        label: 'lb'
       },
-      options: [], // 处理后的杂草数据
       tableData: [],
       pagination: {
         count: pageCount,
@@ -362,7 +363,6 @@ export default {
     }
   },
   mounted() {
-    this.getLbPage()
     this.getPage()
   },
   methods: {
@@ -378,29 +378,47 @@ export default {
     parseTime(time) {
       return parseTime(time)
     },
-    async getLbPage() {
-      const params = { cunt: 1000, start: 0 }
-      await getLbPage(clean(params)).then((res) => {
-        var all = new Map()
-        const { data } = res
-        this.specyList = data.lblist
-        data.lblist.map((item) => {
-          const result = data.lblist.filter((item2) => {
-            return item2.lb1 === item.lb1
-          })
-          all.set(item.lb1, result)
-        })
-        for (const [k, v] of all) {
-          const obj = {}
-          obj.lb2 = k
-          obj.option = v
-          this.options.push(obj)
-        }
-      }).catch(err => err)
+
+    changeSpecy(val, data) {
+      if (data) {
+        const specy = data.data
+        this.formSearch.specy = JSON.stringify(specy)
+      } else {
+        this.formSearch.specy = ''
+      }
     },
-    changeSpecy(val) {
-      const specy = this.specyList.find((obj) => obj.id === val)
-      this.formSearch.specy = JSON.stringify(specy)
+    async loadNode(node, resolve) {
+      const params = { count: 1000, start: 0 }
+      if (node.level === 0) { // 目
+        const arr = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb1, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr)
+      }
+      if (node.level === 1) { // 科 lb1
+        params.lb1 = node.data.lb
+        const arr2 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb2, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr2)
+      }
+      if (node.level === 2) { // 属 lb1 lb2
+        params.lb1 = node.data.data.lb1
+        params.lb2 = node.data.data.lb2
+        const arr3 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb3, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr3)
+      }
+      if (node.level > 2) {
+        return resolve([])
+      }
     },
     async getPage() {
       const searchParams = JSON.parse(JSON.stringify(this.formSearch))

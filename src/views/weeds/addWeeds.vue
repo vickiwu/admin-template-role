@@ -76,9 +76,10 @@
             style="width:100%"
             placeholder="请选择杂草所属种类"
             clearable
-            :data="options"
             :props="treeProps"
-
+            :load="loadNode"
+            lazy
+            :check-strictly="true"
             @change="changeSpecy"
           />
 
@@ -160,7 +161,7 @@
 </template>
 
 <script>
-import { uploadImg, create, edit, getLbPage } from '@/api/zacao'
+import { uploadImg, create, edit, getSpecLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 const provinceJson = require('@/assets/json/province2city.json')
 const provinceList = []
@@ -241,7 +242,6 @@ export default {
         lng: '',
         lat: ''
       },
-      options: [],
       fileList: [],
       rules: {
         nameCn: [
@@ -266,11 +266,10 @@ export default {
         ]
       },
       selectId: '',
-      specyList: [],
       treeProps: {
         value: 'id',
         children: 'option',
-        label: 'lb2'
+        label: 'lb'
       },
       dialogVisible: false
     }
@@ -305,7 +304,6 @@ export default {
         }
       }
     }
-    this.getLbPage()
   },
   methods: {
     selectOne(params) {
@@ -317,9 +315,47 @@ export default {
     selectSecond(params) {
       this.formWeed.discReg.push(params)
     },
-    changeSpecy(val) {
-      const specy = this.specyList.find((obj) => obj.id === val)
-      this.formWeed.specy = JSON.stringify(specy)
+
+    changeSpecy(val, data) {
+      if (data) {
+        const specy = data.data
+        this.formWeed.specy = JSON.stringify(specy)
+      } else {
+        this.formWeed.specy = ''
+      }
+    },
+    async loadNode(node, resolve) {
+      const params = { count: 1000, start: 0 }
+      if (node.level === 0) { // 目
+        const arr = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb1, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr)
+      }
+      if (node.level === 1) { // 科 lb1
+        params.lb1 = node.data.lb
+        const arr2 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb2, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr2)
+      }
+      if (node.level === 2) { // 属 lb1 lb2
+        params.lb1 = node.data.data.lb1
+        params.lb2 = node.data.data.lb2
+        const arr3 = await getSpecLbPage(clean(params)).then((res) => {
+          return res.data.lblist.map(item => {
+            return { id: item.id, lb: item.lb3, data: item }
+          })
+        }).catch(err => err)
+        return resolve(arr3)
+      }
+      if (node.level > 2) {
+        return resolve([])
+      }
     },
     handleRemove(file, fileList) { // 删除图片
       this.fileList = fileList
@@ -332,26 +368,7 @@ export default {
       this.dialogImageUrl = file.url
       this.dialogImageVisible = true
     },
-    async getLbPage() {
-      const params = { cunt: 1000, start: 0 }
-      await getLbPage(clean(params)).then((res) => {
-        var all = new Map()
-        const { data } = res
-        this.specyList = data.lblist
-        data.lblist.map((item) => {
-          const result = data.lblist.filter((item2) => {
-            return item2.lb1 === item.lb1
-          })
-          all.set(item.lb1, result)
-        })
-        for (const [k, v] of all) {
-          const obj = {}
-          obj.lb2 = k
-          obj.option = v
-          this.options.push(obj)
-        }
-      }).catch(err => err)
-    },
+
     async uploadImg(file) {
       const params = new FormData()
       params.append('file', file.file)
