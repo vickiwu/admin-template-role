@@ -285,7 +285,6 @@ export default {
     },
     showDetail(index, row) {
       // 查看log是模态框还是页面 todo
-      console.log('%c 🍍 index,row: ', 'font-size:20px;background-color: #B03734;color:#fff;', index, row)
       this.currentLog = row
       this.dialoglog = true
     }
