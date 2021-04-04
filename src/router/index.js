@@ -131,37 +131,30 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/information',
+    path: '/expertJudge',
     component: Layout,
-    redirect: '/information/index',
-    name: 'InformationIndex',
-    meta: { title: '资料中心', icon: 'el-icon-s-help' },
+    redirect: '/expertJudge/index',
+    name: 'ExpertJudgeIndex',
+    meta: { title: '专家研判', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'addInformation',
-        name: 'InformationAdd',
-        component: () => import('@/views/information/addInfo'),
-        meta: { title: '资料录入', icon: 'tree' }
-      },
-      {
-        path: 'editInformation',
-        name: 'EditrmationAdd',
-        hidden: true,
-        component: () => import('@/views/information/editInfo'),
-        meta: { title: '资料修改', icon: 'tree' }
-      },
-      {
         path: 'index',
-        name: 'Information',
-        component: () => import('@/views/information/index'),
-        meta: { title: '资料管理', icon: 'form' }
+        name: 'ExpertJudge',
+        component: () => import('@/views/expertJudge/index'),
+        meta: { title: '研判任务', icon: 'form' }
       },
       {
-        path: 'searchInformation',
-        name: 'InformationSearch',
-        // hidden: true,
-        component: () => import('@/views/information/search'),
-        meta: { title: '资料检索', icon: 'tree' }
+        path: 'judge',
+        name: 'Judge',
+        hidden: true,
+        component: () => import('@/views/expertJudge/judge'),
+        meta: { title: '执行研判', icon: 'form' }
+      },
+      {
+        path: 'records',
+        name: 'Records',
+        component: () => import('@/views/expertJudge/records'),
+        meta: { title: '研判记录', icon: 'tree' }
       }
     ]
   },
@@ -229,33 +222,41 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/expertJudge',
+    path: '/information',
     component: Layout,
-    redirect: '/expertJudge/index',
-    name: 'ExpertJudgeIndex',
-    meta: { title: '专家研判', icon: 'el-icon-s-help' },
+    redirect: '/information/index',
+    name: 'InformationIndex',
+    meta: { title: '资料中心', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'index',
-        name: 'ExpertJudge',
-        component: () => import('@/views/expertJudge/index'),
-        meta: { title: '研判任务', icon: 'form' }
+        path: 'addInformation',
+        name: 'InformationAdd',
+        component: () => import('@/views/information/addInfo'),
+        meta: { title: '资料录入', icon: 'tree' }
       },
       {
-        path: 'judge',
-        name: 'Judge',
+        path: 'editInformation',
+        name: 'EditrmationAdd',
         hidden: true,
-        component: () => import('@/views/expertJudge/judge'),
-        meta: { title: '执行研判', icon: 'form' }
+        component: () => import('@/views/information/editInfo'),
+        meta: { title: '资料修改', icon: 'tree' }
       },
       {
-        path: 'records',
-        name: 'Records',
-        component: () => import('@/views/expertJudge/records'),
-        meta: { title: '研判记录', icon: 'tree' }
+        path: 'index',
+        name: 'Information',
+        component: () => import('@/views/information/index'),
+        meta: { title: '资料管理', icon: 'form' }
+      },
+      {
+        path: 'searchInformation',
+        name: 'InformationSearch',
+        // hidden: true,
+        component: () => import('@/views/information/search'),
+        meta: { title: '资料检索', icon: 'tree' }
       }
     ]
   },
+
   {
     path: '/news',
     component: Layout,
