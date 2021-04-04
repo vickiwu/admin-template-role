@@ -203,7 +203,7 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.state == 0 ? '未研判' : scope.row.state == 1 ? '研判中': scope.row.state == -1 ? '驳回':'研判完成' }}</span>
+            <span>{{ scope.row.state == 0 ? '未研判' : scope.row.state == 1 ? '研判中': scope.row.state == -1 ? '驳回':'已入库' }}</span>
           </template>
         </el-table-column>
         <el-table-column
