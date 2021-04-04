@@ -106,11 +106,11 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入资料名称', trigger: 'blur' }
-        ],
-
-        specy: [
-          { required: true, message: '请选择资料涉及的杂草种类', trigger: 'change' }
         ]
+
+        // specy: [
+        //   { required: true, message: '请选择资料涉及的杂草种类', trigger: 'change' }
+        // ]
 
       },
       selectId: '',

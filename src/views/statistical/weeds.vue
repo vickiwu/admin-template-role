@@ -34,7 +34,7 @@
               </li>
               <li>
                 <span class="info-key">位置:</span>
-                <span v-for="wz in zacao.discReg" :key="wz" class="info-value">{{ wz }}</span>
+                <span v-for="(wz,index) in zacao.discReg" :key="index" class="info-value">{{ wz }}</span>
               </li>
               <li>
                 <span class="info-key">来源:</span>
@@ -58,13 +58,15 @@
       width="60%"
       :before-close="handleClose"
     >
-      <showWeeds :data="zacaoData" />
+      <showWeeds :data="zacaoData" :show-btn="false" />
     </el-dialog>
     <el-dialog
       title="添加杂草"
       :visible.sync="showAddPoint"
       width="60%"
+      top="5vh"
       :before-close="handleAddClose"
+      class="edit-weed-dialog"
     >
       <editWeed
         v-if="showAddPoint"
@@ -242,6 +244,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.edit-weed-dialog{
+  ::v-deep.el-dialog__body{
+    padding: 0 20px;
+    padding-bottom: 10px;
+  }
+}
 ::v-deep.app-container{
   padding: 0;
 }

@@ -14,7 +14,7 @@
           <el-input v-model="form.realname" placeholder="请输入专家姓名" />
         </el-form-item>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入专家姓名" />
+          <el-input v-model="form.username" placeholder="请输入账户名称" />
         </el-form-item>
         <el-form-item label="专家工号" prop="jobNo">
           <el-input v-model="form.jobNo" placeholder="请输入专家工号" />

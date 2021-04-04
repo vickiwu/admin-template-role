@@ -4,7 +4,7 @@ module.exports = {
   // 服务器端口
   serverPort: '19000',
   // 每页查询数量
-  pageCount: 13,
+  pageCount: 16,
   // 接口地址
   admin: { // 用户相关接口
     createUser: '/admin/createUser', // 系统管理员创建账户

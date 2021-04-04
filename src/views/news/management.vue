@@ -135,7 +135,7 @@
         <el-table-column
           prop=""
           label="编辑"
-          width="180"
+          width="110"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">

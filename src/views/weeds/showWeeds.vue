@@ -61,7 +61,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-button style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
+          <el-button v-if="showBtn" style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
         </el-col>
       </el-row>
 
@@ -112,6 +112,10 @@ export default {
     data: {
       type: Object,
       default: () => {}
+    },
+    showBtn: {
+      type: Boolean,
+      default: () => true
     }
   },
   data() {
@@ -137,6 +141,12 @@ export default {
         this.form = newVal
       }
     }
+    // showBtn: {
+    //   immediate: true,
+    //   deep: true, // 深度监听
+    //   handler(news, old) {
+    //   }
+    // }
   },
   methods: {
     showMap() {

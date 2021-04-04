@@ -151,7 +151,7 @@
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:5px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
+              <span style="margin-right:2px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
               <span style="">{{ scope.row.specy ? scope.row.specy.lb2: "" }}</span>
             </div>
 
@@ -197,6 +197,15 @@
           label="采集人"
           :show-overflow-tooltip="true"
         />
+        <el-table-column
+          prop="state"
+          label="状态"
+          :show-overflow-tooltip="true"
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.state == 0 ? '未审核' : scope.row.state == 1 ? '审核通过': '驳回' }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="create"
           label="上传时间"

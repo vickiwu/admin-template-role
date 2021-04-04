@@ -13,7 +13,7 @@
           <el-input v-model="form.realname" placeholder="请输入专家姓名" />
         </el-form-item>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入专家姓名" />
+          <el-input v-model="form.username" placeholder="请输入账户名称" />
         </el-form-item>
         <el-form-item label="登录密码" prop="password">
           <el-input v-model="form.password" type="password" placeholder="请输入登录密码" />

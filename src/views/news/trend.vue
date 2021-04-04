@@ -6,7 +6,7 @@
           <div class="left-title">最新新闻</div>
           <div v-for="(o, index) in xinwenlist" :key="o.id">
             <el-row>
-              <div class="show-xinwen" @click="jumpNews(o)" v-html="o.content" />
+              <div class="show-xinwen" @click="jumpNews(o)" v-html="o.title" />
               <!-- <el-col :span="7">
                 <el-image
                   src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
@@ -30,7 +30,7 @@
               class="top-span"
               style="cursor: pointer;"
               @click="jumpNews(o)"
-            >{{ `${o.title}...` }}</span>
+            >{{ `${o.title}` }}</span>
           </div>
         </el-col>
       </el-row>
