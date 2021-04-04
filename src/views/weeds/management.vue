@@ -285,9 +285,11 @@
     </el-dialog>
     <el-dialog
       title="编辑杂草"
+      class="edit-weed-dialog"
       :visible.sync="editDialogVisible"
       width="60%"
       :before-close="handleEditClose"
+      top="5vh"
     >
       <editWeed
         v-if="editDialogVisible"
@@ -537,6 +539,7 @@ export default {
 }
 </script>
 <style >
+
 .report-table .el-image-viewer__mask {
   opacity: .9
 }
@@ -548,7 +551,12 @@ export default {
 } */
 </style>
 <style lang="scss" scoped>
-
+.edit-weed-dialog{
+  ::v-deep.el-dialog__body{
+    padding: 0 20px;
+    padding-bottom: 10px;
+  }
+}
 .news-card {
   min-height: calc(100% - 35px);
   ::v-deep.el-card__body {
