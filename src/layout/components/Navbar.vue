@@ -240,11 +240,11 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
+      await this.$store.dispatch('user/logout').catch(err => err)
       this.$router.push(`/login`)
     },
     async getInfo() {
-      const data = await this.$store.dispatch('user/getInfo')
+      const data = await this.$store.dispatch('user/getInfo').catch(err => err)
       this.userInfoForm = data.user
       this.dialogUserInfo = true
     },

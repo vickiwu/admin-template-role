@@ -258,7 +258,7 @@ export default {
             this.$alert('权限不足！', '提示', {
               confirmButtonText: '确定',
               type: 'warning'
-            })
+            }).catch(err => err)
             return
           }
           if (this.$route.params.isEdit) {

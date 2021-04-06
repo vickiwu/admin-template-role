@@ -38,6 +38,10 @@
           prop="lb"
           label="类别"
         />
+        <el-table-column
+          prop="lbLt"
+          label="拉丁名称"
+        />
 
         <el-table-column
           prop=""
@@ -90,12 +94,15 @@
       <el-form
         ref="formAdd"
         :model="formAdd"
-        label-width="60px"
-        label-position="left"
+        label-width="100px"
+        label-position="right"
         :rules="rules"
       >
-        <el-form-item label="目" prop="lb1">
-          <el-input v-model="formAdd.lb1" placeholder="请填写目" />
+        <el-form-item label="目  中文名 " prop="lb1">
+          <el-input v-model="formAdd.lb1" placeholder="请填写中文名" />
+        </el-form-item>
+        <el-form-item label="目  拉丁名 " prop="lb1Lt">
+          <el-input v-model="formAdd.lb1Lt" placeholder="请填写拉丁名称" />
         </el-form-item>
 
       </el-form>
@@ -112,15 +119,25 @@
       <el-form
         ref="formAdd2"
         :model="formAdd2"
-        label-width="60px"
-        label-position="left"
+        label-width="100px"
+        label-position="right"
         :rules="rules2"
       >
-        <el-form-item label="目" prop="lb1">
+        <el-form-item v-if="false" label="目  中文名 " prop="lb1">
           <el-input v-model="formAdd2.lb1" disabled />
         </el-form-item>
-        <el-form-item label="科" prop="lb2">
-          <el-input v-model="formAdd2.lb2" placeholder="请填写科" />
+        <el-form-item v-if="false" label="目  拉丁名 " prop="lb1Lt">
+          <el-input v-model="formAdd2.lb1Lt" disabled />
+        </el-form-item>
+
+        <el-form-item label="目">
+          <el-input :value="formAdd2.lb1 + '     '+ (formAdd2.lb1Lt ? formAdd2.lb1Lt :'')" disabled />
+        </el-form-item>
+        <el-form-item label="科  中文名 " prop="lb2">
+          <el-input v-model="formAdd2.lb2" placeholder="请填写中文名" />
+        </el-form-item>
+        <el-form-item label="科  拉丁名 " prop="lb2Lt">
+          <el-input v-model="formAdd2.lb2Lt" placeholder="请填写拉丁名称" />
         </el-form-item>
 
       </el-form>
@@ -137,18 +154,34 @@
       <el-form
         ref="formAdd3"
         :model="formAdd3"
-        label-width="60px"
-        label-position="left"
+        label-width="100px"
+        label-position="right"
         :rules="rules3"
       >
-        <el-form-item label="目" prop="lb1">
+        <el-form-item v-if="false" label="目  中文名 " prop="lb1">
           <el-input v-model="formAdd3.lb1" disabled />
         </el-form-item>
-        <el-form-item label="科" prop="lb2">
+        <el-form-item v-if="false" label="目  拉丁名 " prop="lb1Lt">
+          <el-input v-model="formAdd3.lb1Lt" disabled />
+        </el-form-item>
+        <el-form-item v-if="false" label="科  中文名 " prop="lb2">
           <el-input v-model="formAdd3.lb2" disabled />
         </el-form-item>
-        <el-form-item label="属" prop="lb3">
-          <el-input v-model="formAdd3.lb3" placeholder="请填写属" />
+        <el-form-item v-if="false" label="科  拉丁名 " prop="lb2Lt">
+          <el-input v-model="formAdd3.lb2Lt" disabled />
+        </el-form-item>
+
+        <el-form-item label="目">
+          <el-input :value="formAdd3.lb1 + '     '+(formAdd3.lb1Lt ? formAdd3.lb1Lt :'')" disabled />
+        </el-form-item>
+        <el-form-item label="科">
+          <el-input :value="formAdd3.lb2 + '     '+(formAdd3.lb2Lt ? formAdd3.lb2Lt :'' )" disabled />
+        </el-form-item>
+        <el-form-item label="属  中文名 " prop="lb3">
+          <el-input v-model="formAdd3.lb3" placeholder="请填写中文名" />
+        </el-form-item>
+        <el-form-item label="属  拉丁名 " prop="lb3Lt">
+          <el-input v-model="formAdd3.lb3Lt" placeholder="请填写拉丁名称" />
         </el-form-item>
 
       </el-form>
@@ -174,30 +207,45 @@ export default {
       dialogVisible2: false,
       dialogVisible3: false,
       formAdd: { // 目添加
-        lb1: ''
+        lb1: '',
+        lb1Lt: ''
       },
       rules: {
         lb1: [
-          { required: true, message: '请选择杂草所属科', trigger: 'blur' }
+          { required: true, message: '请填写目', trigger: 'blur' }
+        ],
+        lb1Lt: [
+          { required: true, message: '请填写目拉丁名称', trigger: 'blur' }
         ]
       },
       formAdd2: { // 科添加--已知目
         lb1: '',
-        lb2: ''
+        lb2: '',
+        lb1Lt: '',
+        lb2Lt: ''
       },
       rules2: {
         lb2: [
           { required: true, message: '请填写科', trigger: 'blur' }
+        ],
+        lb2Lt: [
+          { required: true, message: '请填写科拉丁名称', trigger: 'blur' }
         ]
       },
       formAdd3: { // 属添加--已知目-科
         lb1: '',
         lb2: '',
-        lb3: ''
+        lb3: '',
+        lb1Lt: '',
+        lb2Lt: '',
+        lb3Lt: ''
       },
       rules3: {
         lb3: [
           { required: true, message: '请填写属', trigger: 'blur' }
+        ],
+        lb3Lt: [
+          { required: true, message: '请填写属拉丁名称', trigger: 'blur' }
         ]
       },
       tableData: [],
@@ -230,14 +278,14 @@ export default {
         params.lb2 = tree.data.lb2
         const arr2 = await getSpecLbPage(clean(params)).then((res) => {
           return res.data.lblist.map((item, index) => {
-            return { id: item.id, index: index, lb: item.lb3, level: 3, data: item, hasChildren: false }
+            return { id: item.id, index: index, lb: item.lb3, lbLt: item.lb3Lt, level: 3, data: item, hasChildren: false }
           })
         }).catch(err => err)
         return resolve(arr2)
       } else { // 科
         const arr = await getSpecLbPage(clean(params)).then((res) => {
           return res.data.lblist.map((item, index) => {
-            return { id: item.id, index: index, lb: item.lb2, level: 2, data: item, hasChildren: true }
+            return { id: item.id, index: index, lb: item.lb2, lbLt: item.lb2Lt, level: 2, data: item, hasChildren: true }
           })
         }).catch(err => err)
         return resolve(arr)
@@ -251,7 +299,7 @@ export default {
         const { data } = res
         this.totalCount = data.totalCount
         this.tableData = res.data.lblist.map((item, index) => {
-          return { id: item.id, index: index, lb: item.lb1, level: 1, data: item, hasChildren: true }
+          return { id: item.id, index: index, lb: item.lb1, lbLt: item.lb1Lt, level: 1, data: item, hasChildren: true }
         })
       }).catch(err => err)
     },

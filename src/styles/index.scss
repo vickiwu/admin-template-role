@@ -131,3 +131,17 @@ div:focus {
 .el-card__body {
   padding: 12px;
 }
+// 修改图片预览的样式
+.el-image-viewer__mask {
+  opacity: 0.9;
+}
+.el-image-viewer__close {
+  color: #fff;
+}
+.el-image-viewer__close {
+  top: 15%;
+  right: 20%;
+}
+.el-image-viewer__img {
+  max-width: 50% !important;
+}
