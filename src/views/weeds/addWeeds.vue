@@ -414,6 +414,7 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
+      params.specy = JSON.parse(params.specy)
       params.lat = params.lat * Math.pow(10, 7)
       params.lng = params.lng * Math.pow(10, 7)
       await edit({ json: JSON.stringify(params) }).then((data) => {

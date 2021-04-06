@@ -322,8 +322,10 @@ export default {
       this.$router.push({
         name: 'EditrmationAdd',
         params: {
-          index, rowData
+          index, rowData,
+          isEdit: true
         }
+
       })
     },
     handleShow(index, rowData) { // 编辑页面

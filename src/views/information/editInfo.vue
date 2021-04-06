@@ -211,6 +211,7 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formZilao))
+      params.specy = JSON.parse(params.specy)
       // if (params.filelist.length !== 0) {
       //   params.filelist = JSON.stringify(params.filelist)
       // }
