@@ -21,8 +21,8 @@
         <el-form-item v-if="!this.$route.params.isEdit" label="确认密码" prop="password1">
           <el-input v-model="form.password1" type="password" placeholder="请再次输入登陆密码" />
         </el-form-item>
-        <el-form-item label="地市" prop="cityName">
-          <el-select
+        <el-form-item label="省市" prop="city">
+          <!-- <el-select
             v-model="form.cityName"
             clearable
 
@@ -35,7 +35,42 @@
               :label="item.city"
               :value="item.city"
             />
-          </el-select>
+          </el-select> -->
+          <el-row type="flex" justify="space-between">
+            <!--  v-model="formWeed.discReg" -->
+            <el-col :span="11">
+              <el-select
+                v-model="form.province"
+                placeholder="请选择省"
+                clearable
+                @change="selectOne"
+              >
+                <el-option
+                  v-for="item in provinceList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="11">
+              <el-select
+                v-model="form.cityName"
+                clearable
+                placeholder="请选择市"
+                @change="selectSecond"
+              >
+                <el-option
+                  v-for="item in tempList"
+                  :key="item"
+                  clearable
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+
+          </el-row>
         </el-form-item>
         <el-form-item label="单位" prop="bumen">
           <el-select
@@ -99,6 +134,11 @@ import { mapGetters } from 'vuex'
 import { clean } from '@/utils/index'
 import { createUser, editUser } from '@/api/admin'
 const bumenJson = require('@/assets/json/bumen.json')
+const provinceJson = require('@/assets/json/province2city.json')
+const provinceList = []
+for (const item in provinceJson) {
+  provinceList.push({ value: item, label: item })
+}
 
 export default {
   components: {
@@ -134,18 +174,27 @@ export default {
         callback()
       }
     }
+    const validateCity = (rule, value, callback) => {
+      if (this.form.cityName === '' || this.form.province === '') {
+        callback(new Error('请选择省市'))
+      }
+      callback()
+    }
     return {
       bumenJson: bumenJson.bumenlist,
       bumenList: [],
       ValidCode: '33',
       width: '150px',
       height: '45px',
+      tempList: provinceJson['广西省'],
+      provinceList: provinceList,
       form: {
         username: '',
         realname: '',
         password: '',
         password1: '',
         cityName: '',
+        province: '广西省',
         bumen: '',
         jobNo: '',
         phone: '',
@@ -166,12 +215,18 @@ export default {
         password1: [
           { required: true, validator: validatePass2, trigger: 'blur' }
         ],
-        cityName: [
-          { required: true, message: '请输入地市', trigger: 'blur' }
+        // cityName: [
+        //   { required: true, message: '请输入城市', trigger: 'blur' }
+        // ],
+        // province: [
+        //   { required: true, message: '请输入省份', trigger: 'blur' }
+        // ],
+        city: [
+          { required: true, validator: validateCity, trigger: 'change' }
         ],
-        bumen: [
-          { required: true, message: '请输入单位', trigger: 'blur' }
-        ],
+        // bumen: [
+        //   { required: true, message: '请输入单位', trigger: 'blur' }
+        // ],
         jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
         ],
@@ -193,6 +248,9 @@ export default {
         ],
         cityName: [
           { required: true, message: '请输入地市', trigger: 'blur' }
+        ],
+        province: [
+          { required: true, message: '请输入省份', trigger: 'blur' }
         ],
         bumen: [
           { required: true, message: '请输入单位', trigger: 'blur' }
@@ -232,9 +290,18 @@ export default {
     }
   },
   methods: {
+    selectOne(params) { // 省
+      this.form.cityName = ''
+      this.tempList = provinceJson[params]
+    },
+    selectSecond(params) {
+      this.getBumenList(params)
+    },
     getBumenList(value) {
       const filter = this.bumenJson.find(item => item.city === value)
-      this.bumenList = filter.bumenlist2
+      if (filter) {
+        this.bumenList = filter.bumenlist2
+      }
     },
     refresh() {
       this.queryValidate()
@@ -307,6 +374,7 @@ export default {
                   password: '',
                   password1: '',
                   cityName: '',
+                  province: '广西省',
                   bumen: '',
                   jobNo: '',
                   phone: '',
