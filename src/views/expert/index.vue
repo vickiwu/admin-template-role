@@ -135,8 +135,9 @@
         >
           <template slot-scope="scope">
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
+              <span style="margin-right:5px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
+              <span style="margin-right:5px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
+              <span style="">{{ scope.row.specy && scope.row.specy.lb3 }}</span>
             </div>
           </template>
         </el-table-column>

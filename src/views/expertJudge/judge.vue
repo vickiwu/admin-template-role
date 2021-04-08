@@ -74,19 +74,27 @@
         </el-form-item>
         <el-form-item label="种类" prop="specy">
 
-          <el-select-tree
-            v-model="selectId"
-            style="width:100%"
-            placeholder="请选择杂草所属种类"
-            clearable
-            :props="treeProps"
-            width="120px"
-            :load="loadNode"
-            lazy
-            :check-strictly="true"
-            @change="changeSpecy"
-          />
+          <el-row type="flex" justify="space-between">
+            <el-col :span="20">
+              <el-select-tree
+                v-model="selectId"
+                style="width:100%"
+                placeholder="请选择杂草所属种类"
+                clearable
+                :props="treeProps"
+                :load="loadNode"
+                lazy
+                :check-strictly="true"
+                @change="changeSpecy"
+              />
+
+            </el-col>
+            <el-col :span="3" style="text-align:right">
+              <el-button type="primary" @click="addSpecy">添加种类</el-button>
+            </el-col>
+          </el-row>
         </el-form-item>
+
         <el-form-item label="危害程度" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
             <el-option label="未发现有害生物" :value="0" />
@@ -225,6 +233,14 @@ export default {
     }
   },
   methods: {
+    addSpecy() {
+      this.$router.push({
+        name: 'Category',
+        params: {
+          isAdd: true
+        }
+      })
+    },
     goBack() {
       this.$router.go('-1')
     },
