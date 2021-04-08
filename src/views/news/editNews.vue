@@ -62,7 +62,7 @@ const toolbarOptions = [
   [{ font: [] }], // 字体种类-----[{ font: [] }]
   [{ align: [] }], // 对齐方式-----[{ align: [] }]
   ['clean'], // 清除文本格式-----['clean']
-  ['image'] // 链接、图片、视频-----['link', 'image', 'video']
+  ['image', 'link'] // 链接、图片、视频-----['link', 'image', 'video']
 ]
 
 export default {

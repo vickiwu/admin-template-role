@@ -33,6 +33,13 @@
             <el-radio :label="-1">不可见</el-radio>
           </el-radio-group>
         </el-form-item> -->
+
+        <el-form-item label="是否置顶" prop="top">
+          <el-radio-group v-model="formNews.top">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item class="btn-center">
           <el-button>取消</el-button>
           <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -61,7 +68,7 @@ const toolbarOptions = [
   [{ font: [] }], // 字体种类-----[{ font: [] }]
   [{ align: [] }], // 对齐方式-----[{ align: [] }]
   ['clean'], // 清除文本格式-----['clean']
-  ['image'] // 链接、图片、视频-----['link', 'image', 'video']
+  ['image', 'link'] // 链接、图片、视频-----['link', 'image', 'video']
 ]
 
 export default {
@@ -80,7 +87,7 @@ export default {
       isEdit: false,
       formNews: {
         title: '',
-        state: '',
+        top: 0,
         content: ''
       },
       rules: {
@@ -89,6 +96,9 @@ export default {
         ],
         content: [
           { required: true, message: '请输入内容', trigger: 'blur' }
+        ],
+        top: [
+          { required: true, message: '请选择是否置顶', trigger: 'blur' }
         ]
       }
     }
@@ -121,20 +131,27 @@ export default {
         }
       }).catch(err => err)
     },
-    async create() {
-      await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
-        if (data.state === 1) {
-          this.$alert('新增成功!', '提示', {
-            confirmButtonText: '确定',
-            type: 'success',
-            callback: () => {
-              this.formNews.title = ''
-              this.formNews.content = ''
-              this.formNews.state = ''
+    create() {
+      this.$refs.formNews.validate(async(valid) => {
+        if (!valid) {
+          return false
+        } else {
+          alert('验证后台置顶top字段是否加上')
+          await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
+            if (data.state === 1) {
+              this.$alert('新增成功!', '提示', {
+                confirmButtonText: '确定',
+                type: 'success',
+                callback: () => {
+                  this.formNews.title = ''
+                  this.formNews.content = ''
+                  this.formNews.top = ''
+                }
+              })
             }
-          })
+          }).catch(err => err)
         }
-      }).catch(err => err)
+      })
     },
     onSubmit() {
       if (this.isEdit) {
