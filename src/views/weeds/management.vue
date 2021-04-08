@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column
           prop="discReg"
-          label="区域"
+          label="发现区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -256,12 +256,12 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span
+            <!-- <span
               style="color: #409EFF;cursor:pointer; margin-right:10px"
               @click="handleDetail(scope.$index, scope.row)"
             >
               查看
-            </span>
+            </span> -->
             <span
               style="color: #409EFF;cursor:pointer; margin-right:10px;"
               @click="handleEdit(scope.$index, scope.row)"
