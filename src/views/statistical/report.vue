@@ -193,7 +193,7 @@
             </el-table-column>
             <el-table-column
               prop="create"
-              label="发现时间"
+              label="上传时间"
               :show-overflow-tooltip="true"
             >
               <template slot-scope="scope">
