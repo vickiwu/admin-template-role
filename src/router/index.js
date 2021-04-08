@@ -211,13 +211,13 @@ export const constantRoutes = [
         name: 'File',
         component: () => import('@/views/resource/file'),
         meta: { title: '文件管理', icon: 'table' }
-      },
-      {
-        path: 'space',
-        name: 'Space',
-        component: () => import('@/views/resource/space'),
-        meta: { title: '空间管理', icon: 'table' }
       }
+      // {
+      //   path: 'space',
+      //   name: 'Space',
+      //   component: () => import('@/views/resource/space'),
+      //   meta: { title: '空间管理', icon: 'table' }
+      // }
 
     ]
   },
