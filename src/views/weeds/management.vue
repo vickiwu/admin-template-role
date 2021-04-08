@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="7">
+        <el-col :span="6">
           <el-col :span="11">
             <el-date-picker
               v-model="formSearch.startTime"
@@ -43,7 +43,7 @@
             />
           </el-select>
         </el-col> -->
-        <el-col :span="3" style="margin-left:2px">
+        <el-col :span="2" style="margin-left:2px">
           <el-select
             v-model="value1"
             placeholder="请选择省"
@@ -59,7 +59,7 @@
             />
           </el-select>
         </el-col>
-        <el-col :span="3" style="margin-left:2px">
+        <el-col :span="2" style="margin-left:2px">
           <el-select
             v-model="value2"
             clearable
@@ -73,6 +73,14 @@
               :label="item"
               :value="item"
             />
+          </el-select>
+        </el-col>
+        <el-col :span="2" style="margin-left:2px">
+          <el-select v-model="formSearch.state" clearable placeholder="状态">
+            <el-option label="未研判" :value="0" />
+            <el-option label="研判中" :value="1" />
+            <el-option label="已入库" :value="16" />
+            <el-option label="已驳回" :value="-1" />
           </el-select>
         </el-col>
         <el-col :span="3" style="margin-left:2px">
@@ -141,7 +149,7 @@
         </el-table-column>
         <el-table-column
           prop="discReg"
-          label="区域"
+          label="发现区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -250,12 +258,12 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span
+            <!-- <span
               style="color: #409EFF;cursor:pointer; margin-right:10px"
               @click="handleDetail(scope.$index, scope.row)"
             >
               查看
-            </span>
+            </span> -->
             <span
               style="color: #409EFF;cursor:pointer; margin-right:10px;"
               @click="handleEdit(scope.$index, scope.row)"
@@ -344,6 +352,7 @@ export default {
         reg: '',
         specy: null,
         jydw: '',
+        state: '',
         startTime: '',
         endTime: '',
         name: ''

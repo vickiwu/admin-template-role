@@ -117,7 +117,7 @@
         </el-table-column>
         <el-table-column
           prop="discReg"
-          label="区域"
+          label="发现区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -220,9 +220,15 @@
         <el-table-column
           prop=""
           label="操作"
-          width="100"
+          width="120"
         >
           <template slot-scope="scope">
+            <span
+              style="color: #409EFF;cursor:pointer; margin-right:10px"
+              @click="handleDetail(scope.$index, scope.row)"
+            >
+              查看
+            </span>
             <span
               style="color: #409EFF;cursor:pointer;margin-right:10px"
               @click="handleDownLoad(scope.$index, scope.row)"
@@ -249,6 +255,14 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="杂草详情"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose"
+    >
+      <showWeeds :data="zacaoData" />
+    </el-dialog>
   </div>
 </template>
 
@@ -263,10 +277,12 @@ for (const item in provinceJson) {
 }
 import ElSelectTree from 'el-select-tree'
 import { pageCount } from '@/globalConfig'
+import showWeeds from './showWeeds'
 
 export default {
   components: {
-    ElSelectTree
+    ElSelectTree,
+    showWeeds
   },
   data() {
     return {
@@ -297,7 +313,9 @@ export default {
         index: 1
       },
       totalCount: 0,
-      multipleSelection: {}
+      multipleSelection: {},
+      dialogVisible: false,
+      zacaoData: null
     }
   },
   computed: {
@@ -312,6 +330,10 @@ export default {
     this.getPage()
   },
   methods: {
+    handleDetail(index, rowData) {
+      this.zacaoData = rowData
+      this.dialogVisible = true
+    },
     selectOne(params) {
       this.formSearch.reg = ''
       this.tempList = provinceJson[params]
@@ -373,7 +395,7 @@ export default {
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
-      const params = { ...this.queryPageination, ...searchParams }
+      const params = { ...this.queryPageination, ...searchParams, state: 16 }
 
       await getPage(clean(params)).then((res) => {
         const { data } = res

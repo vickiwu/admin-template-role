@@ -195,7 +195,7 @@
             </el-table-column>
             <el-table-column
               prop="create"
-              label="发现时间"
+              label="上传时间"
               :show-overflow-tooltip="true"
             >
               <template slot-scope="scope">
@@ -373,7 +373,7 @@ export default {
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
-      const params = { ...this.queryPageination, ...searchParams }
+      const params = { ...this.queryPageination, ...searchParams, state: 16 }
 
       await getPage(clean(params)).then((res) => {
         const { data } = res

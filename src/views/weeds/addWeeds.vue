@@ -241,7 +241,7 @@ export default {
         nameCn: '',
         nameLt: '',
         source: '',
-        discReg: [],
+        discReg: ['广西省'],
         specy: '',
         jydw: '',
         desc: '',

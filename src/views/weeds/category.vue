@@ -19,6 +19,7 @@
         class="report-table"
         :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         :load="load"
+        :row-class-name="tableRowClassName"
       >
         <el-table-column
           prop=""
@@ -39,15 +40,15 @@
           prop="lb"
           label="类别"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="lbLt"
           label="拉丁名称"
-        />
+        /> -->
 
         <el-table-column
           prop=""
           label="编辑"
-          width="200"
+          width="400"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
@@ -273,6 +274,14 @@ export default {
     this.getSpecLbPage()
   },
   methods: {
+    tableRowClassName({ row, rowIndex }) {
+      if (row.level === 2) {
+        return 'warning-row'
+      } else if (row.level === 3) {
+        return 'success-row'
+      }
+      return ''
+    },
     goBack() {
       this.$router.go('-1')
     },
@@ -424,7 +433,15 @@ export default {
   }
 }
 </script>
+<style>
+  .report-table .warning-row {
+    background: oldlace;
+  }
 
+  .report-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
 <style lang="scss" scoped>
 .go-back-btn{
   margin-left: 20px ;
