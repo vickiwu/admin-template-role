@@ -163,7 +163,7 @@
           <template slot-scope="scope">
 
             <div>
-              <span> {{ scope.row.capType===1 ? 'APP采集' : '手动录入' }}</span>
+              <span> {{ scope.row.capType===1 ? 'APP采集' : '人工录入' }}</span>
             </div>
 
           </template>
