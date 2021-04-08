@@ -39,15 +39,15 @@
           prop="lb"
           label="类别"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="lbLt"
           label="拉丁名称"
-        />
+        /> -->
 
         <el-table-column
           prop=""
           label="编辑"
-          width="200"
+          width="400"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
