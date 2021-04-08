@@ -16,6 +16,9 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model="form.username" placeholder="请输入账户名称" />
         </el-form-item>
+        <el-form-item label="单位名称" prop="company">
+          <el-input v-model="form.company" placeholder="请输入单位名称" />
+        </el-form-item>
         <el-form-item label="专家工号" prop="jobNo">
           <el-input v-model="form.jobNo" placeholder="请输入专家工号" />
         </el-form-item>
@@ -87,6 +90,7 @@ export default {
         cat: '',
         desc: '',
         jobNo: '',
+        company: '',
         phone: '',
         schedule: '',
         from: '',
@@ -99,6 +103,9 @@ export default {
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
+        ],
+        company: [
+          { required: true, message: '请输入单位名称', trigger: 'blur' }
         ],
         jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
