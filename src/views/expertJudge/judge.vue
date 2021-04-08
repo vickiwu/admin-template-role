@@ -20,7 +20,7 @@
         <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
           <el-input v-model="formWeed.source" />
         </el-form-item>
-        <el-form-item label="区域" prop="discReg">
+        <el-form-item label="发现区域" prop="discReg">
           <!-- <el-select
             v-model="formWeed.discReg"
             clearable
@@ -95,12 +95,12 @@
           </el-row>
         </el-form-item>
 
-        <el-form-item label="危害程度" prop="jydw">
-          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
-            <el-option label="未发现有害生物" :value="0" />
+        <el-form-item label="检疫地位" prop="jydw">
+          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草检疫地位">
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-form-item>
         <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
@@ -125,14 +125,12 @@
         <el-row style="text-align:center">
           <h2>专家研判</h2>
         </el-row>
-        <el-form-item label="检疫地位" prop="jydw">
+        <!-- <el-form-item label="检疫地位" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择检疫地位">
-            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="研判意见" placeholder="请输入专家研判意见">
           <el-input v-model="formWeed.comment" type="textarea" :rows="4" />
         </el-form-item>
@@ -210,7 +208,7 @@ export default {
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
         ],
         jydw: [
-          { required: true, message: '请选择杂草危害程度', trigger: 'change' }
+          { required: true, message: '请选择杂草检疫地位', trigger: 'change' }
         ]
       }
     }

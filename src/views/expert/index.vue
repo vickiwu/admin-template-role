@@ -122,7 +122,7 @@
         </el-table-column>
         <el-table-column
           prop="discReg"
-          label="区域"
+          label="发现区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
