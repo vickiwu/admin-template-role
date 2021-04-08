@@ -59,9 +59,9 @@
         <!-- <el-form-item label="昵称" prop="nickname">
           <el-input v-model="userInfoForm.nickname"    disabled placeholder="" />
         </el-form-item> -->
-        <el-form-item label="地市" prop="cityName">
+        <el-form-item label="省市" prop="cityName">
           <!-- <el-input v-model="userInfoForm.cityName" disabled placeholder="" /> -->
-          {{ userInfoForm.cityName }}
+          {{ userInfoForm.province }}  {{ userInfoForm.cityName }}
         </el-form-item>
         <el-form-item label="单位" prop="group">
           <!-- <el-input v-model="userInfoForm.group" disabled placeholder="" /> -->

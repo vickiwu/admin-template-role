@@ -49,9 +49,13 @@
         />
         <el-table-column
           prop="cityName"
-          label="地市"
+          label="省市"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row.province }} {{ scope.row.cityName }}</span>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="bumen"
           label="部门"
