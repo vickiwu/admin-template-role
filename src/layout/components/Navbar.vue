@@ -43,42 +43,51 @@
       <el-form
         ref="userInfoForm"
         :model="userInfoForm"
+        :rules="userInfoFormRules"
         label-width="80px"
         label-position="left"
         class="news-form"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="userInfoForm.username" disabled placeholder="" />
+          <!-- <el-input v-model="userInfoForm.username" disabled placeholder="" /> -->
+          {{ userInfoForm.username }}
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
-          <el-input v-model="userInfoForm.realname" disabled placeholder="" />
+          <!-- <el-input v-model="userInfoForm.realname" disabled placeholder="" /> -->
+          {{ userInfoForm.realname }}
         </el-form-item>
         <!-- <el-form-item label="昵称" prop="nickname">
           <el-input v-model="userInfoForm.nickname"    disabled placeholder="" />
         </el-form-item> -->
         <el-form-item label="地市" prop="cityName">
-          <el-input v-model="userInfoForm.cityName" disabled placeholder="" />
+          <!-- <el-input v-model="userInfoForm.cityName" disabled placeholder="" /> -->
+          {{ userInfoForm.cityName }}
         </el-form-item>
         <el-form-item label="单位" prop="group">
-          <el-input v-model="userInfoForm.group" disabled placeholder="" />
+          <!-- <el-input v-model="userInfoForm.group" disabled placeholder="" /> -->
+          {{ userInfoForm.group }}
         </el-form-item>
         <el-form-item label="工号" prop="jobNo">
-          <el-input v-model="userInfoForm.jobNo" disabled placeholder="" />
+          <!-- <el-input v-model="userInfoForm.jobNo" disabled placeholder="" /> -->
+          {{ userInfoForm.jobNo }}
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
-          <el-input v-model.number="userInfoForm.phone" disabled placeholder="请输入手机号码" />
+          <el-input v-model.number="userInfoForm.phone" placeholder="请输入手机号码" />
         </el-form-item>
         <el-form-item label="类型" prop="utype">
-          <el-select v-model="userInfoForm.utype" disabled clearable placeholder="请选择类型">
+          {{ userInfoForm.utype===1 ? '系统管理员' : userInfoForm.utype===2 ? "专家调度用户" : userInfoForm.utype===3 ? "研判专家" :userInfoForm.utype===4 ?"图像采集操作员" :'' }}
+          <!-- <el-select v-model="userInfoForm.utype" disabled clearable placeholder="请选择类型">
             <el-option label="系统管理员" :value="1" />
             <el-option label="专家调度用户" :value="2" />
             <el-option label="研判专家" :value="3" />
             <el-option label="图像采集操作员" :value="4" />
-          </el-select>
+          </el-select> -->
 
         </el-form-item>
         <div style="text-align:center;margin-top: 25px;">
           <el-button type="primary" @click="dialogUserInfo = false">关 闭</el-button>
+          <el-button type="primary" @click="editPhone">修 改</el-button>
+
         </div>
       </el-form>
     </el-dialog>
@@ -150,7 +159,8 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { changePassword, uploadAvatar, setAvatar } from '@/api/admin'
+import { changePassword, uploadAvatar, setAvatar, userEdit } from '@/api/admin'
+import { clean } from '@/utils/index'
 
 export default {
   components: {
@@ -172,6 +182,18 @@ export default {
         callback()
       }
     }
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'))
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的手机号'))
+        }
+      }
+    }
     return {
       dialogUserInfo: false,
       dialogChangePassword: false,
@@ -188,6 +210,12 @@ export default {
         phone: '', // 手机号
         utype: '' // 类型
       },
+      userInfoFormRules: {
+        phone: [
+          { validator: checkPhone, trigger: 'blur' }
+        ]
+      },
+
       formChangePassword: {
         oldPass: '',
         newPass: '',
@@ -252,8 +280,20 @@ export default {
       this.$refs.formChangePassword.validate(async valid => {
         if (valid) {
           // 验证通过
-          await changePassword({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass })
+          await changePassword({ oldPass: this.formChangePassword.oldPass, newPass: this.formChangePassword.newPass }).catch(err => err)
           this.dialogChangePassword = false
+        } else {
+          // console.log('重置密码验证未通过!!')
+          return false
+        }
+      })
+    },
+    async editPhone() {
+      this.$refs.userInfoForm.validate(async valid => {
+        if (valid) {
+          // 验证通过
+          await userEdit({ json: JSON.stringify(clean(this.userInfoForm)) }).catch(err => err)
+          this.dialogUserInfo = false
         } else {
           // console.log('重置密码验证未通过!!')
           return false
