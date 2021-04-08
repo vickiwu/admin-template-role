@@ -122,7 +122,7 @@
       width="60%"
       :before-close="handleClose"
     >
-      <showWeeds :data="zacaoData" />
+      <showWeeds :data="zacaoData" :show-yj="false" />
     </el-dialog>
   </div>
 </template>
