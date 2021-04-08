@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-button v-if="isAdd" type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="23" class="right-btn">
@@ -203,6 +204,7 @@ export default {
 
   data() {
     return {
+      isAdd: false,
       dialogVisible: false,
       dialogVisible2: false,
       dialogVisible3: false,
@@ -267,9 +269,13 @@ export default {
     }
   },
   mounted() {
+    this.$route.params.isAdd ? (this.isAdd = true) : this.isAdd = false
     this.getSpecLbPage()
   },
   methods: {
+    goBack() {
+      this.$router.go('-1')
+    },
     async load(tree, treeNode, resolve) {
       const params = { count: 1000, start: 0 }
       // return
@@ -420,7 +426,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.go-back-btn{
+  margin-left: 20px ;
+  margin-bottom: 15px;
+}
 .news-card {
   min-height: calc(100% - 35px);
   ::v-deep.el-card__body {

@@ -71,17 +71,25 @@
           </el-row>
         </el-form-item>
         <el-form-item label="种类" prop="specy">
-          <el-select-tree
-            v-model="selectId"
-            style="width:100%"
-            placeholder="请选择杂草所属种类"
-            clearable
-            :props="treeProps"
-            :load="loadNode"
-            lazy
-            :check-strictly="true"
-            @change="changeSpecy"
-          />
+          <el-row type="flex" justify="space-between">
+            <el-col :span="20">
+              <el-select-tree
+                v-model="selectId"
+                style="width:100%"
+                placeholder="请选择杂草所属种类"
+                clearable
+                :props="treeProps"
+                :load="loadNode"
+                lazy
+                :check-strictly="true"
+                @change="changeSpecy"
+              />
+
+            </el-col>
+            <el-col :span="3" style="text-align:right">
+              <el-button type="primary" @click="addSpecy">添加种类</el-button>
+            </el-col>
+          </el-row>
 
         </el-form-item>
         <el-form-item label="检疫地位" prop="jydw">
@@ -101,11 +109,11 @@
           </el-col>
           <el-col :span="10">
             <!-- 23.2222 -->
-            <el-form-item label="纬度" prop="lat" placeholder="请输入杂草纬度">
+            <el-form-item label="纬度" label-width="50px" prop="lat" placeholder="请输入杂草纬度">
               <el-input v-model="formWeed.lat" />
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" style="text-align:right">
             <!-- 23.2222 -->
             <el-button type="primary" @click="chooseByMap">地图选择</el-button>
           </el-col>
@@ -306,6 +314,14 @@ export default {
     }
   },
   methods: {
+    addSpecy() {
+      this.$router.push({
+        name: 'Category',
+        params: {
+          isAdd: true
+        }
+      })
+    },
     selectOne(params) {
       this.formWeed.discReg = []
       this.formWeed.discReg.push(params)
