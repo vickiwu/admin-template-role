@@ -39,7 +39,7 @@
             <!--  v-model="formWeed.discReg" -->
             <el-col :span="11">
               <el-select
-                v-model="value1"
+                v-model="formWeed.discReg[0]"
                 placeholder="请选择省"
                 clearable
                 @change="selectOne"
@@ -55,7 +55,7 @@
             </el-col>
             <el-col :span="11">
               <el-select
-                v-model="value2"
+                v-model="formWeed.discReg[1]"
                 clearable
                 placeholder="请选择市"
                 @change="selectSecond"
@@ -161,7 +161,7 @@ export default {
   },
   data() {
     const validateReg = (rule, value, callback) => {
-      if (this.value1 === '' || this.value2 === '') {
+      if (this.formWeed.discReg[0] === '' || this.formWeed.discReg[1] === '') {
         callback(new Error('请选择发现区域'))
       }
       callback()
@@ -169,8 +169,8 @@ export default {
     return {
       // cityJson: cityJson.cityies,
       provinceList: provinceList,
-      value1: '广西省',
-      value2: '',
+      // value1: '广西省',
+      // value2: '',
       tempList: provinceJson['广西省'],
       isEdit: true,
       dialogImageUrl: '', // 预览图片地址
@@ -245,7 +245,8 @@ export default {
     selectOne(params) {
       this.formWeed.discReg = []
       this.formWeed.discReg.push(params)
-      this.value2 = ''
+      // this.value2 = ''
+      this.formWeed.discReg[1] = ''
       this.tempList = provinceJson[params]
     },
     selectSecond(params) {
