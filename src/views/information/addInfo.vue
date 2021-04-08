@@ -71,7 +71,6 @@
           </el-upload>
         </el-form-item>
         <el-form-item class="btn-center">
-          <el-button>取消</el-button>
           <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-form-item>
       </el-form>
@@ -197,9 +196,15 @@ export default {
             type: 'success',
             callback: () => {
               for (const key in this.formZilao) {
-                this.formZilao[key] = ''
+                if (key === 'filelist') {
+                  this.formZilao[key] = []
+                } else {
+                  this.formZilao[key] = ''
+                }
               }
               this.selectId = ''
+              this.imageUrl = ''
+              this.fileList = []
             }
           })
         }
