@@ -74,6 +74,26 @@
           label="创建账户"
           :show-overflow-tooltip="true"
         />
+        <el-table-column
+          label="操作"
+          width="100"
+          :show-overflow-tooltip="true"
+        >
+          <template slot-scope="scope">
+            <span
+              style="color: #409EFF;cursor:pointer;margin-right:15px;"
+              @click="showDetail(scope.$index, scope.row)"
+            >
+              查看
+            </span>
+            <span
+              style="color: #f78989;cursor:pointer;"
+              @click="delelteFile(scope.$index, scope.row)"
+            >
+              删除
+            </span>
+          </template>
+        </el-table-column>
 
       </el-table>
       <!-- 分页 新 -->
@@ -91,6 +111,40 @@
         </template>
       </el-pagination>
     </el-card>
+    <el-dialog
+      title="文件详情"
+      :visible.sync="dialoglog"
+      :modal-append-to-body="false"
+      width="50%"
+    >
+      <el-form
+        label-width="90px"
+        label-position="left"
+      >
+        <el-form-item label="文件路径：">
+          {{ currentFile.filePath }}
+        </el-form-item>
+        <el-form-item label="访问链接：">
+          {{ currentFile.httpUrl }}
+        </el-form-item>
+        <el-form-item label="平台位置：">
+          {{ currentFile.platform }}
+        </el-form-item>
+        <el-form-item label="大小(kb)：">
+          {{ currentFile.fsize }}
+        </el-form-item>
+        <el-form-item label="创建时间：">
+          {{ parseTime(currentFile.create) }}
+        </el-form-item>
+        <el-form-item label="创建账户：">
+          {{ currentFile.username }}
+        </el-form-item>
+
+        <div style="text-align:center;margin-top: 25px;">
+          <el-button type="primary" @click="dialoglog = false">关 闭</el-button>
+        </div>
+      </el-form>
+    </el-dialog>
 
   </div>
 </template>
@@ -103,6 +157,8 @@ export default {
 
   data() {
     return {
+      dialoglog: false,
+      currentFile: {},
       tableData: [],
       pagination: {
         count: pageCount,
@@ -124,6 +180,30 @@ export default {
     this.query()
   },
   methods: {
+    showDetail(index, row) {
+      // 查看log是模态框还是页面 todo
+      this.currentFile = row
+      this.dialoglog = true
+    },
+    delelteFile(index, row) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // logDelete({ id: row.id }).then(res => {
+        //   if (res.state === 1) {
+        //     this.$alert('删除成功！', '提示', {
+        //       confirmButtonText: '确定',
+        //       type: 'success',
+        //       callback: () => {
+        //         this.query()
+        //       }
+        //     })
+        //   }
+        // }).catch(err => err)
+      }).catch(err => err)
+    },
     parseTime(time) {
       return parseTime(time)
     },
