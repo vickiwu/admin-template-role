@@ -4,7 +4,27 @@
       <el-row type="flex" justify="space-around" class="news-row">
         <el-col :span="17" class="col-left">
           <div class="left-title">最新新闻</div>
-          <div v-for="(o, index) in xinwenlist" :key="o.id">
+          <!-- 置顶新闻 -->
+          <div v-for="(o, index) in toplist" :key="`toplist${index}`">
+            <el-row>
+              <div class="show-xinwen" @click="jumpNews(o)" v-html="o.title" />
+              <!-- <el-col :span="7">
+                <el-image
+                  src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
+                >
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline" />
+                  </div>
+                </el-image>
+              </el-col>
+              <el-col :span="15">
+                <div class="img-title">{{ o.content }}</div>
+              </el-col> -->
+            </el-row>
+            <el-divider />
+          </div>
+          <!-- 新闻 -->
+          <div v-for="(o, index) in xinwenlist" :key="`xinwenlist${index}`">
             <el-row>
               <div class="show-xinwen" @click="jumpNews(o)" v-html="o.title" />
               <!-- <el-col :span="7">
@@ -48,6 +68,7 @@ export default {
     return {
       topList: [],
       xinwenlist: [],
+      toplist: [],
       pagination: {
         count: pageCount,
         index: 1
@@ -69,6 +90,9 @@ export default {
       const params = { ...this.pagination }
       await getPage(clean(params)).then(res => {
         const { data } = res
+        this.toplist = data.toplist
+        console.log('%c 🍷  data.toplist: ', 'font-size:20px;background-color: #EA7E5C;color:#fff;', data.toplist)
+        alert('验证接口是否加了toplist')
         this.xinwenlist = data.xinwenlist
       }).catch(err => err)
     },
