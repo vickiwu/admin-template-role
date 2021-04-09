@@ -68,7 +68,7 @@
       <el-form-item label="状态 ：">
         {{ form.state ==0?'未研判' :form.state ==1?'待进一步确认':'研判完成,入库' }}
       </el-form-item>
-      <el-form-item label="研判意见 ：">
+      <el-form-item v-if="showYj" label="研判意见 ：">
         {{ form.comment }}
       </el-form-item>
 
@@ -114,6 +114,10 @@ export default {
       default: () => {}
     },
     showBtn: {
+      type: Boolean,
+      default: () => true
+    },
+    showYj: {
       type: Boolean,
       default: () => true
     }

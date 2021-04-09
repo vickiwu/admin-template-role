@@ -20,7 +20,7 @@
         <el-form-item label="来源" prop="source" placeholder="请输入杂草来源">
           <el-input v-model="formWeed.source" />
         </el-form-item>
-        <el-form-item label="区域" prop="discReg">
+        <el-form-item label="发现区域" prop="discReg">
           <!-- <el-select
             v-model="formWeed.discReg"
             clearable
@@ -39,7 +39,7 @@
             <!--  v-model="formWeed.discReg" -->
             <el-col :span="11">
               <el-select
-                v-model="value1"
+                v-model="formWeed.discReg[0]"
                 placeholder="请选择省"
                 clearable
                 @change="selectOne"
@@ -55,7 +55,7 @@
             </el-col>
             <el-col :span="11">
               <el-select
-                v-model="value2"
+                v-model="formWeed.discReg[1]"
                 clearable
                 placeholder="请选择市"
                 @change="selectSecond"
@@ -74,25 +74,33 @@
         </el-form-item>
         <el-form-item label="种类" prop="specy">
 
-          <el-select-tree
-            v-model="selectId"
-            style="width:100%"
-            placeholder="请选择杂草所属种类"
-            clearable
-            :props="treeProps"
-            width="120px"
-            :load="loadNode"
-            lazy
-            :check-strictly="true"
-            @change="changeSpecy"
-          />
+          <el-row type="flex" justify="space-between">
+            <el-col :span="20">
+              <el-select-tree
+                v-model="selectId"
+                style="width:100%"
+                placeholder="请选择杂草所属种类"
+                clearable
+                :props="treeProps"
+                :load="loadNode"
+                lazy
+                :check-strictly="true"
+                @change="changeSpecy"
+              />
+
+            </el-col>
+            <el-col :span="3" style="text-align:right">
+              <el-button type="primary" @click="addSpecy">添加种类</el-button>
+            </el-col>
+          </el-row>
         </el-form-item>
-        <el-form-item label="危害程度" prop="jydw">
-          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
-            <el-option label="未发现有害生物" :value="0" />
+
+        <el-form-item label="检疫地位" prop="jydw">
+          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草检疫地位">
+            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <el-option label="非鉴定性有害生物" :value="3" />
+            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
         </el-form-item>
         <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
@@ -117,14 +125,12 @@
         <el-row style="text-align:center">
           <h2>专家研判</h2>
         </el-row>
-        <el-form-item label="检疫地位" prop="jydw">
+        <!-- <el-form-item label="检疫地位" prop="jydw">
           <el-select v-model="formWeed.jydw" clearable placeholder="请选择检疫地位">
-            <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
-            <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="研判意见" placeholder="请输入专家研判意见">
           <el-input v-model="formWeed.comment" type="textarea" :rows="4" />
         </el-form-item>
@@ -155,7 +161,7 @@ export default {
   },
   data() {
     const validateReg = (rule, value, callback) => {
-      if (this.value1 === '' || this.value2 === '') {
+      if (this.formWeed.discReg[0] === '' || this.formWeed.discReg[1] === '') {
         callback(new Error('请选择发现区域'))
       }
       callback()
@@ -163,8 +169,8 @@ export default {
     return {
       // cityJson: cityJson.cityies,
       provinceList: provinceList,
-      value1: '广西省',
-      value2: '',
+      // value1: '广西省',
+      // value2: '',
       tempList: provinceJson['广西省'],
       isEdit: true,
       dialogImageUrl: '', // 预览图片地址
@@ -202,7 +208,7 @@ export default {
           { required: true, message: '请选择杂草所属种类', trigger: 'change' }
         ],
         jydw: [
-          { required: true, message: '请选择杂草危害程度', trigger: 'change' }
+          { required: true, message: '请选择杂草检疫地位', trigger: 'change' }
         ]
       }
     }
@@ -225,13 +231,22 @@ export default {
     }
   },
   methods: {
+    addSpecy() {
+      this.$router.push({
+        name: 'Category',
+        params: {
+          isAdd: true
+        }
+      })
+    },
     goBack() {
       this.$router.go('-1')
     },
     selectOne(params) {
       this.formWeed.discReg = []
       this.formWeed.discReg.push(params)
-      this.value2 = ''
+      // this.value2 = ''
+      this.formWeed.discReg[1] = ''
       this.tempList = provinceJson[params]
     },
     selectSecond(params) {

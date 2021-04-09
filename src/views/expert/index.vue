@@ -84,13 +84,15 @@
         </el-col>
       </el-row>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         stripe
         style="width: 100%"
         class="report-table"
+        @selection-change="handleSelectionChange"
       >
 
-        <el-table-column label="选择" align="center" width="50">
+        <!-- <el-table-column label="选择" align="center" width="50">
           <template slot-scope="scope">
             <el-radio
               v-model="radio"
@@ -100,7 +102,12 @@
               <span />
             </el-radio>
           </template>
-        </el-table-column>
+        </el-table-column> -->
+        <el-table-column
+          type="selection"
+          width="55"
+        />
+
         <el-table-column
           prop=""
           label="序号"
@@ -115,7 +122,7 @@
         </el-table-column>
         <el-table-column
           prop="discReg"
-          label="区域"
+          label="发现区域"
           :show-overflow-tooltip="true"
         />
         <el-table-column
@@ -135,8 +142,9 @@
         >
           <template slot-scope="scope">
             <div>
-              <span style="margin-right:10px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
-              <span style="margin-left:10px;margin-right:10px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
+              <span style="margin-right:5px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
+              <span style="margin-right:5px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
+              <span style="">{{ scope.row.specy && scope.row.specy.lb3 }}</span>
             </div>
           </template>
         </el-table-column>
@@ -340,7 +348,7 @@ export default {
       totalCount: 0,
       zhuanjialist: [],
       // selected: [],
-      multipleSelection: {},
+      multipleSelection: [],
       radio: ''
     }
   },
@@ -367,6 +375,9 @@ export default {
     this.queryZhuanjia()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
     selectOne(params) {
       this.formInline.reg = ''
       this.formInline.reg = params
@@ -376,9 +387,9 @@ export default {
     selectSecond(params) {
       this.formInline.reg = params
     },
-    getCurrentRow(row) {
-      this.multipleSelection = row
-    },
+    // getCurrentRow(row) {
+    //   this.multipleSelection = row
+    // },
     changeSpecy(val, data) {
       if (data) {
         const specy = data.data
@@ -454,7 +465,7 @@ export default {
       this.form.img = zhuanjia.avatar && zhuanjia.avatar.httpUrl
     },
     onSubmit() {
-      if (JSON.stringify(this.multipleSelection) === '{}') {
+      if (JSON.stringify(this.multipleSelection) === '[]') {
         this.$alert('请选择至少一个杂草', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
@@ -468,13 +479,13 @@ export default {
           }).catch(err => err)
           return
         }
-        create({ zhuanjiaId: this.form.id, zacaoId: this.multipleSelection.id }).then((data) => {
+        create({ zhuanjiaId: this.form.id, zacaoId: this.multipleSelection[0].id }).then((data) => {
           if (data.state === 1) {
             this.$alert('派发成功', '提示', {
               confirmButtonText: '确定',
               type: 'success',
               callback: () => {
-                this.multipleSelection = {}
+                this.multipleSelection = []
                 this.radio = ''
                 // this.form = {
                 //   id: '',

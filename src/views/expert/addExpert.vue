@@ -12,18 +12,22 @@
         <el-form-item label="专家姓名" prop="realname">
           <el-input v-model="form.realname" placeholder="请输入专家姓名" />
         </el-form-item>
-        <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入账户名称" />
+        <el-form-item label="用户名" prop="profUser">
+          <el-input v-model="form.profUser" placeholder="请输入账户名称" />
         </el-form-item>
-        <el-form-item label="登录密码" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="请输入登录密码" />
+        <el-form-item label="登录密码" prop="profPass">
+          <el-input v-model="form.profPass" type="password" placeholder="请输入登录密码" />
         </el-form-item>
         <el-form-item label="确认密码" prop="password1">
           <el-input v-model="form.password1" type="password" placeholder="请输入确认密码" />
         </el-form-item>
+        <el-form-item label="单位名称" prop="company">
+          <el-input v-model="form.company" placeholder="请输入单位名称" />
+        </el-form-item>
         <el-form-item label="专家工号" prop="jobNo">
           <el-input v-model="form.jobNo" placeholder="请输入专家工号" />
         </el-form-item>
+
         <el-form-item label="手机号码" prop="phone">
           <el-input v-model="form.phone" placeholder="请输入手机号码" />
         </el-form-item>
@@ -68,7 +72,7 @@
 import { uploadImg } from '@/api/zacao'
 import { create, edit } from '@/api/zhuanjia'
 import { clean } from '@/utils/index'
-import sha256 from 'sha256'
+// import sha256 from 'sha256'
 
 export default {
 
@@ -88,7 +92,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.form.password) {
+      } else if (value !== this.form.profPass) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -98,14 +102,15 @@ export default {
       isEdit: false,
       form: {
         realname: '',
-        username: '',
-        password: '',
+        profUser: '',
+        profPass: '',
         password1: '',
         cat: '',
         desc: '',
         jobNo: '',
+        company: '',
         phone: '',
-        schedule: '',
+        schedule: 1,
         from: '',
         avatar: null
       },
@@ -114,17 +119,21 @@ export default {
         realname: [
           { required: true, message: '请输入专家姓名', trigger: 'blur' }
         ],
-        username: [
+        profUser: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '请输入登录密码', trigger: 'blur' }
+        profPass: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { min: 1, max: 32, message: '长度在 32 个字符以内', trigger: 'blur' }
         ],
         password1: [
           { required: true, validator: validatePass2, trigger: 'blur' }
         ],
         jobNo: [
           { required: true, message: '请输入工号', trigger: 'blur' }
+        ],
+        company: [
+          { required: true, message: '请输入单位名称', trigger: 'blur' }
         ],
         phone: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
@@ -162,8 +171,8 @@ export default {
           return false
         } else {
           const params = { ...this.form }
-          delete this.params.password1
-          params.password = sha256(this.form.password)
+          delete params.password1
+          // params.profPass = sha256(this.form.profPass)
           create({ json: JSON.stringify(clean(params)) }).then((data) => {
             if (data.state === 1) {
               this.$alert('新增成功', '提示', {
@@ -183,17 +192,20 @@ export default {
               })
             } else {
               this.form = {
-                ...this.form,
                 realname: '',
+                profUser: '',
+                profPass: '',
+                password1: '',
                 cat: '',
                 desc: '',
                 jobNo: '',
+                company: '',
                 phone: '',
-                schedule: '',
-                from: ''
-                // avatar: null
+                schedule: 1,
+                from: '',
+                avatar: null
               }
-              // this.imageUrl = ''
+              this.imageUrl = ''
             }
           }).catch(err => err)
         }

@@ -179,13 +179,15 @@
         <el-table-column
           prop="specy"
           label="涉及杂草种类"
+          width="130"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
 
             <div>
-              <span style="margin-right:2px"> {{ scope.row.specy ? scope.row.specy.lb1 : '' }}</span>
-              <span style="">{{ scope.row.specy ? scope.row.specy.lb2 : "" }}</span>
+              <span style="margin-right:5px"> {{ scope.row.specy && scope.row.specy.lb1 }}</span>
+              <span style="margin-right:5px">{{ scope.row.specy && scope.row.specy.lb2 }}</span>
+              <span style="">{{ scope.row.specy && scope.row.specy.lb3 }}</span>
             </div>
 
           </template>
