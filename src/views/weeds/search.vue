@@ -339,6 +339,9 @@ export default {
     this.getPage()
   },
   methods: {
+    handleClose() {
+      this.dialogVisible = false
+    },
     handleDetail(index, rowData) {
       this.zacaoData = rowData
       this.dialogVisible = true
