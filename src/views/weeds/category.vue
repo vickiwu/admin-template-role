@@ -435,11 +435,11 @@ export default {
 </script>
 <style>
   .report-table .warning-row {
-    background: oldlace;
+    background: #fff0d4;
   }
 
   .report-table .success-row {
-    background: #f0f9eb;
+    background: #e2ffd2;
   }
 </style>
 <style lang="scss" scoped>
