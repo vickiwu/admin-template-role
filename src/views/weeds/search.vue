@@ -207,6 +207,15 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="discTime"
+          label="发现时间"
+          :show-overflow-tooltip="true"
+        >
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.discTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="create"
           label="上传时间"
           :show-overflow-tooltip="true"

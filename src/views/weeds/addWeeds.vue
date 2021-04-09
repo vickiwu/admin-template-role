@@ -118,9 +118,18 @@
             <el-button type="primary" @click="chooseByMap">地图选择</el-button>
           </el-col>
         </el-row>
+        <el-form-item label="发现时间">
+          <el-date-picker
+            v-model="formWeed.discTime"
+            style="width: 100%"
+            type="datetime"
+            value-format="timestamp"
+            placeholder="请选择发现时间"
+          />
+        </el-form-item>
 
-        <el-form-item label="特征描述" placeholder="请输入杂草危害特征描述">
-          <el-input v-model="formWeed.desc" type="textarea" :rows="4" />
+        <el-form-item label="特征描述">
+          <el-input v-model="formWeed.desc" type="textarea" :rows="4" placeholder="请输入杂草危害特征描述" />
         </el-form-item>
 
         <el-form-item label="图片">
@@ -245,6 +254,7 @@ export default {
         specy: '',
         jydw: '',
         desc: '',
+        discTime: '',
         piclistJson: '',
         piclist: [],
         lng: '',
