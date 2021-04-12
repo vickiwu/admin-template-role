@@ -465,7 +465,10 @@ export default {
       this.form.img = zhuanjia.avatar && zhuanjia.avatar.httpUrl
     },
     onSubmit() {
-      if (JSON.stringify(this.multipleSelection) === '[]') {
+      const ids = this.multipleSelection.map((item) => {
+        return item.id
+      })
+      if (ids.length === 0) {
         this.$alert('请选择至少一个杂草', '提示', {
           confirmButtonText: '确定',
           type: 'warning'
@@ -479,7 +482,8 @@ export default {
           }).catch(err => err)
           return
         }
-        create({ zhuanjiaId: this.form.id, zacaoId: this.multipleSelection[0].id }).then((data) => {
+
+        create({ zhuanjiaId: this.form.id, zacaoIds: JSON.stringify(ids) }).then((data) => {
           if (data.state === 1) {
             this.$alert('派发成功', '提示', {
               confirmButtonText: '确定',

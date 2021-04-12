@@ -258,7 +258,8 @@ export default {
         piclistJson: '',
         piclist: [],
         lng: '',
-        lat: ''
+        lat: '',
+        capType: 2 // 录入方式
       },
       fileList: [],
       rules: {
@@ -429,7 +430,8 @@ export default {
                 piclistJson: '',
                 piclist: [],
                 lng: '',
-                lat: ''
+                lat: '',
+                capType: 2
               }
               this.fileList = []
               this.selectId = ''

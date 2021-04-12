@@ -90,9 +90,7 @@ export default {
       const params = { ...this.pagination }
       await getPage(clean(params)).then(res => {
         const { data } = res
-        this.toplist = data.toplist
-        console.log('%c 🍷  data.toplist: ', 'font-size:20px;background-color: #EA7E5C;color:#fff;', data.toplist)
-        alert('验证接口是否加了toplist')
+        this.toplist = data.topList
         this.xinwenlist = data.xinwenlist
       }).catch(err => err)
     },

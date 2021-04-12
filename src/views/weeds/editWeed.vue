@@ -471,7 +471,6 @@ export default {
     },
     async edit() { // id 必须存在
       const params = JSON.parse(JSON.stringify(this.formWeed))
-      console.log('%c 🌭  params.specy: ', 'font-size:20px;background-color: #B03734;color:#fff;', typeof (params.specy))
 
       params.specy = JSON.parse(params.specy)
       params.lat = params.lat * Math.pow(10, 7)

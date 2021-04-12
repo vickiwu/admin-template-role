@@ -4,7 +4,7 @@
       <el-row class="report-row" :gutter="20">
         <el-col :span="10" style="text-align:left">
           <span class="row-title">
-            当前文件总数量：{{ totalCount }}个，占用磁盘空间：1020.56GB
+            当前文件总数量：{{ totalCount }}个， 当前磁盘空间总量：{{ diskTotal }}GB，已用空间：{{ diskUsed }}GB，剩余空间：{{ diskLeft }}GB
           </span>
         </el-col>
         <el-col :span="13" class="right-btn">
@@ -151,7 +151,7 @@
 
 <script>
 import { clean, parseTime } from '@/utils/index'
-import { getFilePage } from '@/api/sys'
+import { getFilePage, getServerList } from '@/api/sys'
 import { pageCount } from '@/globalConfig'
 export default {
 
@@ -165,7 +165,10 @@ export default {
         index: 1
       },
       totalCount: 0,
-      selected: []
+      selected: [],
+      diskTotal: '',
+      diskUsed: '',
+      diskLeft: ''
     }
   },
   computed: {
@@ -213,6 +216,12 @@ export default {
         const { data } = res
         this.tableData = data.filelist
         this.totalCount = data.totalCount
+      }).catch(err => err)
+      getServerList(clean(params)).then((res) => {
+        const { data } = res
+        this.diskTotal = data.serverlist[0].diskTotal
+        this.diskUsed = data.serverlist[0].diskUsed
+        this.diskLeft = data.serverlist[0].diskLeft
       }).catch(err => err)
     },
     handlePageChange(val) {

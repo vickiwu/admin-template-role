@@ -117,14 +117,16 @@ export default {
       imageUrl: '',
       rules: {
         realname: [
-          { required: true, message: '请输入专家姓名', trigger: 'blur' }
+          { required: true, message: '请输入专家姓名', trigger: 'blur' },
+          { min: 4, max: 32, message: '长度在4~32个字符以内', trigger: 'blur' }
         ],
         profUser: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 4, max: 32, message: '长度在4~32个字符以内', trigger: 'blur' }
         ],
         profPass: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 1, max: 32, message: '长度在 32 个字符以内', trigger: 'blur' }
+          { min: 4, max: 32, message: '长度在 4~32 个字符以内', trigger: 'blur' }
         ],
         password1: [
           { required: true, validator: validatePass2, trigger: 'blur' }
