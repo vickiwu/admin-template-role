@@ -68,7 +68,8 @@ module.exports = {
     getDistPage: '/zacao/getDistPage', // 分页获取杂草分布-地图
     tongji: '/zacao/tongji', // 杂草统计表
     export: '/zacao/export', // 杂草导出
-    getSpecLbPage: 'zacao/getSpecLbPage'
+    getSpecLbPage: 'zacao/getSpecLbPage',
+    tongji2: '/zacao/tongji2'
   },
   zhuanjia: { // 专家相关接口
     create: '/zhuanjia/create', // 专家录入

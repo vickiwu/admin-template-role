@@ -261,7 +261,7 @@
 
 <script>
 import * as echarts from 'echarts'
-import { getPage, getSpecLbPage, tongji } from '@/api/zacao'
+import { getPage, getSpecLbPage, tongji2 } from '@/api/zacao'
 import { clean, parseTime } from '@/utils/index'
 // const cityJson = require('@/assets/json/cities.json')
 const provinceJson = require('@/assets/json/province2city.json')
@@ -391,8 +391,15 @@ export default {
       }).catch(err => err)
     },
     async tongji() {
-      await tongji().then((res) => {
+      const searchParams = JSON.parse(JSON.stringify(this.formSearch))
+      const params = { ...searchParams, state: 16 }
+      await tongji2(params).then((res) => {
         const { data } = res
+        this.countStatX = []
+        this.countStatY = []
+        this.regionStatX = []
+        this.regionStatY = []
+        this.specyStat = []
         for (const i in data.countStat) {
           this.countStatX.push(i)
           this.countStatY.push(data.countStat[i])
@@ -415,6 +422,7 @@ export default {
 
     handleSearch() {
       this.getPage()
+      this.tongji()
     },
     loadChart1() {
       // 基于准备好的dom，初始化echarts实例

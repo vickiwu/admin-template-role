@@ -160,3 +160,12 @@ export function getSpecLbPage(data) {
   })
 }
 
+export function tongji2(data) {
+  // 杂草统计
+  return request({
+    url: WeedGlobalConfig.zaocao.tongji2,
+    method: 'POST',
+    data
+  })
+}
+
