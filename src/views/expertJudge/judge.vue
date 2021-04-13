@@ -331,7 +331,8 @@ export default {
         taskId: this.$route.params.taskId,
         bohui: 1,
         jydw: this.formWeed.jydw,
-        comment: this.formWeed.comment
+        comment: this.formWeed.comment,
+        zacaoJson: JSON.stringify(this.formWeed)
       }
       commit(params).then(data => {
         if (data.state === 1) {
@@ -351,7 +352,8 @@ export default {
         taskId: this.$route.params.taskId,
         bohui: 0,
         jydw: this.formWeed.jydw,
-        comment: this.formWeed.comment
+        comment: this.formWeed.comment,
+        zacaoJson: JSON.stringify(this.formWeed)
       }
       commit(params).then(data => {
         if (data.state === 1) {
