@@ -218,7 +218,18 @@ export default {
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
       if (this.isEdit && this.formWeed.specy) {
-        this.selectId = this.formWeed.specy.id
+        // this.selectId = this.formWeed.specy.id
+        if (this.formWeed.specy.lb1) {
+          if (this.formWeed.specy.lb2) {
+            if (this.formWeed.specy.lb3) {
+              this.selectId = this.formWeed.specy.lb3
+            } else {
+              this.selectId = this.formWeed.specy.lb2
+            }
+          } else {
+            this.selectId = this.formWeed.specy.lb1
+          }
+        }
       }
       if (this.isEdit && this.formWeed.piclist && this.formWeed.piclist !== 0) {
         this.formWeed.piclist.map((item) => {
@@ -244,13 +255,11 @@ export default {
     },
     selectOne(params) {
       this.formWeed.discReg = []
-      this.formWeed.discReg.push(params)
-      // this.value2 = ''
-      this.formWeed.discReg[1] = ''
+      this.formWeed.discReg = [params]
       this.tempList = provinceJson[params]
     },
     selectSecond(params) {
-      this.formWeed.discReg.push(params)
+      this.formWeed.discReg[1] = params
     },
     changeSpecy(val, data) {
       if (data) {

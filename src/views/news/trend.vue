@@ -6,7 +6,8 @@
           <div class="left-title">最新新闻</div>
           <!-- 置顶新闻 -->
           <div v-for="(o, index) in toplist" :key="`toplist${index}`">
-            <el-row>
+            <el-row class="top-list">
+              <div class="top-icon">置顶</div>
               <div class="show-xinwen" @click="jumpNews(o)" v-html="o.title" />
               <!-- <el-col :span="7">
                 <el-image
@@ -21,8 +22,9 @@
                 <div class="img-title">{{ o.content }}</div>
               </el-col> -->
             </el-row>
-            <el-divider />
+            <el-divider v-if="index < toplist.length - 1" />
           </div>
+          <el-divider v-if="toplist.length > 0" class="top-divider" />
           <!-- 新闻 -->
           <div v-for="(o, index) in xinwenlist" :key="`xinwenlist${index}`">
             <el-row>
@@ -81,18 +83,22 @@ export default {
   },
   methods: {
     async getHotNews() {
-      await getHotNews().then(res => {
-        const { data } = res
-        this.topList = data.xinwenHotlist
-      }).catch(err => err)
+      await getHotNews()
+        .then(res => {
+          const { data } = res
+          this.topList = data.xinwenHotlist
+        })
+        .catch(err => err)
     },
     async getPage() {
       const params = { ...this.pagination }
-      await getPage(clean(params)).then(res => {
-        const { data } = res
-        this.toplist = data.topList
-        this.xinwenlist = data.xinwenlist
-      }).catch(err => err)
+      await getPage(clean(params))
+        .then(res => {
+          const { data } = res
+          this.toplist = data.topList
+          this.xinwenlist = data.xinwenlist
+        })
+        .catch(err => err)
     },
     jumpNews(news) {
       this.$router.push({
@@ -109,6 +115,11 @@ export default {
 <style lang="scss" scoped>
 .news-card {
   min-height: calc(100% - 35px);
+
+  .top-divider {
+    height: 2px;
+    margin-bottom: 45px !important;
+  }
   ::v-deep.el-card__body {
     padding: 20px 0;
     height: 100%;
@@ -118,6 +129,18 @@ export default {
     height: 100%;
     .col-left {
       // margin-top: -5px;
+      .top-list {
+        display: flex;
+      }
+      .top-icon {
+        background: #e20000;
+        margin-right: 15px;
+        padding: 3px;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+      }
       .left-title {
         font-weight: bold;
         font-size: 20px;
@@ -153,14 +176,13 @@ export default {
       text-decoration: underline;
     }
   }
-
 }
 </style>
 <style lang="scss">
-  .show-xinwen {
-    cursor: pointer;
-    img {
-      max-width: 40%;
-    }
+.show-xinwen {
+  cursor: pointer;
+  img {
+    max-width: 40%;
   }
+}
 </style>
