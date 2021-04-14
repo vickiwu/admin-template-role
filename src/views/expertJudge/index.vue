@@ -49,7 +49,14 @@
           prop="senderRealname"
           label="派发人"
           :show-overflow-tooltip="true"
-        />
+        >
+          <template slot-scope="scope">
+            <span v-if="scope.row.senderRealname"> {{ scope.row.senderRealname }} </span>
+
+            <span v-else>自动调度 </span>
+          </template>
+        </el-table-column>
+
         <el-table-column
           prop="bumen"
           label="派发时间"

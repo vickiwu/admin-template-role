@@ -189,7 +189,7 @@ export default {
       this.dialoglog = true
     },
     delelteFile(index, row) {
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+      this.$confirm('数据删除后将无法恢复，请确认是否执行删除？', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

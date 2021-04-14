@@ -11,18 +11,41 @@
       :scroll-wheel-zoom="true"
       @ready="handleReady"
     >
-      <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :show-address-bar="true" :auto-location="true" />
-      <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']" anchor="BMAP_ANCHOR_TOP_LEFT" />
+      <bm-navigation
+        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+        :enable-geolocation="false"
+        :offset="{ width: 5, height: 105 }"
+        :show-zoom-info="false"
+      />
+      <bm-geolocation
+        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+        :show-address-bar="false"
+        :offset="{ width: 28, height: 70 }"
+        :auto-location="true"
+      />
+      <bm-map-type
+        :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']"
+        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+        type="BMAP_MAPTYPE_CONTROL_MAP"
+        :offset="{ width: 15, height: 5 }"
+      />
       <bm-control anchor="BMAP_ANCHOR_TOP_RIGHT">
         <div>
           <!-- <button @click="showSatelliteTool">卫星</button> -->
-          <button class="make-distance" @click="openDistanceTool">开启测距</button>
+          <button class="make-distance" @click="openDistanceTool">
+            开启测距
+          </button>
         </div>
-
       </bm-control>
-      <bm-marker v-for="(item ) in centerList" :key="item.id" :position="item" :dragging="false" @click="infoWindowOpen(item.id)">
+      <bm-marker
+        v-for="item in centerList"
+        :key="item.id"
+        :position="item"
+        :dragging="false"
+        @click="infoWindowOpen(item.id)"
+      >
         <bm-info-window
-          :show="item.id===currentI"
+          :show="item.id === currentI"
           @close="infoWindowClose(item.id)"
         >
           <div>
@@ -34,7 +57,11 @@
               </li>
               <li>
                 <span class="info-key">位置:</span>
-                <span v-for="(wz,index) in zacao.discReg" :key="index" class="info-value">{{ wz }}</span>
+                <span
+                  v-for="(wz, index) in zacao.discReg"
+                  :key="index"
+                  class="info-value"
+                >{{ wz }}</span>
               </li>
               <li>
                 <span class="info-key">来源:</span>
@@ -42,13 +69,25 @@
               </li>
               <li>
                 <span class="info-key">图片:</span>
-                <span class="info-value"> <img v-for="img in zacao.piclist" :key="img.httpUrl" :src="img.httpUrl" alt=""></span>
+                <span class="info-value">
+                  <img
+                    v-for="img in zacao.piclist"
+                    :key="img.httpUrl"
+                    :src="img.httpUrl"
+                    alt=""
+                  ></span>
               </li>
             </ul>
-            <div class="weed-detail" @click="showDetail(zacao)">查看详细内容 ></div>
+            <div class="weed-detail" @click="showDetail(zacao)">
+              查看详细内容 >
+            </div>
           </div>
         </bm-info-window>
-        <bm-label :content="`${item.name} 位置${item.from }`" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+        <bm-label
+          :content="`${item.name} 位置${item.from}`"
+          :label-style="labelStyle"
+          :offset="{ width: 25, height: 5 }"
+        />
       </bm-marker>
       <bml-heatmap :data="data" :max="10" :radius="20" />
     </baidu-map>
@@ -81,8 +120,23 @@
 
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import { BmMarker, BmInfoWindow, BmlHeatmap, BmLabel, BmMapType, BmGeolocation, BmControl } from 'vue-baidu-map'
-import { totalCount, getDistPage, heatmap, heatmapTotal, getZacao } from '@/api/zacao'
+import {
+  BmMarker,
+  BmInfoWindow,
+  BmlHeatmap,
+  BmLabel,
+  BmMapType,
+  BmGeolocation,
+  BmControl,
+  BmNavigation
+} from 'vue-baidu-map'
+import {
+  totalCount,
+  getDistPage,
+  heatmap,
+  heatmapTotal,
+  getZacao
+} from '@/api/zacao'
 import { getSysConfig } from '@/utils/auth'
 import debounce from 'lodash.debounce'
 import { pageCount } from '@/globalConfig'
@@ -103,18 +157,20 @@ export default {
     BmGeolocation,
     BmControl,
     showWeeds,
-    editWeed
+    editWeed,
+    BmNavigation
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ['apprefs'],
   data() {
     return {
       appMainHeight: '', // 容器高度
-      center: { // 地图中心点- 用户登录可以获取到
+      center: {
+        // 地图中心点- 用户登录可以获取到
         lng: 118.846,
         lat: 32.063
       },
-      zoom: 12, // 地图放大的级别
+      zoom: 15, // 地图放大的级别
       labelStyle: { color: '#000000', fontSize: '13px', border: 'none' },
       currentI: -1,
       // mark点位数据
@@ -131,11 +187,15 @@ export default {
       distanceTool: null
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     this.listenWindow()
-    this.appMainHeight = parseInt(window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')) - 50 + 'px'
+    this.appMainHeight =
+      parseInt(
+        window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')
+      ) -
+      50 +
+      'px'
   },
   unmount() {
     this.distanceTool && this.distanceTool.close()
@@ -166,44 +226,59 @@ export default {
     },
     listenWindow() {
       window.onresize = debounce(() => {
-        this.appMainHeight = parseInt(window.getComputedStyle(this.apprefs.appMain).getPropertyValue('height')) - 50 + 'px'
+        this.appMainHeight =
+          parseInt(
+            window
+              .getComputedStyle(this.apprefs.appMain)
+              .getPropertyValue('height')
+          ) -
+          50 +
+          'px'
       }, 100)
     },
     async totalCount() {
-      await totalCount().then((res) => {
-        // const { data } = res
-      }).catch(err => err)
+      await totalCount()
+        .then(res => {
+          // const { data } = res
+        })
+        .catch(err => err)
     },
 
     async heatmapTotal() {
-      await heatmapTotal().then((res) => {
-        // const { data } = res
-      }).catch(err => err)
+      await heatmapTotal()
+        .then(res => {
+          // const { data } = res
+        })
+        .catch(err => err)
     },
     async getDistPage() {
-      await getDistPage({ count: this.count, start: this.start }).then((res) => {
-        const { data } = res
-        this.centerList = data.distlist.map((item) => {
-          const centerItem = {}
-          centerItem.lat = item.lat / 10000000
-          centerItem.lng = item.lng / 10000000
-          centerItem.name = item.name
-          centerItem.from = item.discReg.join(',')
-          centerItem.id = item.id
-          return centerItem
+      await getDistPage({ count: this.count, start: this.start })
+        .then(res => {
+          const { data } = res
+          this.centerList = data.distlist.map(item => {
+            const centerItem = {}
+            centerItem.lat = item.lat / 10000000
+            centerItem.lng = item.lng / 10000000
+            centerItem.name = item.name
+            centerItem.from = item.discReg.join(',')
+            centerItem.id = item.id
+            return centerItem
+          })
         })
-      }).catch(err => err)
+        .catch(err => err)
     },
     async heatmap() {
-      await heatmap({ count: this.count, start: this.start }).then((res) => {
-        const { data } = res
-        this.data = data.heatmaplist.map((item) => {
-          item.lat = item.lat / 1000000
-          item.lng = item.lng / 1000000
-          item.count = item.count * 2
-          return item
+      await heatmap({ count: this.count, start: this.start })
+        .then(res => {
+          const { data } = res
+          this.data = data.heatmaplist.map(item => {
+            item.lat = item.lat / 1000000
+            item.lng = item.lng / 1000000
+            item.count = item.count * 2
+            return item
+          })
         })
-      }).catch(err => err)
+        .catch(err => err)
     },
     showDetail(zacao) {
       this.zacaoData = zacao
@@ -217,10 +292,12 @@ export default {
     },
     infoWindowOpen(id) {
       // 根据杂草id获取杂草信息
-      getZacao({ id }).then((res) => {
-        const { data } = res
-        this.zacao = data.zacao
-      }).catch(err => err)
+      getZacao({ id })
+        .then(res => {
+          const { data } = res
+          this.zacao = data.zacao
+        })
+        .catch(err => err)
       this.currentI = id
     },
     handleAddClose() {
@@ -244,13 +321,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.edit-weed-dialog{
-  ::v-deep.el-dialog__body{
+.edit-weed-dialog {
+  ::v-deep.el-dialog__body {
     padding: 0 20px;
     padding-bottom: 10px;
   }
 }
-::v-deep.app-container{
+::v-deep.app-container {
   padding: 0;
 }
 .map {
@@ -263,25 +340,26 @@ export default {
   .weed-info {
     list-style: none;
     padding: 0 5px;
-    margin:10px 0 5px 0 ;
+    margin: 10px 0 5px 0;
     li {
       margin-bottom: 8px;
-      font-size: 13px;
+      font-size: 12px;
+      white-space: nowrap;
       .info-key {
         display: inline-block;
         margin-right: 10px;
       }
       .info-value {
         display: inline-block;
-        img{
-          width:35px;
-          height: 35px;
+        img {
+          width: 70px;
+          height: 70px;
           vertical-align: text-top;
         }
       }
     }
   }
-  .weed-detail{
+  .weed-detail {
     text-align: right;
     font-size: 12px;
     color: #0369c3;
@@ -289,23 +367,26 @@ export default {
   }
   .make-distance {
     box-shadow: rgba(0, 0, 0, 0.35) 2px 2px 3px;
-    border-width: 1px; border-style: solid;
+    border-width: 1px;
+    border-style: solid;
     border-color: rgb(139, 164, 220);
     background: rgb(255, 255, 255);
     margin: 10px 10px 0 0;
     font-size: 12px;
     line-height: 1.3em;
-    text-align: center;border-radius:  3px; color: rgb(0, 0, 0);
+    text-align: center;
+    border-radius: 3px;
+    color: rgb(0, 0, 0);
   }
 }
 </style>
 
 <style>
 .BMap_cpyCtrl {
-    display:none;
+  display: none;
 }
 
-.anchorBL{
-    display:none;
+.anchorBL {
+  display: none;
 }
 </style>

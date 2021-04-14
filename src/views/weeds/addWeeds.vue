@@ -171,6 +171,24 @@
         @click="handleMapClick"
       >
         <bm-marker :position="{lng: formWeed.lng, lat: formWeed.lat}" />
+        <bm-navigation
+          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+          :enable-geolocation="false"
+          :offset="{ width: 5, height: 105 }"
+          :show-zoom-info="false"
+        />
+        <bm-geolocation
+          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+          :show-address-bar="false"
+          :offset="{ width: 28, height: 70 }"
+          :auto-location="true"
+        />
+        <bm-map-type
+          :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']"
+          anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+          type="BMAP_MAPTYPE_CONTROL_MAP"
+          :offset="{ width: 15, height: 5 }"
+        />
       </baidu-map>
     </el-dialog>
 
@@ -189,13 +207,13 @@ const countryJson = require('@/assets/json/country.json')
 import ElSelectTree from 'el-select-tree'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmMarker } from 'vue-baidu-map'
+import { BmMarker, BmNavigation, BmGeolocation, BmMapType } from 'vue-baidu-map'
 
 export default {
   components: {
     ElSelectTree,
     BaiduMap,
-    BmMarker
+    BmMarker, BmNavigation, BmGeolocation, BmMapType
   },
   props: {
     data: {
@@ -316,10 +334,10 @@ export default {
           })
         }
         if (this.formWeed.lat) {
-          this.formWeed.lat = this.formWeed.lat / 10000000
+          this.formWeed.lat = (this.formWeed.lat / 10000000).toFixed(7)
         }
         if (this.formWeed.lng) {
-          this.formWeed.lng = this.formWeed.lng / 10000000
+          this.formWeed.lng = (this.formWeed.lng / 10000000).toFixed(7)
         }
       }
     }
@@ -495,6 +513,9 @@ export default {
 .bm-view {
   width: 100%;
   height: 500px;
+}
+::v-deep.el-dialog__body{
+  padding:0 20px;
 }
 .news-card {
 .news-form{

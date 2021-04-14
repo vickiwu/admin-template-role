@@ -3,8 +3,12 @@
     <el-button v-if="isAdd" type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
-        <el-col :span="23" class="right-btn">
+        <el-col :span="4">
+          <el-input v-model="name" prefix-icon="el-icon-search" placeholder="搜索关键字" clearable />
+        </el-col>
+        <el-col :span="20" class="right-btn">
           <el-button type="primary" @click="handleAdd">新增目</el-button>
+          <el-button type="primary" @click="handleSearch">检索</el-button>
           <el-button type="primary" @click="handleSearch">刷新</el-button>
           <!-- <el-button type="danger"   @click="handleDel">删除</el-button> -->
         </el-col>
@@ -213,6 +217,7 @@ export default {
         lb1: '',
         lb1Lt: ''
       },
+      name: '',
       rules: {
         lb1: [
           { required: true, message: '请填写目', trigger: 'blur' }
@@ -308,7 +313,7 @@ export default {
     },
     async getSpecLbPage() {
       this.tableData = []
-      const params = { ...this.queryPageination }
+      const params = { ...this.queryPageination, name: this.name }
 
       await getSpecLbPage(clean(params)).then((res) => {
         const { data } = res
@@ -320,7 +325,7 @@ export default {
     },
 
     handleDel(id) {
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '删除', {
+      this.$confirm('数据删除后将无法恢复，请确认是否执行删除？', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

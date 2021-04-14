@@ -52,12 +52,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="经度 ：">
-            {{ form.lng / 10000000 }}
+            {{ (form.lng / 10000000).toFixed(7) }}
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="纬度 ：">
-            {{ form.lat/ 10000000 }}
+            {{ (form.lat/ 10000000).toFixed(7) }}
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -91,6 +91,24 @@
           <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
             <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
           </bm-marker>
+          <bm-navigation
+            anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+            :enable-geolocation="false"
+            :offset="{ width: 5, height: 105 }"
+            :show-zoom-info="false"
+          />
+          <bm-geolocation
+            anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+            :show-address-bar="false"
+            :offset="{ width: 28, height: 70 }"
+            :auto-location="true"
+          />
+          <bm-map-type
+            :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']"
+            anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+            type="BMAP_MAPTYPE_CONTROL_MAP"
+            :offset="{ width: 15, height: 5 }"
+          />
         </baidu-map>
       </div>
     </el-dialog>
@@ -100,13 +118,13 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmLabel, BmMarker } from 'vue-baidu-map'
+import { BmLabel, BmMarker, BmNavigation, BmGeolocation, BmMapType } from 'vue-baidu-map'
 
 export default {
   components: {
     BaiduMap,
     BmLabel,
-    BmMarker
+    BmMarker, BmNavigation, BmGeolocation, BmMapType
   },
   props: {
     data: {
@@ -172,6 +190,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep.el-dialog__body{
+  padding:0 20px;
+}
 .app-container-dialog{
   .el-form-item{
     margin-bottom: 0 !important;
