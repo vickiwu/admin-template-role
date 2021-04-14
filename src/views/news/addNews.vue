@@ -41,8 +41,8 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item class="btn-center">
-          <el-button>取消</el-button>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
+          <!-- <el-button>取消</el-button> -->
+          <el-button type="primary" style="padding:7px 25px;font-size: 13px;" @click="onSubmit">提 交</el-button>
         </el-form-item>
       </el-form>
     </el-card>
