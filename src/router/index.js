@@ -179,13 +179,7 @@ export const constantRoutes = [
         component: () => import('@/views/resource/editAccount'),
         meta: { title: '账户编辑', icon: 'tree' }
       },
-      {
-        path: 'set',
-        name: 'ExpertSet',
-        // hidden: true,
-        component: () => import('@/views/expert/setExpert'),
-        meta: { title: '调度管理', icon: 'tree' }
-      },
+
       {
         path: 'account',
         name: 'Account',
@@ -211,13 +205,20 @@ export const constantRoutes = [
         name: 'File',
         component: () => import('@/views/resource/file'),
         meta: { title: '文件管理', icon: 'table' }
-      }
+      },
       // {
       //   path: 'space',
       //   name: 'Space',
       //   component: () => import('@/views/resource/space'),
       //   meta: { title: '空间管理', icon: 'table' }
       // }
+      {
+        path: 'set',
+        name: 'ExpertSet',
+        // hidden: true,
+        component: () => import('@/views/expert/setExpert'),
+        meta: { title: '调度管理', icon: 'tree' }
+      }
 
     ]
   },

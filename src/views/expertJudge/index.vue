@@ -1,9 +1,11 @@
 <template>
   <div class="app-container">
     <el-card shadow="always" class="news-card">
-      <el-col :span="24" class="right-btn">
-        <el-button type="primary" @click="query">刷新</el-button>
-      </el-col>
+      <el-row type="flex" class="report-row" justify="space-between">
+        <el-col :span="24" class="right-btn">
+          <el-button type="primary" @click="query">刷新</el-button>
+        </el-col>
+      </el-row>
       <el-table
         ref="tableData"
         :data="tableData"
@@ -182,5 +184,24 @@ export default {
   .slot-span {
     float: left;
   }
+}
+.news-card {
+  min-height: calc(100% - 35px);
+  ::v-deep.el-card__body {
+    // padding: 20px 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .report-row {
+    ::v-deep.el-select{
+      width: 100%;
+    }
+
+  }
+  .report-table {
+    margin: 10px 0;
+  }
+
 }
 </style>
