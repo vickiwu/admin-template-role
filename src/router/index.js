@@ -126,6 +126,13 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/expert/management'),
         meta: { title: '专家管理', icon: 'tree' }
+      },
+      {
+        path: 'showmanagement',
+        name: 'ExpertManagement2',
+        hidden: true,
+        component: () => import('@/views/expert/management'),
+        meta: { title: '专家管理', icon: 'tree' }
       }
 
     ]

@@ -353,12 +353,13 @@ export default {
     },
     selectOne(params) {
       this.formWeed.discReg = []
-      this.formWeed.discReg.push(params)
+      this.formWeed.discReg[0] = params
       this.value2 = ''
       this.tempList = provinceJson[params]
     },
     selectSecond(params) {
-      this.formWeed.discReg.push(params)
+      this.formWeed.discReg[1] = params
+      // this.formWeed.discReg.push(params)
     },
 
     changeSpecy(val, data) {

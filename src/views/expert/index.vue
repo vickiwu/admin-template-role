@@ -514,7 +514,10 @@ export default {
     },
     jumpManageMent() {
       this.$router.push({
-        name: 'ExpertManagement'
+        name: 'ExpertManagement2',
+        params: {
+          isShow: true
+        }
       })
     }
   }
