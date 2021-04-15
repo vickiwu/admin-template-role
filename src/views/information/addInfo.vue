@@ -67,7 +67,7 @@
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div slot="tip" class="el-upload__tip">只能上传pdf文件</div>
+            <div slot="tip" class="el-upload__tip">当前仅支持PDF文件</div>
           </el-upload>
         </el-form-item>
         <el-form-item class="btn-center">

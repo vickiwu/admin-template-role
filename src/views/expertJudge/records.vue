@@ -93,7 +93,7 @@
         >
           <template slot-scope="scope">
             <span
-              style="color: #409EFF;cursor:pointer;"
+              style="color: #409EFF;cursor:pointer;display: inline-block;padding: 4px 0px;"
               @click="details(scope.row)"
             >
               杂草详情

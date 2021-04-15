@@ -103,13 +103,13 @@
         >
           <template slot-scope="scope">
             <span
-              style="color: #409EFF;cursor:pointer;margin-right:15px;"
+              style="color: #409EFF;cursor:pointer;margin-right:15px;display: inline-block;padding: 4px 0px;"
               @click="showDetail(scope.$index, scope.row)"
             >
               查看
             </span>
             <span
-              style="color: #f78989;cursor:pointer;"
+              style="color: #f78989;cursor:pointer;display: inline-block;padding: 4px 0px;"
               @click="delelteFile(scope.$index, scope.row)"
             >
               删除

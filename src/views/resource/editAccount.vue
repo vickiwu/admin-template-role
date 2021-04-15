@@ -11,7 +11,7 @@
         :rules="this.$route.params.isEdit? rulesEdit:rules"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" />
+          <el-input v-model="form.username" placeholder="请输入用户名" disabled />
         </el-form-item>
         <el-form-item label="真实姓名" prop="realname">
           <el-input v-model="form.realname" placeholder="请输入真实姓名" />

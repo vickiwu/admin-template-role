@@ -98,12 +98,12 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span
+            <!-- <span
               style="color: #409EFF;cursor:pointer;margin-right:15px;"
               @click="handleEdit(scope.$index, scope.row)"
             >
               修改
-            </span>
+            </span> -->
             <span
               style="color: #409EFF;cursor:pointer;margin-right:15px;"
               @click="handleDownLoad(scope.$index, scope.row)"

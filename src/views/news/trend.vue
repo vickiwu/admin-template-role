@@ -173,6 +173,7 @@ export default {
   .top-span {
     cursor: pointer;
     &:hover {
+       color: #e20000;
       text-decoration: underline;
     }
   }
@@ -181,6 +182,9 @@ export default {
 <style lang="scss">
 .show-xinwen {
   cursor: pointer;
+  &:hover{
+    color: #e20000;
+  }
   img {
     max-width: 40%;
   }
