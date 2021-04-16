@@ -93,6 +93,7 @@
               clearable
               :props="treeProps"
               :load="loadNode"
+              :data="treeData"
               lazy
               :check-strictly="true"
               @change="changeSpecy"
@@ -212,12 +213,22 @@
         />
       </baidu-map>
     </el-dialog>
+    <el-dialog
+      title="添加种类"
+      append-to-body
+      :visible.sync="dialogVisibleTree"
+      width="60%"
+      :before-close="handleCloseTree"
+    >
+      <category :has-class="false" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { uploadImg, edit, create, getSpecLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
+import category from '@/views/weeds/category'
 const provinceJson = require('@/assets/json/province2city.json')
 const provinceList = []
 for (const item in provinceJson) {
@@ -233,6 +244,7 @@ export default {
   components: {
     ElSelectTree,
     BaiduMap,
+    category,
     BmMarker, BmNavigation, BmGeolocation, BmMapType
   },
   props: {
@@ -283,6 +295,8 @@ export default {
       callback()
     }
     return {
+      dialogVisibleTree: false,
+      treeData: [],
       countryJson: countryJson,
       provinceList: provinceList,
       value1: '',
@@ -343,6 +357,7 @@ export default {
     ])
   },
   mounted() {
+    this.loadTreeData()
     if (this.isCreate) {
       this.formWeed = {
         ...this.formWeed,
@@ -358,13 +373,18 @@ export default {
     }
   },
   methods: {
+    handleCloseTree() {
+      this.loadTreeData()
+      this.dialogVisibleTree = false
+    },
     addSpecy() {
-      this.$router.push({
-        name: 'Category',
-        params: {
-          isAdd: true
-        }
-      })
+      this.dialogVisibleTree = true
+      // this.$router.push({
+      //   name: 'Category',
+      //   params: {
+      //     isAdd: true
+      //   }
+      // })
     },
     selectOne(params) {
       this.formWeed.discReg = []
@@ -414,16 +434,25 @@ export default {
         this.formWeed.specy = ''
       }
     },
+    async loadTreeData() {
+      const params = { count: 1000, start: 0 }
+      const arr = await getSpecLbPage(clean(params)).then((res) => {
+        return res.data.lblist.map(item => {
+          return { id: item.id, lb: item.lb1, data: item }
+        })
+      }).catch(err => err)
+      this.treeData = arr
+    },
     async loadNode(node, resolve) {
       const params = { count: 1000, start: 0 }
-      if (node.level === 0) { // 目
-        const arr = await getSpecLbPage(clean(params)).then((res) => {
-          return res.data.lblist.map(item => {
-            return { id: item.id, lb: item.lb1, data: item }
-          })
-        }).catch(err => err)
-        return resolve(arr)
-      }
+      // if (node.level === 0) { // 目
+      //   const arr = await getSpecLbPage(clean(params)).then((res) => {
+      //     return res.data.lblist.map(item => {
+      //       return { id: item.id, lb: item.lb1, data: item }
+      //     })
+      //   }).catch(err => err)
+      //   return resolve(arr)
+      // }
       if (node.level === 1) { // 科 lb1
         params.lb1 = node.data.lb
         const arr2 = await getSpecLbPage(clean(params)).then((res) => {

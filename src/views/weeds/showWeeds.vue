@@ -24,6 +24,9 @@
         </span>
 
       </el-form-item>
+      <el-form-item label="发现时间 ：">
+        <span>{{ parseTime(form.discTime) }}</span>
+      </el-form-item>
       <el-form-item label="种类 ：">
 
         <div>
@@ -66,7 +69,7 @@
       </el-row>
 
       <el-form-item label="状态 ：">
-        {{ form.state ==0?'未研判' :form.state ==1?'待进一步确认':'研判完成,入库' }}
+        {{ form.state ==0?'待研判' :form.state ==1?'待进一步确认':'研判完成,入库' }}
       </el-form-item>
       <el-form-item v-if="showYj" label="研判意见 ：">
         {{ form.comment }}
@@ -84,12 +87,12 @@
         <baidu-map
           ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
           class="bm-view"
-          :zoom="10"
+          zoom="15"
           :center="home"
           :scroll-wheel-zoom="true"
         >
           <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
-            <bm-label content="位置" :label-style="labelStyle" :offset="{width: 25, height:5}" />
+            <bm-label content="位置ccc" :label-style="labelStyle" :offset="{width: 25, height:5}" />
           </bm-marker>
           <bm-navigation
             anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
@@ -119,6 +122,7 @@
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
 import { BmLabel, BmMarker, BmNavigation, BmGeolocation, BmMapType } from 'vue-baidu-map'
+import { parseTime } from '@/utils/index'
 
 export default {
   components: {
@@ -171,6 +175,9 @@ export default {
     // }
   },
   methods: {
+    parseTime(time) {
+      return parseTime(time)
+    },
     showMap() {
       if (this.form.lat && this.form.lng) {
         this.mapDialogVisible = true

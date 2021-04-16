@@ -136,7 +136,6 @@ export default {
         if (!valid) {
           return false
         } else {
-          alert('验证后台置顶top字段是否加上')
           await create({ json: JSON.stringify(clean(this.formNews)) }).then((data) => {
             if (data.state === 1) {
               this.$alert('新增成功!', '提示', {

@@ -83,6 +83,7 @@
                 clearable
                 :props="treeProps"
                 :load="loadNode"
+                :data="treeData"
                 lazy
                 :check-strictly="true"
                 @change="changeSpecy"
@@ -140,6 +141,15 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-dialog
+      title="添加种类"
+      append-to-body
+      :visible.sync="dialogVisibleTree"
+      width="60%"
+      :before-close="handleCloseTree"
+    >
+      <category :has-class="false" />
+    </el-dialog>
   </div>
 </template>
 
@@ -148,6 +158,7 @@ import ElSelectTree from 'el-select-tree'
 import { uploadImg, getSpecLbPage } from '@/api/zacao'
 import { clean } from '@/utils/index'
 import { commit } from '@/api/yanpan'
+import category from '@/views/weeds/category'
 // const cityJson = require('@/assets/json/cities.json')
 const provinceJson = require('@/assets/json/province2city.json')
 const provinceList = []
@@ -157,7 +168,8 @@ for (const item in provinceJson) {
 
 export default {
   components: {
-    ElSelectTree
+    ElSelectTree,
+    category
   },
   data() {
     const validateReg = (rule, value, callback) => {
@@ -167,6 +179,8 @@ export default {
       callback()
     }
     return {
+      dialogVisibleTree: false,
+      treeData: [],
       // cityJson: cityJson.cityies,
       provinceList: provinceList,
       // value1: '广西省',
@@ -214,6 +228,7 @@ export default {
     }
   },
   mounted() {
+    this.loadTreeData()
     // this.$route.params.isEdit ? (this.isEdit = true) : this.isEdit = false
     if (this.$route.params.rowData) { // 跳转页面的时候携带id及数据元进入
       this.formWeed = this.$route.params.rowData
@@ -242,13 +257,18 @@ export default {
     }
   },
   methods: {
+    handleCloseTree() {
+      this.loadTreeData()
+      this.dialogVisibleTree = false
+    },
     addSpecy() {
-      this.$router.push({
-        name: 'Category',
-        params: {
-          isAdd: true
-        }
-      })
+      this.dialogVisibleTree = true
+      // this.$router.push({
+      //   name: 'Category',
+      //   params: {
+      //     isAdd: true
+      //   }
+      // })
     },
     goBack() {
       this.$router.go('-1')
@@ -264,7 +284,8 @@ export default {
     changeSpecy(val, data) {
       if (data) {
         const specy = data.data
-        this.formWeed.specy = JSON.stringify(specy)
+        // this.formWeed.specy = JSON.stringify(specy)
+        this.formWeed.specy = specy
       } else {
         this.formWeed.specy = ''
       }
@@ -280,16 +301,25 @@ export default {
       this.dialogImageUrl = file.url
       this.dialogImageVisible = true
     },
+    async loadTreeData() {
+      const params = { count: 1000, start: 0 }
+      const arr = await getSpecLbPage(clean(params)).then((res) => {
+        return res.data.lblist.map(item => {
+          return { id: item.id, lb: item.lb1, data: item }
+        })
+      }).catch(err => err)
+      this.treeData = arr
+    },
     async loadNode(node, resolve) {
       const params = { count: 1000, start: 0 }
-      if (node.level === 0) { // 目
-        const arr = await getSpecLbPage(clean(params)).then((res) => {
-          return res.data.lblist.map(item => {
-            return { id: item.id, lb: item.lb1, data: item }
-          })
-        }).catch(err => err)
-        return resolve(arr)
-      }
+      // if (node.level === 0) { // 目
+      //   const arr = await getSpecLbPage(clean(params)).then((res) => {
+      //     return res.data.lblist.map(item => {
+      //       return { id: item.id, lb: item.lb1, data: item }
+      //     })
+      //   }).catch(err => err)
+      //   return resolve(arr)
+      // }
       if (node.level === 1) { // 科 lb1
         params.lb1 = node.data.lb
         const arr2 = await getSpecLbPage(clean(params)).then((res) => {

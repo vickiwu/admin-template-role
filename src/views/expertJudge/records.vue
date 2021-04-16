@@ -65,7 +65,7 @@
         >
           <template slot-scope="scope">
             <span v-if="scope.row.state === -1">驳回</span>
-            <span v-else-if="scope.row.state === 0">未处理</span>
+            <span v-else-if="scope.row.state === 0">待研判</span>
             <span v-else-if="scope.row.state === 1">已处理</span>
             <span v-else />
           </template>

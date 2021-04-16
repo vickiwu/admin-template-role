@@ -128,7 +128,18 @@ export default {
       this.imageUrl = this.$route.params.rowData.cover && this.$route.params.rowData.cover.httpUrl
       this.filelist = this.formZilao.filelist
       if (this.isEdit && this.formZilao.specy) {
-        this.selectId = this.formZilao.specy.id
+        // this.selectId = this.formZilao.specy.id
+        if (this.formZilao.specy.lb1) {
+          if (this.formZilao.specy.lb2) {
+            if (this.formZilao.specy.lb3) {
+              this.selectId = this.formZilao.specy.lb3
+            } else {
+              this.selectId = this.formZilao.specy.lb2
+            }
+          } else {
+            this.selectId = this.formZilao.specy.lb1
+          }
+        }
       }
       const arr = []
       this.formZilao.filelist.forEach((element, idx) => {

@@ -77,7 +77,7 @@
         </el-col>
         <el-col :span="2" style="margin-left:2px">
           <el-select v-model="formSearch.state" clearable placeholder="状态">
-            <el-option label="未研判" :value="0" />
+            <el-option label="待研判" :value="0" />
             <el-option label="研判中" :value="1" />
             <el-option label="已入库" :value="16" />
             <el-option label="已驳回" :value="-1" />
@@ -239,7 +239,7 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.state == 0 ? '未研判' : scope.row.state == 1 ? '研判中': scope.row.state == -1 ? '驳回':'已入库' }}</span>
+            <span>{{ scope.row.state == 0 ? '待研判' : scope.row.state == 1 ? '研判中': scope.row.state == -1 ? '驳回':'已入库' }}</span>
           </template>
         </el-table-column>
         <el-table-column

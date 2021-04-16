@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div :class="hasClass?'app-container' : ''">
     <el-button v-if="isAdd" type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
@@ -96,6 +96,7 @@
       :title="!isEdit ? '新增目' : '修改目'"
       :visible.sync="dialogVisible"
       width="40%"
+      append-to-body
     >
       <el-form
         ref="formAdd"
@@ -121,6 +122,7 @@
       :title="!isEdit ? '新增科' : '修改科'"
       :visible.sync="dialogVisible2"
       width="40%"
+      append-to-body
     >
       <el-form
         ref="formAdd2"
@@ -156,6 +158,7 @@
       :title="!isEdit ? '新增属' : '修改属'"
       :visible.sync="dialogVisible3"
       width="40%"
+      append-to-body
     >
       <el-form
         ref="formAdd3"
@@ -206,7 +209,13 @@ import { clean } from '@/utils/index'
 import { pageCount } from '@/globalConfig'
 
 export default {
+  props: {
 
+    hasClass: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       isAdd: false,
