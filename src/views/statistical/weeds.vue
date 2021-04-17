@@ -11,7 +11,9 @@
       :scroll-wheel-zoom="true"
       @ready="handleReady"
     >
-      <bm-navigation
+      <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :show-address-bar="true" :auto-location="true" />
+      <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']" anchor="BMAP_ANCHOR_TOP_LEFT" />
+      <!-- <bm-navigation
         anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
         :enable-geolocation="false"
         :offset="{ width: 5, height: 105 }"
@@ -28,7 +30,7 @@
         anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
         type="BMAP_MAPTYPE_CONTROL_MAP"
         :offset="{ width: 15, height: 5 }"
-      />
+      /> -->
       <bm-control anchor="BMAP_ANCHOR_TOP_RIGHT">
         <div>
           <!-- <button @click="showSatelliteTool">卫星</button> -->
@@ -127,8 +129,8 @@ import {
   BmLabel,
   BmMapType,
   BmGeolocation,
-  BmControl,
-  BmNavigation
+  BmControl
+  // BmNavigation
 } from 'vue-baidu-map'
 import {
   totalCount,
@@ -157,8 +159,8 @@ export default {
     BmGeolocation,
     BmControl,
     showWeeds,
-    editWeed,
-    BmNavigation
+    editWeed
+    // BmNavigation
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ['apprefs'],

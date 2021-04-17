@@ -95,7 +95,7 @@
           <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
             <bm-label content="位置ccc" :label-style="labelStyle" :offset="{width: 25, height:5}" />
           </bm-marker>
-          <bm-navigation
+          <!-- <bm-navigation
             anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
             :enable-geolocation="false"
             :offset="{ width: 5, height: 105 }"
@@ -112,7 +112,9 @@
             anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
             type="BMAP_MAPTYPE_CONTROL_MAP"
             :offset="{ width: 15, height: 5 }"
-          />
+          /> -->
+          <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :show-address-bar="true" :auto-location="true" />
+          <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']" anchor="BMAP_ANCHOR_TOP_LEFT" />
         </baidu-map>
       </div>
     </el-dialog>
@@ -122,14 +124,18 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmLabel, BmMarker, BmNavigation, BmGeolocation, BmMapType } from 'vue-baidu-map'
+import { BmLabel, BmMarker,
+//  BmNavigation,
+  BmGeolocation, BmMapType } from 'vue-baidu-map'
 import { parseTime } from '@/utils/index'
 
 export default {
   components: {
     BaiduMap,
     BmLabel,
-    BmMarker, BmNavigation, BmGeolocation, BmMapType
+    BmMarker,
+    // BmNavigation,
+    BmGeolocation, BmMapType
   },
   props: {
     data: {

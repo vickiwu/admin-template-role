@@ -125,7 +125,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column
+        <!-- <el-table-column
           prop="state"
           label="状态"
           :show-overflow-tooltip="true"
@@ -133,7 +133,7 @@
           <template slot-scope="scope">
             <span>{{ scope.row.state == 0 ? '未审核' : scope.row.state == 1 ? '审核通过': '驳回' }}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop=""
           label="编辑"

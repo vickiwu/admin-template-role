@@ -4,7 +4,7 @@
     <el-card shadow="always" class="news-card">
       <el-row type="flex" class="report-row" justify="space-between">
         <el-col :span="4">
-          <el-input v-model="name" prefix-icon="el-icon-search" placeholder="搜索关键字" clearable />
+          <el-input v-if="false" v-model="searchname" prefix-icon="el-icon-search" placeholder="搜索关键字" clearable />
         </el-col>
         <el-col :span="20" class="right-btn">
           <el-button type="primary" @click="handleAdd">新增目</el-button>
@@ -226,7 +226,7 @@ export default {
         lb1: '',
         lb1Lt: ''
       },
-      name: '',
+      searchname: '',
       rules: {
         lb1: [
           { required: true, message: '请填写目', trigger: 'blur' }
@@ -303,26 +303,50 @@ export default {
       const params = { count: 1000, start: 0 }
       // return
       params.lb1 = tree.data.lb1
-      if (tree.data.lb2) { // 属
-        params.lb2 = tree.data.lb2
-        const arr2 = await getSpecLbPage(clean(params)).then((res) => {
-          return res.data.lblist.map((item, index) => {
-            return { id: item.id, index: index, lb: item.lb3, lbLt: item.lb3Lt, level: 3, data: item, hasChildren: false }
-          })
-        }).catch(err => err)
-        return resolve(arr2)
-      } else { // 科
-        const arr = await getSpecLbPage(clean(params)).then((res) => {
-          return res.data.lblist.map((item, index) => {
+      if (tree.level === 1) { // 点击目 获取科
+        let arr
+        await getSpecLbPage(clean(params)).then((res) => {
+          arr = res.data.lblist.map((item, index) => {
             return { id: item.id, index: index, lb: item.lb2, lbLt: item.lb2Lt, level: 2, data: item, hasChildren: true }
           })
         }).catch(err => err)
         return resolve(arr)
+      } else if (tree.level === 2) {
+        params.lb2 = tree.data.lb2
+        let arr2
+        await getSpecLbPage(clean(params)).then((res) => {
+          arr2 = res.data.lblist.map((item, index) => {
+            return { id: item.id, index: index, lb: item.lb3, lbLt: item.lb3Lt, level: 3, data: item, hasChildren: false }
+          })
+        }).catch(err => err)
+        return resolve(arr2)
+      } else {
+        return resolve([])
       }
+
+      // if (tree.data.lb2) { // 请求属
+      //   params.lb2 = tree.data.lb2
+      //   let arr2
+      //   await getSpecLbPage(clean(params)).then((res) => {
+      //     arr2 = res.data.lblist.map((item, index) => {
+      //       return { id: item.id, index: index, lb: item.lb3, lbLt: item.lb3Lt, level: 3, data: item, hasChildren: false }
+      //     })
+      //   }).catch(err => err)
+      //   return resolve(arr2)
+      // } else { // 请求科
+      //   let arr
+      //   await getSpecLbPage(clean(params)).then((res) => {
+      //     arr = res.data.lblist.map((item, index) => {
+      //       return { id: item.id, index: index, lb: item.lb2, lbLt: item.lb2Lt, level: 2, data: item, hasChildren: true }
+      //     })
+      //   }).catch(err => err)
+      //   console.log('%c 🎂 arr: ', 'font-size:20px;background-color: #7F2B82;color:#fff;', arr)
+      //   return resolve(arr)
+      // }
     },
     async getSpecLbPage() {
       this.tableData = []
-      const params = { ...this.queryPageination, name: this.name }
+      const params = { ...this.queryPageination, name: this.searchname }
 
       await getSpecLbPage(clean(params)).then((res) => {
         const { data } = res

@@ -193,7 +193,7 @@
         @click="handleMapClick"
       >
         <bm-marker :position="{lng: formWeed.lng, lat: formWeed.lat}" />
-        <bm-navigation
+        <!-- <bm-navigation
           anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
           :enable-geolocation="false"
           :offset="{ width: 5, height: 105 }"
@@ -210,7 +210,9 @@
           anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
           type="BMAP_MAPTYPE_CONTROL_MAP"
           :offset="{ width: 15, height: 5 }"
-        />
+        /> -->
+        <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" :show-address-bar="true" :auto-location="true" />
+        <bm-map-type :map-types="['BMAP_NORMAL_MAP', 'BMAP_SATELLITE_MAP']" anchor="BMAP_ANCHOR_TOP_LEFT" />
       </baidu-map>
     </el-dialog>
     <el-dialog
@@ -238,14 +240,18 @@ const countryJson = require('@/assets/json/country.json')
 import ElSelectTree from 'el-select-tree'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmMarker, BmNavigation, BmGeolocation, BmMapType } from 'vue-baidu-map'
+import { BmMarker,
+// BmNavigation,
+  BmGeolocation, BmMapType } from 'vue-baidu-map'
 
 export default {
   components: {
     ElSelectTree,
     BaiduMap,
     category,
-    BmMarker, BmNavigation, BmGeolocation, BmMapType
+    BmMarker,
+    //  BmNavigation,
+    BmGeolocation, BmMapType
   },
   props: {
     data: {
