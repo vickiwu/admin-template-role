@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-button type="primary" class="go-back-btn" @click="goBack">返回上一级</el-button>
     <el-card shadow="always" class="news-card">
-      <div v-html="news.content" />
+      <div style="padding:0 15px;" v-html="news.content" />
     </el-card>
   </div>
 </template>

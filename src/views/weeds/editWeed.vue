@@ -186,7 +186,7 @@
       <baidu-map
         ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
         class="bm-view"
-        :zoom="10"
+        :zoom="15"
         :center="home"
         :map-click="false"
         :scroll-wheel-zoom="true"

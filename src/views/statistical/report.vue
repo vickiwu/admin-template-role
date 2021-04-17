@@ -429,6 +429,12 @@ export default {
       var myChart = echarts.init(document.getElementById('main1'))
       // 绘制图表
       myChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
         grid: {
           left: '10%',
           right: '10px',
@@ -464,6 +470,12 @@ export default {
       var myChart = echarts.init(document.getElementById('main2'))
       // 绘制图表
       myChart.setOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
         grid: {
           left: '10%',
           right: '10px',
@@ -499,11 +511,11 @@ export default {
           {
             name: '种类分布',
             type: 'pie',
-            radius: ['30%', '90%'],
+            radius: ['20%', '70%'],
             avoidLabelOverlap: false,
             label: {
-              show: false,
-              position: 'center'
+              show: true
+              // position: 'center'
             },
             emphasis: {
               label: {
@@ -511,7 +523,7 @@ export default {
               }
             },
             labelLine: {
-              show: false
+              show: true
             },
             data: this.specyStat
           }

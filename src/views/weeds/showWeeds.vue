@@ -82,12 +82,13 @@
       width="50%"
       :before-close="handleClose"
       append-to-body
+      class="show-map"
     >
       <div>
         <baidu-map
           ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
           class="bm-view"
-          zoom="15"
+          :zoom="15"
           :center="home"
           :scroll-wheel-zoom="true"
         >
@@ -195,6 +196,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .show-map{
+    .el-dialog__body{
+  padding:0 20px;
+}
+  }
+</style>
 
 <style lang="scss" scoped>
 ::v-deep.el-dialog__body{

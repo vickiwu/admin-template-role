@@ -165,7 +165,7 @@
       <baidu-map
         ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
         class="bm-view"
-        :zoom="10"
+        :zoom="15"
         :center="home"
         :map-click="false"
         :scroll-wheel-zoom="true"
@@ -280,7 +280,7 @@ export default {
       formWeed: {
         nameCn: '',
         nameLt: '',
-        source: '',
+        source: '中国',
         discReg: ['广西省'],
         specy: '',
         jydw: '',
