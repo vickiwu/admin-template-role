@@ -89,12 +89,10 @@
           ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
           class="bm-view"
           :zoom="15"
-          :center="home"
+          :center="mapHome"
           :scroll-wheel-zoom="true"
         >
-          <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}">
-            <bm-label content="位置ccc" :label-style="labelStyle" :offset="{width: 25, height:5}" />
-          </bm-marker>
+          <bm-marker :position="{lng: form.lng / 10000000, lat: form.lat/ 10000000}" />
           <!-- <bm-navigation
             anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
             :enable-geolocation="false"
@@ -157,7 +155,8 @@ export default {
       dialogVisible: false,
       form: {},
       mapDialogVisible: false,
-      labelStyle: { color: '#000000', fontSize: '13px', border: 'none' }
+      labelStyle: { color: '#000000', fontSize: '13px', border: 'none' },
+      mapHome: {}
 
     }
   },
@@ -187,7 +186,10 @@ export default {
     },
     showMap() {
       if (this.form.lat && this.form.lng) {
+        this.mapHome = {}
         this.mapDialogVisible = true
+        this.mapHome.lng = this.form.lng / 10000000
+        this.mapHome.lat = this.form.lat / 10000000
       } else {
         this.$alert('当前杂草无位置信息', '提示', {
           confirmButtonText: '确定',

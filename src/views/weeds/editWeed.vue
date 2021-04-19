@@ -187,7 +187,7 @@
         ak="InHZQsN1mrE5mfdl9s02lRuLtCI1QiHK"
         class="bm-view"
         :zoom="15"
-        :center="home"
+        :center="mapHome"
         :map-click="false"
         :scroll-wheel-zoom="true"
         @click="handleMapClick"
@@ -301,6 +301,7 @@ export default {
       callback()
     }
     return {
+      mapHome: {},
       dialogVisibleTree: false,
       treeData: [],
       countryJson: countryJson,
@@ -426,9 +427,11 @@ export default {
       }
       if (this.formWeed.lat) {
         this.formWeed.lat = (this.formWeed.lat / 10000000).toFixed(7)
+        this.mapHome.lat = this.formWeed.lat
       }
       if (this.formWeed.lng) {
         this.formWeed.lng = (this.formWeed.lng / 10000000).toFixed(7)
+        this.mapHome.lng = this.formWeed.lng
       }
     },
 
