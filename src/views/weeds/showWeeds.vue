@@ -122,7 +122,7 @@
 <script>
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import { mapGetters } from 'vuex'
-import { BmLabel, BmMarker,
+import { BmMarker,
 //  BmNavigation,
   BmGeolocation, BmMapType } from 'vue-baidu-map'
 import { parseTime } from '@/utils/index'
@@ -130,7 +130,6 @@ import { parseTime } from '@/utils/index'
 export default {
   components: {
     BaiduMap,
-    BmLabel,
     BmMarker,
     // BmNavigation,
     BmGeolocation, BmMapType
