@@ -327,8 +327,8 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  mode: 'history',
-  base: '/zacao/',
+  // mode: 'history',
+  // base: '/zacao/',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
