@@ -15,6 +15,7 @@
       </el-row>
 
       <el-table
+        ref="lazyTable"
         :data="tableData"
         style="width: 100%"
         row-key="id"
@@ -70,7 +71,7 @@
             </span>
             <span
               style="color: #f78989;cursor:pointer;"
-              @click="handleDel( scope.row.id)"
+              @click="handleDel(scope.row.data.id)"
             >
               删除
             </span>
@@ -323,26 +324,6 @@ export default {
       } else {
         return resolve([])
       }
-
-      // if (tree.data.lb2) { // 请求属
-      //   params.lb2 = tree.data.lb2
-      //   let arr2
-      //   await getSpecLbPage(clean(params)).then((res) => {
-      //     arr2 = res.data.lblist.map((item, index) => {
-      //       return { id: item.id, index: index, lb: item.lb3, lbLt: item.lb3Lt, level: 3, data: item, hasChildren: false }
-      //     })
-      //   }).catch(err => err)
-      //   return resolve(arr2)
-      // } else { // 请求科
-      //   let arr
-      //   await getSpecLbPage(clean(params)).then((res) => {
-      //     arr = res.data.lblist.map((item, index) => {
-      //       return { id: item.id, index: index, lb: item.lb2, lbLt: item.lb2Lt, level: 2, data: item, hasChildren: true }
-      //     })
-      //   }).catch(err => err)
-      //   console.log('%c 🎂 arr: ', 'font-size:20px;background-color: #7F2B82;color:#fff;', arr)
-      //   return resolve(arr)
-      // }
     },
     async getSpecLbPage() {
       this.tableData = []
@@ -356,7 +337,9 @@ export default {
         })
       }).catch(err => err)
     },
-
+    resetLazyTree() {
+      this.$set(this.$refs.lazyTable.store.states, 'lazyTreeNodeMap', {})
+    },
     handleDel(id) {
       this.$confirm('数据删除后将无法恢复，请确认是否执行删除？', '删除', {
         confirmButtonText: '确定',
@@ -369,7 +352,7 @@ export default {
               confirmButtonText: '确定',
               type: 'success',
               callback: () => {
-                // 新增完成 更新列表
+                this.resetLazyTree()
                 this.getSpecLbPage()
               }
             })
