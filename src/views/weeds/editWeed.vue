@@ -160,6 +160,7 @@
       <el-form-item label="图片">
         <el-upload
           action="string"
+          multiple
           :http-request="uploadImg"
           list-type="picture-card"
           :file-list="fileList"

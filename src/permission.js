@@ -29,8 +29,7 @@ router.beforeEach(async(to, from, next) => {
           next()
         } else {
           await store.dispatch('permission/generateRoutes', {
-            priv: store.getters.privGroup,
-            privilege: store.getters.privilege
+            utype: store.getters.utype
           })
           next({ ...to, replace: true })
         }

@@ -23,13 +23,13 @@
               <el-checkbox label="资料中心" />
             </div>
             <div>
-              <el-checkbox label="专家中心" />
+              <el-checkbox label="调度中心" />
               <el-checkbox label="专家研判" />
             </div>
 
-            <div>
+            <!-- <div>
               <el-checkbox label="新闻管理" />
-            </div>
+            </div> -->
 
             <div>
               <el-checkbox label="系统日志" />

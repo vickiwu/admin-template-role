@@ -5,10 +5,10 @@
         <svg-icon icon-class="zhanghutngbu" class="bg-icon" />
         账户同步
       </div>
-      <div class="blue-bg green-bg" @click="jumpRoles()">
+      <!-- <div class="blue-bg green-bg" @click="jumpRoles()">
         <svg-icon icon-class="quanxianshezhi" class="bg-icon" />
         权限设置
-      </div>
+      </div> -->
     </div>
 
     <el-card shadow="always" class="news-card">
@@ -87,9 +87,11 @@
         >
           <template slot-scope="scope">
             <span v-if="scope.row.utype === 1">系统管理员</span>
-            <span v-else-if="scope.row.utype === 2">专家调度用户</span>
+            <span v-else-if="scope.row.utype === 2">调度专家</span>
             <span v-else-if="scope.row.utype === 3">研判专家</span>
-            <span v-else-if="scope.row.utype === 4">图像采集操作员</span>
+            <span v-else-if="scope.row.utype === 4">信息录入员</span>
+            <span v-else-if="scope.row.utype === 5">应用审计员</span>
+            <span v-else-if="scope.row.utype === 6">统计查询员</span>
             <span v-else />
           </template>
         </el-table-column>

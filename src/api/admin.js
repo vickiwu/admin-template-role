@@ -130,3 +130,19 @@ export function setPrivGroup(data) {
     data
   })
 }
+// 单位列表查询
+export function getCompanyList(data) {
+  return request({
+    url: WeedGlobalConfig.admin.getCompanyList,
+    method: 'POST',
+    data
+  })
+}
+// 单位列表修改
+export function setCompanyList(data) {
+  return request({
+    url: WeedGlobalConfig.admin.setCompanyList,
+    method: 'POST',
+    data
+  })
+}

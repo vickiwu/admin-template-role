@@ -22,7 +22,9 @@ module.exports = {
     uploadAvatar: '/upload/avatar', // 头像上传
     getH4aUserPage: 'admin/getH4aUserPage',
     synH4a: '/admin/synH4a', // h4a 账户同步
-    setPrivGroup: '/admin/setPrivGroup'// 权限设置
+    setPrivGroup: '/admin/setPrivGroup', // 权限设置
+    getCompanyList: '/user/getCompanyList', // 单位列表查询
+    setCompanyList: '/user/setCompanyList' // 单位列表修改
   },
   log: { // 日志相关接口
     logDelete: '/log/delete', // 日志删除
