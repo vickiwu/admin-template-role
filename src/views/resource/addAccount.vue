@@ -97,7 +97,7 @@
           <el-input v-model="form.jobNo" placeholder="请输入工号" />
         </el-form-item>
         <el-form-item label="手机号码" prop="phone">
-          <el-input v-model.number="form.phone" placeholder="请输入手机号码" />
+          <el-input v-model="form.phone" placeholder="请输入手机号码" />
         </el-form-item>
 
         <el-form-item label="类型" prop="utype">
@@ -171,7 +171,7 @@
 
 <script>
 import ValidCode from '@/components/ValidCode/index'
-import sha256 from 'sha256'
+// import sha256 from 'sha256'
 import { sendsms } from '@/api/admin'
 import { mapGetters } from 'vuex'
 import { clean } from '@/utils/index'
@@ -442,7 +442,7 @@ export default {
             const params = { ...this.form }
             delete params.password1
             delete params.validate
-            params.password = sha256(this.form.password)
+            // params.password = sha256(this.form.password)
             params.bumen = [params.bumen]
 
             // 新增
