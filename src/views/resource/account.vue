@@ -5,10 +5,10 @@
         <svg-icon icon-class="zhanghutngbu" class="bg-icon" />
         账户同步
       </div>
-      <div class="blue-bg green-bg" @click="jumpRoles()">
+      <!-- <div class="blue-bg green-bg" @click="jumpRoles()">
         <svg-icon icon-class="quanxianshezhi" class="bg-icon" />
         权限设置
-      </div>
+      </div> -->
     </div>
 
     <el-card shadow="always" class="news-card">
