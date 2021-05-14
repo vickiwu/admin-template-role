@@ -72,7 +72,7 @@ export function resetRoutes(constantRoutes) {
     if (element.meta) {
       if (element.meta.title === '统计分析' ||
       element.meta.title === '新闻管理' ||
-      element.meta.title === '杂草库' ||
+      element.meta.title === '有害生物录入' ||
       element.meta.title === '专家中心' ||
       element.meta.title === '资料中心' ||
       element.meta.title === '系统日志' ||

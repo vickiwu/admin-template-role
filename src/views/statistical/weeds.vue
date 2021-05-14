@@ -99,7 +99,7 @@
       width="60%"
       :before-close="handleClose"
     >
-      <showWeeds :data="zacaoData" :show-btn="false" />
+      <showWeeds :mydata="zacaoData" :show-btn="false" />
     </el-dialog>
     <el-dialog
       title="添加杂草"

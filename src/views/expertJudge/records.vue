@@ -122,7 +122,7 @@
       width="60%"
       :before-close="handleClose"
     >
-      <showWeeds :data="zacaoData" :show-yj="false" />
+      <showWeeds :mydata="zacaoData" :show-yj="false" />
     </el-dialog>
   </div>
 </template>
@@ -181,8 +181,15 @@ export default {
       // 查询杂草记录
       getZacao(clean({ id: row.zacaoId })).then((res) => {
         const { data } = res
-        this.zacaoData = data.zacao
-        this.dialogVisible = true
+        if (data.zacao) {
+          this.zacaoData = data.zacao
+          this.dialogVisible = true
+        } else {
+          this.$alert('为查询到此杂草信息', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        }
       }).catch(err => err)
     },
     handleClose() {

@@ -175,7 +175,6 @@
             <el-table-column
               prop="piclist"
               label="图片"
-              :show-overflow-tooltip="true"
             >
               <template slot-scope="scope">
 

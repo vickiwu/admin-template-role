@@ -14,8 +14,7 @@
       <el-form-item label="拉丁名称" prop="nameLt" placeholder="请输入杂草拉丁名称">
         <el-input v-model="formWeed.nameLt" />
       </el-form-item>
-      <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源">
-        <!-- <el-input v-model="formWeed.source" /> -->
+      <!-- <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源">
         <el-select
           v-model="formWeed.source"
           clearable
@@ -29,7 +28,7 @@
             :value="item[1]"
           />
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="发现区域" prop="discReg">
 
         <!-- <el-select
@@ -114,6 +113,12 @@
           <!-- <el-option label="非鉴定性有害生物" :value="3" /> -->
         </el-select>
       </el-form-item>
+      <el-form-item label="数量" prop="number">
+        <el-input v-model="formWeed.number" />
+      </el-form-item>
+      <el-form-item label="采集人" prop="man">
+        <el-input v-model="formWeed.man" />
+      </el-form-item>
       <el-row :gutter="20">
         <span v-if="isCreate">
           <el-col :span="12">
@@ -142,10 +147,9 @@
               <el-input v-model="formWeed.lat" />
             </el-form-item>
           </el-col>
-          <el-col :span="4" style="text-align:right">
-            <!-- 23.2222 -->
+          <!-- <el-col :span="4" style="text-align:right">
             <el-button type="primary" @click="chooseByMap">地图选择</el-button>
-          </el-col>
+          </el-col> -->
         </span>
       </el-row>
 
@@ -314,6 +318,8 @@ export default {
       dialogImageUrl: '', // 预览图片地址
       dialogImageVisible: false, // 图片的预览模态框
       formWeed: {
+        number: '',
+        man: '',
         nameCn: '',
         nameLt: '',
         source: '',

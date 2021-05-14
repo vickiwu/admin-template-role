@@ -20,34 +20,34 @@ export const constantRoutes = [
   },
   {
     path: '/', // 首页的设定
-    redirect: '/statistical/weeds',
+    redirect: '/statistical/report',
     hidden: true
   },
   {
     path: '/statistical',
     component: Layout,
-    redirect: '/statistical/weeds',
+    redirect: '/statistical/report',
     name: 'Statistical',
     meta: { title: '统计分析', icon: 'el-icon-s-help' },
     children: [
-      {
-        path: 'weeds',
-        name: 'WeedsStatistical',
-        component: () => import('@/views/statistical/weeds'),
-        meta: { title: '杂草分布', icon: 'table' }
-      },
+      // {
+      //   path: 'weeds',
+      //   name: 'WeedsStatistical',
+      //   component: () => import('@/views/statistical/weeds'),
+      //   meta: { title: '杂草分布', icon: 'table' }
+      // },
       {
         path: 'report',
         name: 'Report',
         component: () => import('@/views/statistical/report'),
         meta: { title: '报表统计', icon: 'tree' }
-      },
-      {
-        path: 'index',
-        name: 'Trend',
-        component: () => import('@/views/news/trend'),
-        meta: { title: '新闻动态', icon: 'table' }
       }
+      // {
+      //   path: 'index',
+      //   name: 'Trend',
+      //   component: () => import('@/views/news/trend'),
+      //   meta: { title: '新闻动态', icon: 'table' }
+      // }
     ]
   },
   {
@@ -55,7 +55,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/weeds/management',
     name: 'Weeds',
-    meta: { title: '杂草库', icon: 'el-icon-s-help' },
+    meta: { title: '有害生物录入', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'addWeeds',
@@ -63,6 +63,13 @@ export const constantRoutes = [
         // hidden: true,
         component: () => import('@/views/weeds/addWeeds'),
         meta: { title: '杂草录入', icon: 'tree' }
+      },
+      {
+        path: 'fly',
+        name: 'Fly',
+        // hidden: true,
+        component: () => import('@/views/weeds/addFly'),
+        meta: { title: '实蝇录入', icon: 'tree' }
       },
       {
         path: 'showWeeds',

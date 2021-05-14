@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '生物杂草信息处理系统',
+  title: '有害生物数据库',
   /**
    * @type {boolean} true | false
    * @description 固定头部

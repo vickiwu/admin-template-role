@@ -210,7 +210,6 @@
         <el-table-column
           prop="piclist"
           label="图片"
-          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
 
@@ -309,7 +308,7 @@
       width="60%"
       :before-close="handleClose"
     >
-      <showWeeds :data="zacaoData" />
+      <showWeeds :mydata="zacaoData" />
     </el-dialog>
     <el-dialog
       title="编辑杂草"

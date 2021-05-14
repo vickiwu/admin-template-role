@@ -162,7 +162,6 @@
         <el-table-column
           prop="name"
           label="图片"
-          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <el-image

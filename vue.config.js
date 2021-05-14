@@ -7,7 +7,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '生物杂草信息处理系统' // 页面标题
+const name = defaultSettings.title || '有害生物数据库' // 页面标题
 
 // 启动端口 9528
 const port = 9528

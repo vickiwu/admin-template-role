@@ -63,9 +63,9 @@
             {{ (form.lat/ 10000000).toFixed(7) }}
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <el-button v-if="showBtn" style="margin-left ：20px" type="primary" @click="showMap">地图查看</el-button>
-        </el-col>
+        </el-col> -->
       </el-row>
 
       <el-form-item label="状态 ：">
@@ -135,7 +135,7 @@ export default {
     BmGeolocation, BmMapType
   },
   props: {
-    data: {
+    mydata: {
       type: Object,
       default: () => {}
     },
@@ -150,12 +150,12 @@ export default {
   },
   data() {
     return {
+      mapHome: {},
       dialogImageUrl: '',
       dialogVisible: false,
       form: {},
       mapDialogVisible: false,
-      labelStyle: { color: '#000000', fontSize: '13px', border: 'none' },
-      mapHome: {}
+      labelStyle: { color: '#000000', fontSize: '13px', border: 'none' }
 
     }
   },
@@ -165,7 +165,7 @@ export default {
     ])
   },
   watch: {
-    data: {
+    mydata: {
       immediate: true,
       deep: true, // 深度监听
       handler(newVal, oldVal) {

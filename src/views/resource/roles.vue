@@ -17,7 +17,7 @@
         <el-form-item label="访问控制" prop="name" placeholder="请输入杂草来源">
           <el-checkbox-group v-model="checkList">
             <div>
-              <el-checkbox label="杂草库" />
+              <el-checkbox label="有害生物录入" />
             </div>
             <div>
               <el-checkbox label="资料中心" />
@@ -72,7 +72,7 @@ export default {
       },
       options: [],
       checkList: [],
-      defaultAll: ['杂草库', '资料中心', '专家中心', '专家研判', '新闻管理', '系统日志', '账户管理', '文件管理', '空间管理']
+      defaultAll: ['有害生物录入', '资料中心', '专家中心', '专家研判', '新闻管理', '系统日志', '账户管理', '文件管理', '空间管理']
     }
   },
   computed: {

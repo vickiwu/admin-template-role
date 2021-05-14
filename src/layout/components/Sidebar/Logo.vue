@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '生物杂草信息处理系统',
+      title: '有害生物数据库',
       logo: require('@/assets/logo.png')
     }
   }
