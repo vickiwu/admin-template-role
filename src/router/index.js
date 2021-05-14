@@ -105,7 +105,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/expert/index',
     name: 'ExpertIndex',
-    meta: { title: '专家中心', icon: 'el-icon-s-help' },
+    meta: { title: '调度中心', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'index',
@@ -272,50 +272,50 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: '/news',
-    component: Layout,
-    redirect: '/news/trend',
-    name: 'News',
-    meta: { title: '新闻管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'addNews',
-        name: 'AddNews',
-        // hidden: true,
-        component: () => import('@/views/news/addNews'),
-        meta: { title: '新闻发布', icon: 'tree' }
-      },
-      {
-        path: 'editNews',
-        name: 'EditNews',
-        hidden: true,
-        component: () => import('@/views/news/editNews'),
-        meta: { title: '新闻编辑', icon: 'tree' }
-      },
-      {
-        path: 'newsDetail',
-        name: 'NewsDetail',
-        hidden: true,
-        component: () => import('@/views/news/news'),
-        meta: { title: '新闻内容', icon: 'tree' }
-      },
+  // {
+  //   path: '/news',
+  //   component: Layout,
+  //   redirect: '/news/trend',
+  //   name: 'News',
+  //   meta: { title: '新闻管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'addNews',
+  //       name: 'AddNews',
+  //       // hidden: true,
+  //       component: () => import('@/views/news/addNews'),
+  //       meta: { title: '新闻发布', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'editNews',
+  //       name: 'EditNews',
+  //       hidden: true,
+  //       component: () => import('@/views/news/editNews'),
+  //       meta: { title: '新闻编辑', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'newsDetail',
+  //       name: 'NewsDetail',
+  //       hidden: true,
+  //       component: () => import('@/views/news/news'),
+  //       meta: { title: '新闻内容', icon: 'tree' }
+  //     },
 
-      // {
-      //   path: 'trend',
-      //   name: 'Trend',
-      //   component: () => import('@/views/news/trend'),
-      //   meta: { title: '新闻动态', icon: 'table' }
-      // },
-      {
-        path: 'management',
-        name: 'Management',
-        component: () => import('@/views/news/management'),
-        meta: { title: '新闻管理', icon: 'tree' }
-      }
+  //     // {
+  //     //   path: 'trend',
+  //     //   name: 'Trend',
+  //     //   component: () => import('@/views/news/trend'),
+  //     //   meta: { title: '新闻动态', icon: 'table' }
+  //     // },
+  //     {
+  //       path: 'management',
+  //       name: 'Management',
+  //       component: () => import('@/views/news/management'),
+  //       meta: { title: '新闻管理', icon: 'tree' }
+  //     }
 
-    ]
-  },
+  //   ]
+  // },
   {
     path: '/log',
     component: Layout,
