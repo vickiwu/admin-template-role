@@ -104,8 +104,8 @@
         <el-form-item label="数量" prop="number">
           <el-input v-model="formWeed.number" />
         </el-form-item>
-        <el-form-item label="采集人" prop="man">
-          <el-input v-model="formWeed.man" />
+        <el-form-item label="采集人" prop="caijiren">
+          <el-input v-model="formWeed.caijiren" />
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="10">
@@ -292,7 +292,7 @@ export default {
       dialogImageVisible: false, // 图片的预览模态框
       formWeed: {
         number: '',
-        man: '',
+        caijiren: '',
         nameCn: '',
         nameLt: '',
         source: '中国',
