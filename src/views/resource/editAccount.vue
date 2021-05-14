@@ -73,20 +73,27 @@
 
           </el-row>
         </el-form-item>
-        <el-form-item label="单位" prop="bumen">
-          <el-select
-            v-model="form.bumen"
-            clearable
+        <el-form-item label="隶属海关" prop="bumen">
+          <el-row>
+            <el-col :span="22">
+              <el-select
+                v-model="form.bumen"
+                clearable
+                placeholder="请选择隶属海关"
+              >
+                <el-option
+                  v-for="item in bumenList"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+            <el-col :span="2" style="text-align:right">
+              <el-button type="primary" @click="edit">编辑</el-button>
+            </el-col>
+          </el-row>
 
-            placeholder="请选择单位"
-          >
-            <el-option
-              v-for="item in bumenList"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
         </el-form-item>
         <el-form-item label="工号" prop="jobNo">
           <el-input v-model="form.jobNo" placeholder="请输入工号" />
@@ -124,6 +131,41 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-dialog
+      title="编辑隶属海关"
+      :visible.sync="dialogVisible"
+      width="30%"
+      center
+    >
+      <el-row style="text-align: right;padding-bottom: 15px">
+        <el-button type="primary" @click="addCompany">新增</el-button>
+      </el-row>
+      <div style="height: 300px; overflow-y: scroll">
+        <el-row v-for="(item,idx) in bumenList" :key="item" class="company-row" style="cursor: pointer">
+          <el-col :span="20">{{ item }}</el-col>
+          <el-col :span="4">
+            <el-button type="text" style="color: #409EFF;cursor:pointer; margin-right:10px;" @click="editCompany(item, idx)"> 编辑</el-button>
+            <el-button type="text" style="color: #f78989;cursor:pointer;" @click="delCompany(idx)"> 删除</el-button>
+          </el-col>
+        </el-row>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveCompanyList">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="添加隶属海关"
+      :visible.sync="dialogVisible1"
+      width="30%"
+      center
+    >
+      <el-input v-model="company" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible1 = false">取 消</el-button>
+        <el-button type="primary" @click="saveCompany">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -133,8 +175,7 @@ import sha256 from 'sha256'
 import { sendsms } from '@/api/admin'
 import { mapGetters } from 'vuex'
 import { clean } from '@/utils/index'
-import { createUser, editUser } from '@/api/admin'
-const bumenJson = require('@/assets/json/bumen.json')
+import { createUser, editUser, getCompanyList, setCompanyList } from '@/api/admin'
 const provinceJson = require('@/assets/json/province2city.json')
 const provinceList = []
 for (const item in provinceJson) {
@@ -182,7 +223,11 @@ export default {
       callback()
     }
     return {
-      bumenJson: bumenJson.bumenlist,
+      dialogVisible: false,
+      dialogVisible1: false,
+      mode: 1, // 1 新增  2 编辑
+      company: '',
+      companyIndex: 0,
       bumenList: [],
       ValidCode: '33',
       width: '150px',
@@ -274,17 +319,69 @@ export default {
   },
   mounted() {
     this.queryValidate()
+    // 查询隶属海关
+    this.getCompanyList()
     if (this.$route.params.isEdit) {
       // 编辑
       this.form = {
         ...this.$route.params.rowData
       }
-      this.form.bumen = this.form.bumen.length === 2 ? this.form.bumen[1] : ''
-      const filter = this.bumenJson.find(item => item.city === this.form.cityName)
-      this.bumenList = filter.bumenlist2
     }
   },
   methods: {
+    edit() {
+      this.dialogVisible = true
+    },
+    editCompany(value, idx) {
+      this.mode = 2
+      this.companyIndex = idx
+      this.company = value
+      this.dialogVisible1 = true
+    },
+    delCompany(idx) {
+      this.$confirm('数据删除后将无法恢复，请确认是否执行删除？', '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.bumenList.splice(idx, 1)
+      }).catch(err => err)
+    },
+    addCompany() {
+      this.company = ''
+      this.mode = 1
+      this.dialogVisible1 = true
+    },
+    saveCompany() {
+      if (this.mode === 1) {
+        this.bumenList.push(this.company)
+      } else {
+        this.bumenList.splice(this.companyIndex, 1, this.company)
+      }
+      // this.form.bumen = this.company
+      this.dialogVisible1 = false
+    },
+    saveCompanyList() {
+      setCompanyList(clean({ comlist: JSON.stringify(this.bumenList) })).then((res) => {
+        if (res.state === 1) {
+          this.$alert('修改成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success',
+            callback: () => {
+              // 修改成功后跳转回管理页面
+              this.form.bumen = ''
+              this.dialogVisible = false
+            }
+          })
+        }
+      }).catch(err => err)
+    },
+    getCompanyList() {
+      getCompanyList(clean({})).then((res) => {
+        const { data } = res
+        this.bumenList = data && data.comlist
+      }).catch(err => err)
+    },
     selectOne(params) { // 省
       this.form.cityName = ''
       this.tempList = provinceJson[params]
@@ -294,12 +391,6 @@ export default {
     },
     goBack() {
       this.$router.go('-1')
-    },
-    getBumenList(value) {
-      const filter = this.bumenJson.find(item => item.city === value)
-      if (filter) {
-        this.bumenList = filter.bumenlist2
-      }
     },
     refresh() {
       this.queryValidate()
@@ -324,7 +415,7 @@ export default {
           }
           if (this.$route.params.isEdit) {
             const params = { ...this.form }
-            params.bumen = [params.cityName, params.bumen]
+            params.bumen = [params.bumen]
             delete params.validate
 
             // 编辑
@@ -346,7 +437,7 @@ export default {
             delete params.password1
             delete params.validate
             params.password = sha256(this.form.password)
-            params.bumen = [params.cityName, params.bumen]
+            params.bumen = [params.bumen]
 
             // 新增
             createUser({ json: JSON.stringify(clean(params)) }).then((data) => {
