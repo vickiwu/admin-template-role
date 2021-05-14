@@ -102,9 +102,11 @@
 
         <el-form-item label="类型" prop="utype">
           <el-select v-model="form.utype" clearable placeholder="请选择类型">
-            <el-option label="专家调度用户" :value="2" />
+            <el-option label="调度专家" :value="2" />
             <el-option label="研判专家" :value="3" />
-            <el-option label="图像采集操作员" :value="4" />
+            <el-option label="信息录入员" :value="4" />
+            <el-option label="应用审计员" :value="5" />
+            <el-option label="统计查询员" :value="6" />
           </el-select>
         </el-form-item>
 
