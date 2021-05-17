@@ -229,6 +229,11 @@
         </el-table-column>
         <el-table-column
           prop="realname"
+          label="录入人"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column
+          prop="caijiren"
           label="采集人"
           :show-overflow-tooltip="true"
         />
