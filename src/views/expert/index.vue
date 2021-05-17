@@ -277,7 +277,7 @@
           </el-col>
           <el-col :span="11">
             <el-form-item label="专家头像" prop="img">
-              <el-avatar shape="square" :size="80" :src="form.img" />
+              <img :src="form.img ? form.img: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'" class="avatar" alt="暂无头像">
             </el-form-item>
           </el-col>
         </el-row>
@@ -565,4 +565,10 @@ export default {
   }
 }
 }
+.avatar {
+    border-radius: 5px;
+    width: 80px;
+    height: 80px;
+    display: block;
+  }
 </style>
