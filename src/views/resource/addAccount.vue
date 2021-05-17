@@ -142,8 +142,8 @@
       </el-row>
       <div style="height: 300px; overflow-y: scroll">
         <el-row v-for="(item,idx) in bumenList" :key="item" class="company-row" style="cursor: pointer">
-          <el-col :span="20">{{ item }}</el-col>
-          <el-col :span="4">
+          <el-col :span="16">{{ item }}</el-col>
+          <el-col :span="8" style="text-align: right;padding-right: 5px">
             <el-button type="text" style="color: #409EFF;cursor:pointer; margin-right:10px;" @click="editCompany(item, idx)"> 编辑</el-button>
             <el-button type="text" style="color: #f78989;cursor:pointer;" @click="delCompany(idx)"> 删除</el-button>
           </el-col>
