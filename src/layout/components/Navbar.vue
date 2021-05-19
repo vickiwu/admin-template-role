@@ -16,7 +16,8 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <div @click="getInfo()">
+
+          <!-- <div @click="getInfo()">
             <el-dropdown-item><i class="el-icon-document" /> 基本资料
             </el-dropdown-item>
           </div>
@@ -27,7 +28,8 @@
           <div @click="dialogImg = true">
             <el-dropdown-item><i class="el-icon-user" /> 修改头像
             </el-dropdown-item>
-          </div>
+          </div> -->
+
           <!-- 处理退出，删除token -->
           <el-dropdown-item @click.native="logout"><i class="el-icon-switch-button" /> 退出
           </el-dropdown-item>

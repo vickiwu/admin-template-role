@@ -88,6 +88,7 @@ export default {
     }
     return {
       markPassword: false, // 是否记住密码
+      sessionId: '',
       loginForm: {
         // 登录表单
         username: '',
@@ -106,7 +107,12 @@ export default {
       passwordType: 'password'
     }
   },
-
+  mounted() {
+    if (this.$route.query.sessionId) {
+      this.sessionId = this.$route.query.sessionId
+      this.hasId()
+    }
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -137,6 +143,17 @@ export default {
           return false
         }
       })
+    },
+    hasId() {
+      this.$store
+        .dispatch('user/loginBySessionId', this.sessionId)
+        .then(() => {
+          this.$router.push({ path: '/' }) // 跳转至首页
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     }
   }
 }

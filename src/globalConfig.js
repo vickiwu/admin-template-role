@@ -14,6 +14,7 @@ module.exports = {
     userEdit: '/user/edit', // 用户自身资料修改
     getInfo: '/user/getInfo', // 用户信息查询
     login: '/user/login', // 用户登陆
+    loginBySessionId: '/user/loginBySessionId', // 通过sessionId登录
     logout: '/user/logout', // 用户登出
     sendsms: '/user/sendsms', // 发送验证码
     changePassword: '/user/changePassword', // 密码修改

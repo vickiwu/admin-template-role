@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/admin'
+import { login, logout, getInfo, loginBySessionId } from '@/api/admin'
 import { getToken, setToken, removeToken, getUserId, setUserId,
   removeUserId, getUser, setUser, removeUser, getSysConfig,
   setSysConfig, removeSysConfig, removeUserPriv, getUserPriv, setUserPriv } from '@/utils/auth'
@@ -50,6 +50,32 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: sha256(password) }).then(response => {
+        const { data } = response
+        const { sessionId, id } = data.user
+        // store 存token
+        commit('SET_USER', data.user)
+        commit('SET_SYSCONFIG', data.sysconfig)
+        commit('SET_TOKEN', sessionId)
+        commit('SET_USERID', id) // 存用户id
+        // 存当前用户的权限
+        commit('SET_PRIV', data.user.privGroup)
+        // 缓存token等登录信息到cook中
+        setToken(sessionId)
+        setUserId(id)
+        setUser(data.user)
+        setSysConfig(data.sysconfig)
+        setUserPriv(data.user.privGroup)
+
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  // 用户通过sessionId登陆
+  loginBySessionId({ commit }, mysessionId) {
+    return new Promise((resolve, reject) => {
+      loginBySessionId({ sessionId: mysessionId }).then(response => {
         const { data } = response
         const { sessionId, id } = data.user
         // store 存token
