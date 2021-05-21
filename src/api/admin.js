@@ -66,6 +66,15 @@ export function login(data) {
     data
   })
 }
+// 用户通过sessionId登陆
+export function loginBySessionId(data) {
+  return request({
+    url: WeedGlobalConfig.admin.loginBySessionId,
+    method: 'POST',
+    data
+  })
+}
+
 // 用户登出
 export function logout(data) {
   return request({
