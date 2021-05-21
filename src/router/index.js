@@ -12,7 +12,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  {
+    path: '/login1',
+    component: () => import('@/views/login1/index'),
+    hidden: true
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),

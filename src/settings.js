@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '有害生物数据库',
+  title: '物流监控子系统（南宁海关）',
   /**
    * @type {boolean} true | false
    * @description 固定头部

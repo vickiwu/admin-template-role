@@ -5,9 +5,13 @@
         <img v-if="logo" :src="logo" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+      <router-link v-else key="expand" class="sidebar-logo-link" style="display: flex;align-items: center; justify-content:center" to="/">
+        <div>
+          <img v-if="logo" :src="logo" class="sidebar-logo">
+        </div>
+        <div class="sidebar-title" style="padding-left: 5px">
+          {{ title }} <br> {{ title1 }}
+        </div>
       </router-link>
     </transition>
   </div>
@@ -24,8 +28,9 @@ export default {
   },
   data() {
     return {
-      title: '有害生物数据库',
-      logo: require('@/assets/logo.png')
+      title: '有害生物进境运输途中',
+      title1: '监测系统',
+      logo: require('@/assets/logo.jpeg')
     }
   }
 }
@@ -48,7 +53,7 @@ export default {
   line-height: 50px;
   background: #2b2f3a;
   text-align: center;
-  overflow: hidden;
+  // overflow: hidden;
 
   & .sidebar-logo-link {
     height: 100%;
@@ -65,9 +70,10 @@ export default {
       display: inline-block;
       margin: 0;
       color: #fff;
+      height: 40px;
       font-weight: 600;
-      line-height: 50px;
-      font-size: 16px;
+      line-height: 20px;
+      font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
