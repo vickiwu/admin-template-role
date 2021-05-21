@@ -1,4 +1,5 @@
 module.exports = {
+  loginPage: 'http://localhost:19000/login/',
   // 服务器ip地址
   serverIP: '106.13.217.53',
   // 服务器端口

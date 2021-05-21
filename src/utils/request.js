@@ -57,10 +57,20 @@ service.interceptors.response.use(
           }
         })
       } else {
-        MessageBox.alert(res.data.msg || '错误', '提示', {
-          confirmButtonText: '确定',
-          type: 'warning'
-        })
+        if (res.data.msg === '无效的token') {
+          MessageBox.alert(res.data.msg || '错误', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning',
+            callback: () => { // 点击确定后返回登录页
+              location.href = GlobalConfig.loginPage
+            }
+          })
+        } else {
+          MessageBox.alert(res.data.msg || '错误', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        }
       }
       return Promise.reject(res.data.msg || '错误')
     } else {

@@ -42,6 +42,7 @@ router.beforeEach(async(to, from, next) => {
           await store.dispatch('user/resetToken')
           Message.error(error || '错误')
           next(`/login`)
+          // location.href = GlobalConfig.loginPage
           NProgress.done()
         }
       }
@@ -57,6 +58,8 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // 没有权限的页面，跳转到登录页
       next(`/login`)
+      // location.href = GlobalConfig.loginPage
+
       NProgress.done()
     }
   }

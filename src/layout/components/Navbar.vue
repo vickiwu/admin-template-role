@@ -163,6 +163,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { changePassword, uploadAvatar, setAvatar, userEdit } from '@/api/admin'
 import { clean } from '@/utils/index'
+const GlobalConfig = require('@/globalConfig')
 
 export default {
   components: {
@@ -271,7 +272,8 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout').catch(err => err)
-      this.$router.push(`/login`)
+      location.href = GlobalConfig.loginPage
+      // this.$router.push(`/login`)
     },
     async getInfo() {
       const data = await this.$store.dispatch('user/getInfo').catch(err => err)
