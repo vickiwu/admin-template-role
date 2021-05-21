@@ -19,7 +19,11 @@ const actions = {
       const arr1 = ['统计分析']
 
       if (utype === 1) {
-        arr1.push('资源管理')
+        arr1.push('调度中心')
+        arr1.push('有害生物录入')
+        arr1.push('专家研判')
+        arr1.push('资料中心')
+        arr1.push('系统日志')
       } else if (utype === 2) {
         arr1.push('调度中心')
       } else if (utype === 3) {

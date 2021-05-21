@@ -176,70 +176,70 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/resource',
-    component: Layout,
-    redirect: '/resource/account',
-    name: 'Resource',
-    meta: { title: '资源管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'addAccount',
-        name: 'AddAccount',
-        // hidden: true,
-        component: () => import('@/views/resource/addAccount'),
-        meta: { title: '账户新增', icon: 'tree' }
-      },
-      {
-        path: 'editAccount',
-        name: 'EditAccount',
-        hidden: true,
-        component: () => import('@/views/resource/editAccount'),
-        meta: { title: '账户编辑', icon: 'tree' }
-      },
+  // {
+  //   path: '/resource',
+  //   component: Layout,
+  //   redirect: '/resource/account',
+  //   name: 'Resource',
+  //   meta: { title: '资源管理', icon: 'el-icon-s-help' },
+  //   children: [
+  //     {
+  //       path: 'addAccount',
+  //       name: 'AddAccount',
+  //       // hidden: true,
+  //       component: () => import('@/views/resource/addAccount'),
+  //       meta: { title: '账户新增', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'editAccount',
+  //       name: 'EditAccount',
+  //       hidden: true,
+  //       component: () => import('@/views/resource/editAccount'),
+  //       meta: { title: '账户编辑', icon: 'tree' }
+  //     },
 
-      {
-        path: 'account',
-        name: 'Account',
-        component: () => import('@/views/resource/account'),
-        meta: { title: '账户管理', icon: 'tree' }
-      },
-      {
-        path: 'syncAccount',
-        name: 'SyncAccount',
-        hidden: true,
-        component: () => import('@/views/resource/syncAccount'),
-        meta: { title: '账户同步', icon: 'tree' }
-      },
-      {
-        path: 'roles',
-        name: 'AccountRoles',
-        hidden: true,
-        component: () => import('@/views/resource/roles'),
-        meta: { title: '权限设置', icon: 'tree' }
-      },
-      {
-        path: 'file',
-        name: 'File',
-        component: () => import('@/views/resource/file'),
-        meta: { title: '文件管理', icon: 'table' }
-      },
-      // {
-      //   path: 'space',
-      //   name: 'Space',
-      //   component: () => import('@/views/resource/space'),
-      //   meta: { title: '空间管理', icon: 'table' }
-      // }
-      {
-        path: 'set',
-        name: 'ExpertSet',
-        // hidden: true,
-        component: () => import('@/views/expert/setExpert'),
-        meta: { title: '调度管理', icon: 'tree' }
-      }
+  //     {
+  //       path: 'account',
+  //       name: 'Account',
+  //       component: () => import('@/views/resource/account'),
+  //       meta: { title: '账户管理', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'syncAccount',
+  //       name: 'SyncAccount',
+  //       hidden: true,
+  //       component: () => import('@/views/resource/syncAccount'),
+  //       meta: { title: '账户同步', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'roles',
+  //       name: 'AccountRoles',
+  //       hidden: true,
+  //       component: () => import('@/views/resource/roles'),
+  //       meta: { title: '权限设置', icon: 'tree' }
+  //     },
+  //     {
+  //       path: 'file',
+  //       name: 'File',
+  //       component: () => import('@/views/resource/file'),
+  //       meta: { title: '文件管理', icon: 'table' }
+  //     },
+  //     // {
+  //     //   path: 'space',
+  //     //   name: 'Space',
+  //     //   component: () => import('@/views/resource/space'),
+  //     //   meta: { title: '空间管理', icon: 'table' }
+  //     // }
+  //     {
+  //       path: 'set',
+  //       name: 'ExpertSet',
+  //       // hidden: true,
+  //       component: () => import('@/views/expert/setExpert'),
+  //       meta: { title: '调度管理', icon: 'tree' }
+  //     }
 
-    ]
-  },
+  //   ]
+  // },
   {
     path: '/information',
     component: Layout,

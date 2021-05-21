@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <el-form
+
+    <!-- <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
@@ -62,7 +63,7 @@
       >
         登录
       </el-button>
-    </el-form>
+    </el-form> -->
   </div>
 </template>
 
@@ -104,16 +105,29 @@ export default {
         ]
       },
       loading: false,
-      passwordType: 'password'
+      passwordType: 'password',
+      pageLoading: null
     }
   },
   mounted() {
+    this.openFullScreen2()
     if (this.$route.query.sessionId) {
       this.sessionId = this.$route.query.sessionId
       this.hasId()
     }
   },
+  destroyed() {
+    this.pageLoading.close()
+  },
   methods: {
+    openFullScreen2() {
+      this.pageLoading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading'
+        // background: 'rgba(0, 0, 0, 0.7)'
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -215,7 +229,7 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   // background-color: $bg;
-  background: url("../../assets/login.png") no-repeat;
+  // background: url("../../assets/login.png") no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
   display: flex;
