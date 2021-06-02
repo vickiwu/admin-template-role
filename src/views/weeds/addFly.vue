@@ -306,7 +306,8 @@ export default {
         piclist: [],
         lng: '',
         lat: '',
-        capType: 2 // 录入方式
+        capType: 2, // 录入方式，
+        cat: 1
       },
       fileList: [],
       rules: {
@@ -497,7 +498,8 @@ export default {
                 piclist: [],
                 lng: '',
                 lat: '',
-                capType: 2
+                capType: 2,
+                cat: 1
               }
               this.fileList = []
               this.selectId = ''
