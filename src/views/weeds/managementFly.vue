@@ -88,7 +88,7 @@
           <el-select-tree
             v-model="selectId"
             style="width:100%"
-            placeholder="请选择杂草种类"
+            placeholder="请选择实蝇种类"
             clearable
             :props="treeProps"
 
@@ -178,7 +178,7 @@
         </el-table-column>
         <el-table-column
           prop="specy"
-          label="涉及杂草种类"
+          label="涉及实蝇种类"
           width="130"
           :show-overflow-tooltip="true"
         >
@@ -308,7 +308,7 @@
       </el-pagination>
     </el-card>
     <el-dialog
-      title="杂草详情"
+      title="实蝇详情"
       :visible.sync="dialogVisible"
       width="60%"
       :before-close="handleClose"
@@ -316,7 +316,7 @@
       <showWeeds :mydata="zacaoData" />
     </el-dialog>
     <el-dialog
-      title="编辑杂草"
+      title="编辑实蝇"
       class="edit-weed-dialog"
       :visible.sync="editDialogVisible"
       width="60%"
@@ -461,7 +461,7 @@ export default {
       if (searchParams.reg.length !== 0) {
         searchParams.reg = JSON.stringify(searchParams.reg)
       }
-      const params = { ...this.queryPageination, ...searchParams, cat: 2 }
+      const params = { ...this.queryPageination, ...searchParams, cat: 1 }
       await getPage(clean(params)).then((res) => {
         const { data } = res
         this.tableData = data.zacaolist

@@ -10,17 +10,17 @@
         :rules="rules"
       >
         <el-form-item label="名称" prop="nameCn">
-          <el-input v-model="formWeed.nameCn" placeholder="请输入杂草名称" />
+          <el-input v-model="formWeed.nameCn" placeholder="请输入实蝇名称" />
         </el-form-item>
         <el-form-item label="拉丁名称" prop="nameLt">
-          <el-input v-model="formWeed.nameLt" placeholder="请输入杂草拉丁名称" />
+          <el-input v-model="formWeed.nameLt" placeholder="请输入实蝇拉丁名称" />
         </el-form-item>
-        <!-- <el-form-item label="来源国家/区域" prop="source" placeholder="请输入杂草来源国家/区域">
+        <!-- <el-form-item label="来源国家/区域" prop="source" placeholder="请输入实蝇来源国家/区域">
           <el-select
             v-model="formWeed.source"
             clearable
 
-            placeholder="请输入杂草来源国家/区域"
+            placeholder="请输入实蝇来源国家/区域"
           >
             <el-option
               v-for="item in countryJson"
@@ -76,7 +76,7 @@
               <el-select-tree
                 v-model="selectId"
                 style="width:100%"
-                placeholder="请选择杂草所属种类"
+                placeholder="请选择实蝇所属种类"
                 clearable
                 :props="treeProps"
                 :load="loadNode"
@@ -94,7 +94,7 @@
 
         </el-form-item>
         <el-form-item label="检疫地位" prop="jydw">
-          <el-select v-model="formWeed.jydw" clearable placeholder="请选择杂草危害程度">
+          <el-select v-model="formWeed.jydw" clearable placeholder="请选择实蝇危害程度">
             <!-- <el-option label="未发现有害生物" :value="0" /> -->
             <el-option label="非检疫性有害生物" :value="1" />
             <el-option label="检疫性有害生物" :value="2" />
@@ -110,13 +110,13 @@
         <el-row :gutter="20">
           <el-col :span="10">
             <!-- 112.2222 -->
-            <el-form-item label="经度" prop="lng" placeholder="请输入杂草经度" style="margin-bottom:18px">
+            <el-form-item label="经度" prop="lng" placeholder="请输入实蝇经度" style="margin-bottom:18px">
               <el-input v-model="formWeed.lng" />
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <!-- 23.2222 -->
-            <el-form-item label="纬度" label-width="50px" prop="lat" placeholder="请输入杂草纬度">
+            <el-form-item label="纬度" label-width="50px" prop="lat" placeholder="请输入实蝇纬度">
               <el-input v-model="formWeed.lat" />
             </el-form-item>
           </el-col>
@@ -135,7 +135,7 @@
         </el-form-item>
 
         <el-form-item label="特征描述">
-          <el-input v-model="formWeed.desc" type="textarea" :rows="4" placeholder="请输入杂草危害特征描述" />
+          <el-input v-model="formWeed.desc" type="textarea" :rows="4" placeholder="请输入实蝇危害特征描述" />
         </el-form-item>
 
         <el-form-item label="图片">
@@ -314,24 +314,24 @@ export default {
           { required: true, message: '请选择发现时间', trigger: 'change' }
         ],
         nameCn: [
-          { required: true, message: '请输入杂草名称', trigger: 'blur' }
+          { required: true, message: '请输入实蝇名称', trigger: 'blur' }
         ],
         nameLt: [
-          { required: true, message: '请输入杂草拉丁名称', trigger: 'blur' }
+          { required: true, message: '请输入实蝇拉丁名称', trigger: 'blur' }
         ],
         lng: [{ validator: checkLong, length: 18, trigger: 'blur' }],
         lat: [{ validator: checkLat, length: 18, trigger: 'blur' }],
         source: [
-          { required: true, message: '请输入杂草来源', trigger: 'blur' }
+          { required: true, message: '请输入实蝇来源', trigger: 'blur' }
         ],
         discReg: [
           { required: true, validator: validateReg, trigger: 'change' }
         ],
         specy: [
-          { required: true, message: '请选择杂草所属种类', trigger: 'change' }
+          { required: true, message: '请选择实蝇所属种类', trigger: 'change' }
         ],
         jydw: [
-          { required: true, message: '请选择杂草危害程度', trigger: 'change' }
+          { required: true, message: '请选择实蝇危害程度', trigger: 'change' }
         ]
       },
       selectId: '',

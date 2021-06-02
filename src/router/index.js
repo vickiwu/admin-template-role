@@ -13,7 +13,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/login1',
+    path: '/login1', // 旧的登陆入口
     component: () => import('@/views/login1/index'),
     hidden: true
   },
@@ -87,6 +87,12 @@ export const constantRoutes = [
         name: 'WeedsManagement',
         component: () => import('@/views/weeds/management'),
         meta: { title: '杂草管理', icon: 'tree' }
+      },
+      {
+        path: 'managementFly',
+        name: 'FlyManagement',
+        component: () => import('@/views/weeds/managementFly'),
+        meta: { title: '实蝇管理', icon: 'tree' }
       },
       {
         path: 'search',
